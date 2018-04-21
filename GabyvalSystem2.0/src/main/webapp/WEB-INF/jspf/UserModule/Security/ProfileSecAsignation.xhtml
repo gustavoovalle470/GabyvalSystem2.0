@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+    </head>
+    <h:body>
+        <h:form id="SecurityForm">
+            <div align="center">
+                <p:outputLabel value="ASIGNACION DE USUARIOS POR PEFIL" styleClass="GBTitle"/>
+                <p:spacer height="10px"/>
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Perfil de usuario:" styleClass="GBLabel"/>
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="profiles" value="#{ProfileAsignBean.profile}" style="width:150px">
+                                    <p:ajax listener="#{ProfileAsignBean.onFilterChange()}" update="ProfileAsign"/>
+                                    <f:selectItems value="#{ProfileAsignBean.profiles}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p:spacer height="40px"/>
+            <div align="center">
+                <p:pickList id="ProfileAsign" value="#{ProfileAsignBean.users}" var="user" itemLabel="#{user}" itemValue="#{user}">
+                    <f:facet name="sourceCaption">Usuarios sin asignar</f:facet>
+                    <f:facet name="targetCaption">Usuarios asignados</f:facet>
+                </p:pickList>
+            </div>
+            <p:spacer style="height: 10px"/>
+            <div align="center">
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:commandButton value="Guardar" action="#{ProfileAsignBean.saveUserAsign()}" icon="btnSave" update="message"/>
+                            </td>
+                            <td>
+                                <p:commandButton value="Volver" action="#{menuBean.setPageView('core/Welcome.xhtml')}" update="deployFunction" icon="btnHome"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+    </h:body>
+</html>

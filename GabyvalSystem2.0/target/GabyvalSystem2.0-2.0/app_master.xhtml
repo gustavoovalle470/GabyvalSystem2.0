@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *******************************                                                                              ****************************************
+ * *******************************  ********** ********** ******    **      ** **      ** ********** **         ****************************************
+ * *******************************  ********** **********  ******   **      ** **      ** ********** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  ******    **    **  **      ** **      ** **         ****************************************
+ * *******************************  **    **** **********  *******    **  **   **      ** ********** **         ****************************************
+ * *******************************  **    **** **********  ********    ****    **      ** ********** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **     **      ** **      ** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **      **    **  **      ** **         ****************************************
+ * *******************************  **      ** **      **  **   **      **       **  **   **      ** **         ****************************************
+ * *******************************  ********** **      **  **  **       **        ****    **      ** ********** ****************************************
+ * *******************************  ********** **      ** ******        **         **     **      ** ********** ****************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * |***************************************************************************************************************************************************|
+ * |                                                        Control de versiones                                                                       |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.0   |  07/09/2017  |      GAOQ      | Vista de pagina home del aplicativo.                                                                    |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.1   |  08/09/2017  |      GAOQ      | Adicion documentacion, cierre del menu contextual del usuario.                                          |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.2   |  13/11/2017  |      GAOQ      | Correccion de rutas de los recursos multimedia.                                                         |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ ******************************************************************************************************************************************************
+ **Nombre del archivo: app_master.xhtml
+ ******************************************************************************************************************************************************
+ **Descripcion:        Contenedor general de la aplicacion, sobre este se despliegan todas las funcionalidades del aplicativo para un usuario logueado.
+ ******************************************************************************************************************************************************
+ **Componentes en que se usa: index.xhtml, faces-config.xml
+ ******************************************************************************************************************************************************
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" >
+    <h:head>    
+        <style type="text/css">
+            body {background-image:url("resources/images/fondo_pagina.jpg");
+        </style>
+        <link rel="icon" type="image/x-icon" href="resources/images/favicon.jpg"/>
+        <h:outputStylesheet library="css" name="GabyvalStyle.css"/>
+        <title>GABYVAL System - Version Beta</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </h:head>
+    <h:body>
+        <p:growl id ="message" showDetail="true"/>
+        <ui:include src="/WEB-INF/jspf/Dialog/Dialogs.xhtml"/>
+        <p:layout style="min-width:400px;min-height:785px;">
+            <p:layoutUnit position="north" resizable="false" size="160">
+                <p:layout>
+                    <p:layoutUnit position="west" size="190" style="border:0" resizable="false">
+                        <img src="resources/images/LogoPrincipal.png" width="177" height="106" alt="LogoPrincipal"/>
+                    </p:layoutUnit>
+                    <p:layoutUnit position="east" style="border: 0" size="300">
+                        <h:form id="Menu">
+                            <div align="center">
+                                <div style="height:50px"></div>
+                                <p:outputLabel value="Bienvenido:"/>
+                                <br/>
+                                <p:splitButton value="#{userSesionBean.username}" onclick="PF('viewProfile').show();" icon="btnUser" styleClass="iconOnlyButton">
+                                    <p:menuitem value="Informacion personal" onclick="PF('editProfile').show();" icon="btnUserEdit" styleClass="iconOnlyButton"/>
+                                    <p:menuitem value="  Cambio de contraseña" onclick="PF('SelfChangePwdDlg').show();" icon="btnPassw"/>
+                                    <p:separator />
+                                    <p:menuitem value="  Cerrar sesion" action="#{userSesionBean.logout()}"  icon="btnExit" styleClass="iconOnlyButton"/>
+                                </p:splitButton>
+                            </div>
+                        </h:form>
+                    </p:layoutUnit>
+                    <p:layoutUnit position="center" visible="false">
+                    </p:layoutUnit>
+                </p:layout>
+            </p:layoutUnit>
+            <p:layoutUnit position="west" style="border: 0" resizable="false" size="250">
+                <ui:include src="/WEB-INF/jspf/core/MenuBar.xhtml"/>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" style="border: 0" resizable="false" size="250">
+                <h:form id="deployFunction">
+                    <ui:include src="/WEB-INF/jspf/#{menuBean.pageView}"/>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="south" resizable="false" size="45">
+                <p:layout>
+                    <p:layoutUnit position="center" visible="false" />
+                    <p:layoutUnit position="east" style="border: 0" size="25%">
+                        <h:form id="ContainerDate">
+                            <div align="left">
+                                <p:outputLabel id="clock" value="#{SystemDateBean.systemDate}"/>
+                                <p:poll interval="1" update="clock" process="@this"/>
+                                <p:outputLabel id="clock2" value="#{SystemDateBean2.systemDate}"/>
+                                <p:poll interval="1" update="clock2" process="@this"/>
+                            </div>
+                        </h:form>
+                    </p:layoutUnit>
+                </p:layout>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

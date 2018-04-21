@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 15, 2017 9:15:46 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.core.time.AdSystemControl" table="AD_SYSTEM_CONTROL" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbSystemControlId" type="int">
+            <column name="GB_SYSTEM_CONTROL_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbSystemDate" type="timestamp">
+            <column name="GB_SYSTEM_DATE" not-null="true" />
+        </property>
+        <property name="gbSystemPause" type="string">
+            <column name="GB_SYSTEM_PAUSE" length="1" not-null="true" />
+        </property>
+        <property name="gbSystemWorkDay" type="string">
+            <column name="GB_SYSTEM_WORK_DAY" length="1" not-null="true" />
+        </property>
+        <property name="gbLastCloseDt" type="timestamp">
+            <column name="GB_LAST_CLOSE_DT" not-null="true" />
+        </property>
+        <property name="gbNextCloseDt" type="timestamp">
+            <column name="GB_NEXT_CLOSE_DT" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="big_decimal">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

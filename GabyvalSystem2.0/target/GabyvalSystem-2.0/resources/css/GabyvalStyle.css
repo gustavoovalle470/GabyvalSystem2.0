@@ -1,0 +1,106 @@
+.btnLogin {
+    background-image: url("#{resource['images/login.png']}") !important;
+    width: 48px;
+    height: 48px;
+    background-position: 0px 0px;
+}
+
+.btnUser {
+    background-image: url("#{resource['images/LoginUser.png']}") !important;
+    width: 48px;
+    height: 48px;
+    background-position: 0px 0px;
+}
+
+.btnUserEdit {
+    background-image: url("#{resource['images/user_edit.png']}") !important;
+    width: 20px;
+    height: 20px;
+    background-position: 0px 0px;
+}
+
+.btnPassw {
+    background-image: url("#{resource['images/password.png']}") !important;
+    width: 20px;
+    height: 20px;
+    background-position: 0px 0px;
+}
+
+.btnExit {
+    background-image: url("#{resource['images/logout.png']}") !important;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+}
+
+.btnOn{
+    background-image: url("#{resource['images/ok_button.png']}") !important;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+}
+
+.btnOff{
+    background-image: url("#{resource['images/cancel_button.png']}") !important;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+}
+
+.btnHome{
+    background-image: url("#{resource['images/home_button.png']}") !important;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+}
+
+.btnAdd{
+    background-image: url("#{resource['images/add_button.png']}") !important;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+}
+
+.btnSave{
+    background-image: url("#{resource['images/save_button.png']}") !important;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+}
+
+.iconOnlyButton{
+    background: transparent !important;
+    border: none !important;
+    margin: 0;
+}
+
+.GBLabel{
+    font-weight: bold; 
+    text-align: left;
+}
+
+.GBTitle{
+    font-weight: bold; 
+    text-align: left;
+    font-size: 100px;
+}
+
+.GBNeutralState{
+    background-color: #FFFFFF; 
+    border: 3px solid #000000;
+}
+
+.GBErrorState{
+    background-color: #FFFFFF; 
+    border: 3px solid #FF0000;
+}
+
+.GBWarningState{
+    background-color: #FFFFFF; 
+    border: 3px solid #FF7B00;
+}
+
+.GBCorrectlyState{
+    background-color: #FFFFFF; 
+    border: 3px solid #55DD01;
+}

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *******************************                                                                              ****************************************
+ * *******************************  ********** ********** ******    **      ** **      ** ********** **         ****************************************
+ * *******************************  ********** **********  ******   **      ** **      ** ********** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  ******    **    **  **      ** **      ** **         ****************************************
+ * *******************************  **    **** **********  *******    **  **   **      ** ********** **         ****************************************
+ * *******************************  **    **** **********  ********    ****    **      ** ********** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **     **      ** **      ** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **      **    **  **      ** **         ****************************************
+ * *******************************  **      ** **      **  **   **      **       **  **   **      ** **         ****************************************
+ * *******************************  ********** **      **  **  **       **        ****    **      ** ********** ****************************************
+ * *******************************  ********** **      ** ******        **         **     **      ** ********** ****************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * |***************************************************************************************************************************************************|
+ * |                                                        Control de versiones                                                                       |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.0   |  13/11/2017  |      GAOQ      | Creacion de la vista para la visualizacion del menu de la aplicacion.                                  |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ ******************************************************************************************************************************************************
+ **Nombre del archivo: MenusView.xhtml
+ ******************************************************************************************************************************************************
+ **Descripcion:        Vista de todas las pantallas registradas en el sistema.
+ ******************************************************************************************************************************************************
+ **Componentes en que se usa: app_master.xhtml
+ ******************************************************************************************************************************************************
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <h:form id="MenuViewForm">
+            <div align="center">
+                <p:outputLabel value="ADMINISTRACION DE MENU DEL SISTEMA" styleClass="GBTitle"/>
+                <p:spacer height="10px"/>
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Modulo:" styleClass="GBLabel"/>
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="modules" value="#{MenuViewBean.module}" style="width:150px">
+                                    <p:ajax listener="#{MenuViewBean.onModuleChange()}" update="SubmenusView, message"/>
+                                    <f:selectItems value="#{MenuViewBean.modules}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p:spacer height="20px"/>
+            <p:dataTable id="SubmenusView" var="submenu" value="#{MenuViewBean.submenus}" editable="true" rows="10" paginator="true" scrollable="true" scrollHeight="300">
+                <f:facet name="header">
+                    Sub menus asociados
+                </f:facet>
+                <p:ajax event="rowEdit" listener="#{MenuViewBean.onPageEdit}" update="SubmenusView,message"/>
+                <p:column headerText="Identificador">
+                    <h:outputText value="#{submenu.gbMenuId}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{submenu.gbMenuName}"/>
+                        </f:facet>
+                        <f:facet name = "input">
+                            <h:inputText id="menuNameEdit" value="#{submenu.gbMenuName}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Estado">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{MenuViewBean.decode(submenu.gbMenuStatus)}"/>
+                        </f:facet>
+                        <f:facet name = "input">
+                            <h:selectOneMenu value="#{submenu.gbMenuStatus}">
+                                <f:selectItems value="#{MenuViewBean.menuStatus}" var="possibleStatus"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Vista">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{submenu.gbPageView}"/>
+                        </f:facet>
+                        <f:facet name = "input">
+                            <h:inputText id="pageViewEdit" value="#{submenu.gbPageView}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Ult. usuario modif.">
+                    <h:outputText value="#{submenu.gbLastUserChg}"/>
+                </p:column>
+                <p:column headerText="Última fecha modif.">
+                    <h:outputText value="#{userProfileBean.getDateString(submenu.gbLastDateChg)}"/>
+                </p:column>
+                <p:column>
+                    <p:rowEditor/>
+                </p:column>
+            </p:dataTable>
+            <p:spacer style="height: 5px"/>
+            <div align="center">
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:commandButton value="Agregar vista" onclick="PF('AddPage').show();" icon="btnAdd"/>
+                            </td>
+                            <td>
+                                <p:commandButton value="Volver" action="#{menuBean.setPageView('core/Welcome.xhtml')}" update="deployFunction" icon="btnHome"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+    </h:body>
+</html>

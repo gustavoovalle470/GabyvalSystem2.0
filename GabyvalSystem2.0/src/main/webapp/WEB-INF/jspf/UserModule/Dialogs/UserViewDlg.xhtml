@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!--
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *******************************                                                                              ****************************************
+ * *******************************  ********** ********** ******    **      ** **      ** ********** **         ****************************************
+ * *******************************  ********** **********  ******   **      ** **      ** ********** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  ******    **    **  **      ** **      ** **         ****************************************
+ * *******************************  **    **** **********  *******    **  **   **      ** ********** **         ****************************************
+ * *******************************  **    **** **********  ********    ****    **      ** ********** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **     **      ** **      ** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **      **    **  **      ** **         ****************************************
+ * *******************************  **      ** **      **  **   **      **       **  **   **      ** **         ****************************************
+ * *******************************  ********** **      **  **  **       **        ****    **      ** ********** ****************************************
+ * *******************************  ********** **      ** ******        **         **     **      ** ********** ****************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * |***************************************************************************************************************************************************|
+ * |                                                        Control de versiones                                                                       |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.0   |  13/11/2017  |      GAOQ      | Creacion de la vista de dialogo para la visualizacion del perfil de usuario.                                  |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ ******************************************************************************************************************************************************
+ **Nombre del archivo: UserViewDlg.xhtml
+ ******************************************************************************************************************************************************
+ **Descripcion:        Dialogo utilizado para que el usuario pueda visualizar sus datos personales.
+ ******************************************************************************************************************************************************
+ **Componentes en que se usa: Dialogs.xhtml
+ ******************************************************************************************************************************************************
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition>
+            <p:dialog header="Perfil de usuario: #{StaffBean.username}" widgetVar="viewProfile" modal="true" height="380" width="70%" closeOnEscape="true" id="viewProfileDlg">
+                <h:form id="ProfileViewForm">
+                    <p:layout style="width: 100%;min-height:350px;">
+                        <p:layoutUnit position="west" visible="true" size="50%" style="border:0">
+                            <div align="center">
+                                <p:graphicImage value="#{StaffBean.photo_profile}" id="ProfileViewPic" cache="false" width="90%" height="90%"/>
+                            </div>
+                        </p:layoutUnit>
+                        <p:layoutUnit position="center" visible="true" size="50%" style="border:0">
+                            <table border="0">
+                                <tbody>
+                                    <tr>
+                                        <td><p:outputLabel value="Nombre:" styleClass="GBLabel"/></td>
+                                        <td><p:outputLabel value="#{StaffBean.staff_name}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Apellido:" styleClass="GBLabel"/></td>
+                                        <td><p:outputLabel value="#{StaffBean.staff_surname}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Tipo de documento:" styleClass="GBLabel"/></td>
+                                        <td>
+                                            <p:selectOneMenu id="docType" value="#{StaffBean.id_type}" style="width:150px" disabled="true">
+                                                <f:selectItems value="#{StaffBean.id_types}" />
+                                            </p:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Numero de documento:" styleClass="GBLabel"/></td>
+                                        <td><p:outputLabel value="#{StaffBean.id_number}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Telefono:" styleClass="GBLabel"/></td>
+                                        <td><p:outputLabel value="#{StaffBean.phone_number}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Celular:" styleClass="GBLabel"/></td>
+                                        <td><p:outputLabel value="#{StaffBean.mobile_number}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Correo electronico:" styleClass="GBLabel"/></td>
+                                        <td><p:outputLabel value="#{StaffBean.email}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Fecha de nacimiento:" styleClass="GBLabel"/></td>
+                                        <td>
+                                            <p:outputLabel value="#{StaffBean.birthdate}">
+                                                <f:convertDateTime pattern="yyyy/MM/dd" />
+                                            </p:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p:outputLabel value="Sexo:" styleClass="GBLabel"/></td>
+                                        <td>
+                                            <p:selectOneMenu id="gender" value="#{StaffBean.gender}" style="width:150px" disabled="true">
+                                                <f:selectItems value="#{StaffBean.genders}" />
+                                            </p:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                 </tbody>
+                            </table>
+                        </p:layoutUnit>
+                    </p:layout>
+                </h:form>
+            </p:dialog>
+        </ui:composition>
+    </body>
+</html>

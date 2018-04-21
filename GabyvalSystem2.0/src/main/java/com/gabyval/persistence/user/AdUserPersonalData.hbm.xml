@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 7, 2017 4:19:31 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class name="com.gabyval.persistence.user.AdUserPersonalData" optimistic-lock="version" schema="GABYVAL" table="AD_USER_PERSONAL_DATA">
+    <id name="gbUsername" type="string">
+      <column length="20" name="GB_USERNAME"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="gbStaffName" type="string">
+      <column length="200" name="GB_STAFF_NAME" not-null="true"/>
+    </property>
+    <property name="gbStaffSurname" type="string">
+      <column length="200" name="GB_STAFF_SURNAME" not-null="true"/>
+    </property>
+    <property name="gbIdType" type="int">
+      <column name="GB_ID_TYPE" not-null="true" precision="22" scale="0"/>
+    </property>
+    <property name="gbIdNumber" type="string">
+      <column length="20" name="GB_ID_NUMBER" not-null="true"/>
+    </property>
+    <property name="gbPhoto" type="blob">
+      <column name="GB_PHOTO"/>
+    </property>
+    <property name="gbPhoneNumber" type="string">
+      <column length="20" name="GB_PHONE_NUMBER"/>
+    </property>
+    <property name="gbMobileNumber" type="string">
+      <column length="20" name="GB_MOBILE_NUMBER"/>
+    </property>
+    <property name="gbEmail" type="string">
+      <column length="200" name="GB_EMAIL"/>
+    </property>
+    <property name="gbBirthdate" type="date">
+      <column length="7" name="GB_BIRTHDATE"/>
+    </property>
+    <property name="gbGender" type="int">
+      <column name="GB_GENDER" precision="22" scale="0"/>
+    </property>
+    <property name="createDt" type="date">
+      <column length="7" name="CREATE_DT" not-null="true"/>
+    </property>
+    <property name="rowversion" type="int">
+      <column name="ROWVERSION" not-null="true" precision="22" scale="0"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/11/2017 07:26:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.persistence.user.security.AdSecMenulinks" table="AD_SEC_MENULINKS" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbMenuId" type="string">
+            <column name="GB_MENU_ID" length="100" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbMenuName" type="string">
+            <column name="GB_MENU_NAME" length="150" not-null="true" />
+        </property>
+        <property name="gbMenuParId" type="string">
+            <column name="GB_MENU_PAR_ID" length="100" />
+        </property>
+        <property name="gbPageView" type="string">
+            <column name="GB_PAGE_VIEW" length="100" />
+        </property>
+        <property name="gbMenuStatus" type="int">
+            <column name="GB_MENU_STATUS" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="gbLastUserChg" type="string">
+            <column name="GB_LAST_USER_CHG" length="20" />
+        </property>
+        <property name="gbLastDateChg" type="date">
+            <column name="GB_LAST_DATE_CHG" />
+        </property>
+    </class>
+</hibernate-mapping>

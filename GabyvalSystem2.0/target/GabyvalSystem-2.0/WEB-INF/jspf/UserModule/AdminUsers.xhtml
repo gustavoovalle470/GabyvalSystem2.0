@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <h:form>
+                <p:dataTable id="Users" var="user" value="#{NewUserBean.users}" editable="true" rows="10" paginator="true" scrollable="true" scrollHeight="300">
+                    <f:facet name="header">
+                        Perfiles de usuario actuales.
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{NewUserBean.onRowEdit}" update="Users,message"/>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{user.gbUsername}"/>
+                    </p:column>
+                    <p:column headerText="Estado de logueo">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{NewUserBean.getLoginStatus(user.gbLoginStatus)}"/>
+                            </f:facet>
+                            <f:facet name = "input">
+                                <h:selectOneMenu value="#{NewUserBean.lStatus}">
+                                    <f:selectItems value="#{NewUserBean.sessionStatus}" var="lStatus"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Estado de operatividad">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{NewUserBean.getOperativeStatus(user.gbOprativeStatus)}"/>
+                            </f:facet>
+                            <f:facet name = "input">
+                                <h:selectOneMenu value="#{NewUserBean.oStatus}">
+                                    <f:selectItems value="#{NewUserBean.operativeStatus}" var="oStatus"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Reestablecer contraseña">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{NewUserBean.getChangePassword(user.gbUsername)}"/>
+                            </f:facet>
+                            <f:facet name = "input">
+                                <p:selectBooleanCheckbox value="#{NewUserBean.needChangePwd}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Última fecha modif.">
+                        <h:outputText value="#{userProfileBean.getDateString(user.gbLastXgeDt)}"/>
+                    </p:column>
+                    <p:column headerText="Último usuario modif.">
+                        <h:outputText value="#{user.gbUsername}"/>
+                    </p:column>
+                    <p:column>
+                        <p:rowEditor/>
+                    </p:column>
+                </p:dataTable>
+                <p:spacer style="height: 10px"/>
+                <div align="center">
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:commandButton value="Crear usuario" onclick="PF('CreateUserDialog').show();" icon="btnAdd" update="Users"/>
+                            </td>
+                            <td>
+                                <p:commandButton value="Volver" action="#{menuBean.setPageView('core/Welcome.xhtml')}" update="deployFunction" icon="btnHome"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </h:form>
+        </ui:composition>
+    </h:body>
+</html>

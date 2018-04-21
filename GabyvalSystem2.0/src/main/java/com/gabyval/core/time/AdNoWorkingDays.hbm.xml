@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 23, 2017 6:09:29 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.core.time.AdNoWorkingDays" table="AD_NO_WORKING_DAYS" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbNoWorkingDayId" type="int">
+            <column name="GB_NO_WORKING_DAY_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbDate" type="date">
+            <column name="GB_DATE" length="7" not-null="true" unique="true" />
+        </property>
+        <property name="gbDateDescription" type="string">
+            <column name="GB_DATE_DESCRIPTION" length="100" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

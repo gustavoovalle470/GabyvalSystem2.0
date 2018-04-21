@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+    </head>
+    <h:body>
+        <h:form id="SecurityForm">
+            <div align="center">
+                <p:outputLabel value="ADMINISTRACION DE SEGURIDAD DEL SISTEMA" styleClass="GBTitle"/>
+                <p:spacer height="10px"/>
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Perfil de usuario:" styleClass="GBLabel"/>
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="profiles" value="#{SecurityAdminBean.profile}" style="width:150px">
+                                    <p:ajax listener="#{SecurityAdminBean.onFilterChange()}" update="SecurityAsign"/>
+                                    <f:selectItems value="#{SecurityAdminBean.profiles}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Modulo:" styleClass="GBLabel"/>
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="modules" value="#{SecurityAdminBean.module}" style="width:150px">
+                                    <p:ajax listener="#{SecurityAdminBean.onFilterChange()}" update="SecurityAsign"/>
+                                    <f:selectItems value="#{SecurityAdminBean.modules}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p:spacer height="40px"/>
+            <div align="center">
+                <p:pickList id="SecurityAsign" value="#{SecurityAdminBean.menus}" var="menu" itemLabel="#{menu}" itemValue="#{menu}">
+                    <f:facet name="sourceCaption">Vistas disponibles</f:facet>
+                    <f:facet name="targetCaption">Vistas asignadas</f:facet>
+                </p:pickList>
+            </div>
+            <p:spacer style="height: 10px"/>
+            <div align="center">
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:commandButton value="Guardar" action="#{SecurityAdminBean.saveSecurity()}" icon="btnSave" update="message"/>
+                            </td>
+                            <td>
+                                <p:commandButton value="Volver" action="#{menuBean.setPageView('core/Welcome.xhtml')}" update="deployFunction" icon="btnHome"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 29, 2017 1:26:07 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.persistence.user.security.AdSecMenuProfiling" table="AD_SEC_MENU_PROFILING" schema="GABYVAL" optimistic-lock="version">
+        <composite-id name="id" class="com.gabyval.persistence.user.security.AdSecMenuProfilingId">
+            <key-property name="gbMenuId" type="string">
+                <column name="GB_MENU_ID" length="100" />
+            </key-property>
+            <key-property name="gbProfileName" type="string">
+                <column name="GB_PROFILE_NAME" length="100" />
+            </key-property>
+        </composite-id>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

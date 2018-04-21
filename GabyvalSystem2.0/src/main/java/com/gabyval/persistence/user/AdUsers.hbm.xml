@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2017 10:52:42 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.persistence.user.AdUsers" table="AD_USERS" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbUsername" type="string">
+            <column name="GB_USERNAME" length="20" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbPassword" type="string">
+            <column name="GB_PASSWORD" length="60" not-null="true" />
+        </property>
+        <property name="gbLoginStatus" type="int">
+            <column name="GB_LOGIN_STATUS" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="gbOprativeStatus" type="int">
+            <column name="GB_OPRATIVE_STATUS" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="gbLastPwdXgeDt" type="date">
+            <column name="GB_LAST_PWD_XGE_DT" length="7" not-null="true" />
+        </property>
+        <property name="gbLastLogginDt" type="date">
+            <column name="GB_LAST_LOGGIN_DT" length="7" not-null="true" />
+        </property>
+        <property name="gbLastXgeDt" type="date">
+            <column name="GB_LAST_XGE_DT" length="7" not-null="true" />
+        </property>
+        <property name="gbLastUserXge" type="string">
+            <column name="GB_LAST_USER_XGE" length="20" not-null="true" />
+        </property>
+        <property name="gbUserSystem" type="int">
+            <column name="GB_USER_SYSTEM" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

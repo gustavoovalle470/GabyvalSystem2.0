@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 7/11/2017 09:14:16 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.persistence.commons.AdCatalogs" table="AD_CATALOGS" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbCatalogId" type="big_decimal">
+            <column name="GB_CATALOG_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbCatalogName" type="string">
+            <column name="GB_CATALOG_NAME" length="50" not-null="true" />
+        </property>
+        <property name="gbCatagogItemId" type="int">
+            <column name="GB_CATAGOG_ITEM_ID" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="gbCatalogItem" type="string">
+            <column name="GB_CATALOG_ITEM" length="60" not-null="true" />
+        </property>
+        <property name="gbCatalogDescription" type="string">
+            <column name="GB_CATALOG_DESCRIPTION" length="150" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

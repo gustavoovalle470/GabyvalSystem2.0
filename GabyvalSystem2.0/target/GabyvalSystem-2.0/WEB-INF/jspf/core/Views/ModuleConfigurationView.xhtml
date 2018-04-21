@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *******************************                                                                              ****************************************
+ * *******************************  ********** ********** ******    **      ** **      ** ********** **         ****************************************
+ * *******************************  ********** **********  ******   **      ** **      ** ********** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  ******    **    **  **      ** **      ** **         ****************************************
+ * *******************************  **    **** **********  *******    **  **   **      ** ********** **         ****************************************
+ * *******************************  **    **** **********  ********    ****    **      ** ********** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **     **      ** **      ** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **      **    **  **      ** **         ****************************************
+ * *******************************  **      ** **      **  **   **      **       **  **   **      ** **         ****************************************
+ * *******************************  ********** **      **  **  **       **        ****    **      ** ********** ****************************************
+ * *******************************  ********** **      ** ******        **         **     **      ** ********** ****************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * |***************************************************************************************************************************************************|
+ * |                                                        Control de versiones                                                                       |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.0   |  13/11/2017  |      GAOQ      | Creacion de la vista para la visualizacion del menu de la aplicacion.                                  |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ ******************************************************************************************************************************************************
+ **Nombre del archivo: MenusView.xhtml
+ ******************************************************************************************************************************************************
+ **Descripcion:        Vista de todas las pantallas registradas en el sistema.
+ ******************************************************************************************************************************************************
+ **Componentes en que se usa: app_master.xhtml
+ ******************************************************************************************************************************************************
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <h:form id="ModuleConfigurationViewForm">
+            <div align="center">
+                <p:outputLabel value="ADMINISTRACION DE CONFIGURACIONES DEL SISTEMA" styleClass="GBTitle"/>
+            </div>
+            <p:spacer height="10px"/>
+            <p:dataTable id="Configurations" var="configuration" value="#{ConfigurationBean.configurations}" editable="true" rows="10" paginator="true" scrollable="true" scrollHeight="300">
+                <f:facet name="header">
+                    Configuraciones del sistema
+                </f:facet>
+                <p:ajax event="rowEdit" listener="#{ConfigurationBean.onPageEdit}" update="Configurations,message"/>
+                <p:column headerText="ID de la configuracion" filterBy="#{configuration.gbModuleConfigId}">
+                    <h:outputText value="#{configuration.gbModuleConfigId}"/>
+                </p:column>
+                <p:column headerText="Nombre de la configuracion">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{configuration.gbModuleConfigName}"/>
+                        </f:facet>
+                        <f:facet name = "input">
+                            <h:inputText id="ConfigurationItemEdit" value="#{configuration.gbModuleConfigName}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Valor de la configuracion" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{configuration.gbModuleConfigValue}"/>
+                        </f:facet>
+                        <f:facet name = "input">
+                            <h:inputText id="ConfValueEdit" value="#{configuration.gbModuleConfigValue}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Tipo del valor">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{ConfigurationBean.getMCType(configuration.gbModuleConfigType)}"/>
+                        </f:facet>
+                        <f:facet name = "input">
+                            <h:selectOneMenu value="#{configuration.gbModuleConfigType}">
+                                <f:selectItems value="#{ConfigurationBean.confTypes}" var="types"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column>
+                    <p:rowEditor/>
+                </p:column>
+            </p:dataTable>
+            <div align="center">
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p:commandButton value="Agregar configuracion" onclick="PF('AddConfiguration').show();" icon="btnAdd"/>
+                            </td>
+                            <td>
+                                <p:commandButton value="Volver" action="#{menuBean.setPageView('core/Welcome.xhtml')}" update="deployFunction" icon="btnHome"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+    </h:body>
+</html>

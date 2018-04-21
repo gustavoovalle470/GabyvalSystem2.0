@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 8, 2017 8:38:43 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.core.commons.controllers.AdIdControl" table="AD_ID_CONTROL" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbNomTabla" type="string">
+            <column name="GB_NOM_TABLA" length="30" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbNumCtrl" type="int">
+            <column name="GB_NUM_CTRL" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="gbNumInc" type="int">
+            <column name="GB_NUM_INC" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

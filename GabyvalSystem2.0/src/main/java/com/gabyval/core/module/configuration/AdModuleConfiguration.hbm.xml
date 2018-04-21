@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 9, 2017 12:00:50 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.core.module.configuration.AdModuleConfiguration" table="AD_MODULE_CONFIGURATION" schema="GABYVAL" optimistic-lock="version">
+        <id name="gbModuleConfigId" type="big_decimal">
+            <column name="GB_MODULE_CONFIG_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="gbModuleConfigName" type="string">
+            <column name="GB_MODULE_CONFIG_NAME" length="30" not-null="true" unique="true" />
+        </property>
+        <property name="gbModuleConfigType" type="int">
+            <column name="GB_MODULE_CONFIG_TYPE" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="gbModuleConfigValue" type="string">
+            <column name="GB_MODULE_CONFIG_VALUE" length="100" not-null="true" />
+        </property>
+        <property name="gbModuleConfigDesc" type="string">
+            <column name="GB_MODULE_CONFIG_DESC" length="150" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="int">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
