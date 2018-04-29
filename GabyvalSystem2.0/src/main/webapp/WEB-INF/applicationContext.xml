@@ -9,16 +9,32 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-    <!--bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-          p:location="/WEB-INF/jdbc.properties" />
-
-<bean id="dataSource"
-    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-    p:driverClassName="${jdbc.driverClassName}"
-    p:url="${jdbc.url}"
-    p:username="${jdbc.username}"
-    p:password="${jdbc.password}" /-->
-
-    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+        <!--
+        Controlador principal de la conexion a la base de datos, inicia en automantico
+        la configuracion dado el archivo hibernate.ctg.xml, y mapeando las clases
+        configuradas en la base de datos.
+        -->
+       <bean id="ConnectionManager"
+             class="com.gabyval.core.commons.controllers.PersistenceManager"
+             init-method="getInstance"
+             destroy-method="closeConnection"
+        />
+       
+       <!--
+        Carga del entorno del sistema, habilitando los servicios back end del 
+        sistema.
+        -->
+        <bean id="EnviromentStartUp"
+              class="com.gabyval.core.GBEnvironment"
+              init-method="getInstance"
+        />
+       
+        <!--
+        Inicializacion del sistema de scheduler de GABYVAL.
+        -->
+        <bean id="ScheduleService"
+              class="com.gabyval.core.scheduler.GB_Scheduler"
+              init-method="getInstance"
+              destroy-method="stop"
+        />
 </beans>

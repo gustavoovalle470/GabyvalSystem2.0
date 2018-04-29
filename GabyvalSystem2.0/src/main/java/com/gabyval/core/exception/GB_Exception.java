@@ -92,12 +92,12 @@ public class GB_Exception extends Exception{
      * @param errorId int number of error in database.
      */
     public GB_Exception(int errorId){
-       AdError error= getError(errorId);
-       if(error != null){
-            this.customized_message= error.getGbErrorDesc();
-       }else{
-           this.customized_message = getError(errorId).getGbErrorDesc();
-       }
+//       AdError error= getError(errorId);
+//       if(error != null){
+//            this.customized_message= error.getGbErrorDesc();
+//       }else{
+//           this.customized_message = getError(errorId).getGbErrorDesc();
+//       }
        if(customized_message != null && customized_message.length() > 0){
             isCustomizedMessage = true;
         }
@@ -109,11 +109,11 @@ public class GB_Exception extends Exception{
      * @param replace String to replace the wildcards in the error description. All string to replace should separate whit coma.
      */
     public GB_Exception(int errorId, String replace){
-        AdError error= getError(errorId);
-        if(error == null){
-            error = getError(errorId);
-        }
-       this.customized_message= replaceMessage(error.getGbErrorDesc(), replace);
+//        AdError error= getError(errorId);
+//        if(error == null){
+//            error = getError(errorId);
+//        }
+//       this.customized_message= replaceMessage(error.getGbErrorDesc(), replace);
        if(customized_message != null && customized_message.length() > 0){
             isCustomizedMessage = true;
         }
@@ -135,12 +135,12 @@ public class GB_Exception extends Exception{
      * @param errorId int id of error message in database.
      */
     public GB_Exception(Exception exception, int errorId){
-        AdError error= getError(errorId);
-        if(error == null){
-            error = getError(errorId);
-        }
+//        AdError error= getError(errorId);
+//        if(error == null){
+//            error = getError(errorId);
+//        }
         this.exception = exception;
-        this.customized_message= error.getGbErrorDesc();
+//        this.customized_message= error.getGbErrorDesc();
         if(customized_message != null && customized_message.length() > 0){
             isCustomizedMessage = true;
         }
@@ -176,7 +176,7 @@ public class GB_Exception extends Exception{
         return traceMessage;
     }
     
-    private AdError getError(int errorId){
+    /*private AdError getError(int errorId){
         AdError error;
         try {
             error= (AdError) PersistenceManager.getInstance().load(AdError.class, errorId);
@@ -190,5 +190,5 @@ public class GB_Exception extends Exception{
     
     private AdError getUnexpectedError(int errorId){
         return new AdError(0, "UNEXPECTED BEHAVIOR. The error is not controlled. ID Error: "+errorId, Calendar.getInstance().getTime(), 0);
-    }
+    }*/
 }

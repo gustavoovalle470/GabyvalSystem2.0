@@ -1,8 +1,0 @@
-#surefire
-#Sat Apr 14 10:44:27 COT 2018
-maven.ext.class.path=C\:\\Program Files\\NetBeans 8.2\\java\\maven-nblib\\netbeans-eventspy.jar
-user.dir=C\:\\Users\\gusta\\Documents\\NetBeansProjects\\GabyvalSystem2.0
-file.encoding=UTF-8
-localRepository=C\:\\Users\\gusta\\.m2\\repository
-netbeans.deploy=true
-basedir=C\:\\Users\\gusta\\Documents\\NetBeansProjects\\GabyvalSystem2.0

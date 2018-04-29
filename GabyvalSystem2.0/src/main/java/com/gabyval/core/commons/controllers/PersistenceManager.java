@@ -48,6 +48,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 /**
  * This class will control the persistence with database.
@@ -74,11 +76,17 @@ public class PersistenceManager implements EntityManager{
      * @throws GB_Exception if:
      * <ol><li>The database session is null</li></ol>
      */
+    @Bean("ConnectionManager")
+    @Scope("Singleton")
     public static PersistenceManager getInstance() throws GB_Exception{
         if (instance == null){
             instance = new PersistenceManager();
         }
         return instance;
+    }
+    
+    public void closeConnection(){
+        SESSION.close();
     }
     
     /**

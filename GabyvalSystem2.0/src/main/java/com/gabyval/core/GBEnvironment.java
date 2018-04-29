@@ -51,6 +51,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Level;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 /**
  * This class define de Class environment for core utilities.
@@ -67,6 +69,8 @@ public class GBEnvironment {
      * Return the instance of GABYVAL Environment core.
      * @return GBEnvironment this instance.
      */
+    @Bean("EnviromentStartUp")
+    @Scope("Singleton")
     public static GBEnvironment getInstance(){
         if(instance == null){
             instance = new GBEnvironment();

@@ -41,11 +41,8 @@
 
 package com.gabyval.core.connections.connectors;
 
-import com.gabyval.core.constants.GB_CommonStrConstants;
-import com.gabyval.core.IO.GB_IOController;
 import com.gabyval.core.connections.classloader.AdResource;
 import com.gabyval.core.logger.GB_Logger;
-import java.util.HashMap;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -68,6 +65,7 @@ public class ConnectionFactory{
      * @return Session whit database.
      */
     public static Session getConnection() {
+        System.out.println("Configurando sesion...");
         try{
             configure();
             classLoader();
@@ -104,23 +102,24 @@ public class ConnectionFactory{
      * This method configure all parameters to establish the data base connection.
      */
     private static void configure(){
+        System.out.println("Iniciando configuracion de la sesion...");
         conf = new Configuration();
+        conf.configure();
         LOG.info("Iniciando conexcion a la base de datos.");
-        HashMap<String, String> configuration = GB_IOController.getConfiguration(GB_CommonStrConstants.CONNECT_PROP, "=");
-        LOG.info("Cargando la configuracion de la conexion.");
-        for(String key: configuration.keySet()){
-            LOG.info("Nombre de la propiedad: "+key+" valor actual: "+configuration.get(key));
-            conf.setProperty(key, configuration.get(key));
-        }
         LOG.info("Finalizo con exito la carga de la conexion.");
         Class c;
         try {
+            LOG.info("Cargando modulo de lectura de entidades de persistencia. Clase a cargar com.gabyval.core.connections.classloader.AdResource");
             c = Class.forName("com.gabyval.core.connections.classloader.AdResource");
+            LOG.info("Instancia creada para com.gabyval.core.connections.classloader.AdResource. Cargando en configuracion.");
             conf.addAnnotatedClass(c);
+            LOG.info("Configuracion actualizada.");
         } catch (ClassNotFoundException ex) {
             LOG.fatal(ex);
         }
+        LOG.info("Creando session de trabajo...");
         sessionFactory = conf.buildSessionFactory();
+        LOG.info("Sesion activa y en espera de la carga de los modulos de persistencia.");
     }
     
     /**

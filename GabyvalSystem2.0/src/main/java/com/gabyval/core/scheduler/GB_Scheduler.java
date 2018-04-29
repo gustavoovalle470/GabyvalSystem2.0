@@ -37,12 +37,15 @@ import com.gabyval.core.constants.GB_CommonStrConstants;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import java.text.ParseException;
+import javax.annotation.PreDestroy;
 import org.quartz.Job;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.triggers.CronTriggerImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 /**
  * This class control the scheduler and jobs running.
@@ -60,6 +63,8 @@ public class GB_Scheduler{
      * Return the instance of this controller.
      * @return GB_Scheduler this instance.
      */
+    @Bean("ScheduleService")
+    @Scope("Singleton")
     public static GB_Scheduler getInstance(){
         if(instance == null){
             instance = new GB_Scheduler();
@@ -125,6 +130,7 @@ public class GB_Scheduler{
     /**
      * Stop the scheduler service.
      */
+    @PreDestroy
     public void stop() {
         try {
             SCH.pauseAll();
