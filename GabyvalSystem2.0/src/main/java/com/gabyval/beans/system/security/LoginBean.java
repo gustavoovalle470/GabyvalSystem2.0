@@ -34,7 +34,6 @@ package com.gabyval.beans.system.security;
 import com.gabyval.beans.utilities.GBMessage;
 import com.gabyval.controller.user.UserController;
 import com.gabyval.core.GBEnvironment;
-import com.gabyval.core.commons.controllers.PersistenceManager;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import java.io.Serializable;

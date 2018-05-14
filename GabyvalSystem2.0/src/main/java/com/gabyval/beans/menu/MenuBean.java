@@ -37,10 +37,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.model.menu.BaseMenuModel;
 import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.DynamicMenuModel;
 import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Submenu;
 
 /**
  * This class controlled the principal menu bar of application.
@@ -63,24 +66,46 @@ public class MenuBean implements Serializable{
      * Creates a new instance of LoginBean
      */
     public MenuBean() {
-        LOG.debug("Start with menu creation.");
+        menu = new DynamicMenuModel();
+        DefaultSubMenu sub1 = new DefaultSubMenu("Sub 1");
+        DefaultSubMenu sub2 = new DefaultSubMenu("Sub 2");
+        DefaultSubMenu sub3 = new DefaultSubMenu("Sub 3");
+        DefaultMenuItem item1 = new DefaultMenuItem("item 1");
+        DefaultMenuItem item2 = new DefaultMenuItem("item 2");
+        DefaultMenuItem item3 = new DefaultMenuItem("item 3");
+        DefaultMenuItem item4 = new DefaultMenuItem("item 4");
+        DefaultMenuItem item5 = new DefaultMenuItem("item 5");
+        DefaultMenuItem item6 = new DefaultMenuItem("item 6");
+        DefaultMenuItem item7 = new DefaultMenuItem("item 7");
+        sub1.addElement(item1);
+        sub1.addElement(item4);
+        sub1.addElement(item5);
+        sub2.addElement(item2);
+        sub3.addElement(item3);
+        sub3.addElement(item6);
+        sub3.addElement(item7);
+        menu.addElement(sub1);
+        menu.addElement(sub2);
+        menu.addElement(sub3);
+        sub1.setStyle("nav-link-text");
+//        LOG.debug("Start with menu creation.");
         command = "#{menuBean.setPageView('$')}";
         target = "deployFunction";
         pageView = "core/Welcome.xhtml";
-        menu = new DynamicMenuModel();
-        menu.generateUniqueIds();
-        LOG.debug("All properties was charged.");
-        try{
-            LOG.debug("Getting the user name.");
-            username = SessionController.getInstance().getUser((HttpSession) FacesContext.
-                             getCurrentInstance().getExternalContext().getSession(false));
-            LOG.debug("The user name was obtain is: "+username);
-            LOG.debug("Creating the security tree");
-            createMenuModel(username);
-            LOG.debug("Menu model is complete.");
-        }catch(GB_Exception ex){
-            LOG.error(ex);
-        }
+//        menu = new DynamicMenuModel();
+//        menu.generateUniqueIds();
+//        LOG.debug("All properties was charged.");
+//        try{
+//            LOG.debug("Getting the user name.");
+//            username = SessionController.getInstance().getUser((HttpSession) FacesContext.
+//                             getCurrentInstance().getExternalContext().getSession(false));
+//            LOG.debug("The user name was obtain is: "+username);
+//            LOG.debug("Creating the security tree");
+//            createMenuModel(username);
+//            LOG.debug("Menu model is complete.");
+//        }catch(GB_Exception ex){
+//            LOG.error(ex);
+//        }
     }    
 
     /**
@@ -143,5 +168,9 @@ public class MenuBean implements Serializable{
                 LOG.debug("GABYVAL added a submenu: "+submenu.getLabel());
             }
         }
+    }
+    
+    public String change_page(String page){
+        return page;
     }
 }

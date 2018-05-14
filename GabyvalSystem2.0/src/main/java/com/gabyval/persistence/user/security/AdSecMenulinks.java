@@ -26,6 +26,7 @@ public class AdSecMenulinks  implements java.io.Serializable {
      private String gbMenuParId;
      private String gbPageView;
      private int gbMenuStatus;
+     private int gbIsNode;
      private Date createDt;
      private int rowversion;
      private String gbLastUserChg;
@@ -95,7 +96,6 @@ public class AdSecMenulinks  implements java.io.Serializable {
     public void setGbPageView(String gbPageView) {
         this.gbPageView = gbPageView;
     }
-
     
     @Column(name="GB_MENU_STATUS", nullable=false, precision=22, scale=0)
     public int getGbMenuStatus() {
@@ -106,6 +106,15 @@ public class AdSecMenulinks  implements java.io.Serializable {
         this.gbMenuStatus = gbMenuStatus;
     }
 
+    @Column(name="GB_IS_NODE", nullable=false, precision=22, scale=0)
+    public int getGbIsNode() {
+        return this.gbIsNode;
+    }
+    
+    public void setGbIsNode(int gbIsNode) {
+        this.gbIsNode = gbIsNode;
+    }
+    
     @Temporal(TemporalType.DATE)
     @Column(name="CREATE_DT", nullable=false, length=7)
     public Date getCreateDt() {

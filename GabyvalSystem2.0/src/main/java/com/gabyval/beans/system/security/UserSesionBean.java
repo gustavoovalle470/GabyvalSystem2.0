@@ -59,6 +59,7 @@ public class UserSesionBean implements Serializable {
     private String changePass1;// For change, the first password.
     private String changePass2; //For change, the second password. Confirnation.
     private AdUsers user;       //User entity.
+    private String home_page = "app_master.xhtml";
     
     /**
      * Creates a new instance of UserSesionBean
@@ -172,6 +173,14 @@ public class UserSesionBean implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getHome_page() {
+        return home_page;
+    }
+
+    public void setHome_page(String home_page) {
+        this.home_page = home_page;
+    }
     
     /**
      * This method evaluate and change de password.
@@ -219,5 +228,9 @@ public class UserSesionBean implements Serializable {
             }
             GBMessage.putMessage(GBEnvironment.getInstance().getError(40), null);
         }
+    }
+    
+    public String home_page(){
+        return home_page;
     }
 }

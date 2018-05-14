@@ -20,6 +20,9 @@
         <property name="gbMenuStatus" type="int">
             <column name="GB_MENU_STATUS" precision="22" scale="0" not-null="true" />
         </property>
+        <property name="gbIsNode" type="int">
+            <column name="GB_IS_NODE" precision="22" scale="0" not-null="true" />
+        </property>
         <property name="createDt" type="date">
             <column name="CREATE_DT" length="7" not-null="true" />
         </property>

@@ -71,6 +71,7 @@ public class SessionController {
             throw new GB_Exception("La session de usuario ya se encuentra registrada.");
         }
         userSession.put(session.getId(), username.toUpperCase());
+        System.out.println("Se registro la sesion.");
     }
     
     /**

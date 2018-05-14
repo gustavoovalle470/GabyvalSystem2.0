@@ -5,6 +5,7 @@
  */
 package com.gabyval.controller.user;
 
+import com.gabyval.beans.utilities.GBMessage;
 import com.gabyval.core.GBEnvironment;
 import com.gabyval.core.commons.controllers.PersistenceManager;
 import com.gabyval.core.exception.GB_Exception;
@@ -32,6 +33,7 @@ public class UserController {
     public boolean login(String username, String pass) throws GB_Exception{
         AdUsers user = getUser(username);
         LOG.debug("GABYVAL start the user validations.");
+        System.out.println("Password base de datos:"+user.getGbPassword()+" ingresada:"+pass);
         int errorId=0;
         if(user == null){
             errorId=10;
@@ -54,10 +56,11 @@ public class UserController {
             errorId=13;
         }
         if(errorId != 0){
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(errorId), username);
             GB_Exception ex = new GB_Exception(errorId, username);
             LOG.error(ex);
             throw ex;
-        }
+        }   
         LOG.debug("GABYVAL finished the user validations, change the user status for loggin.");
         user.setGbLoginStatus(1);
         LOG.debug("GABYVAL was change the user to loggin. Updating the last connection for user "+username);

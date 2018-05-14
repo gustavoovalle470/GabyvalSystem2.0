@@ -31,6 +31,9 @@ CREATE TABLE GABYVAL.ad_sec_menulinks
 	gb_menu_name	VARCHAR(150)  NOT NULL,
 	gb_menu_par_id	VARCHAR(100)  NULL,
 	gb_page_view	VARCHAR(100)  NULL,
+	gb_is_node      INTEGER NOT NULL,
+	GB_LAST_USER_CHG VARCHAR(20),
+	GB_LAST_DATE_CHG DATE,
 	gb_menu_status  INTEGER NOT NULL,
 	create_dt			DATE		 NOT NULL,
 	rowversion			INTEGER		NOT NULL

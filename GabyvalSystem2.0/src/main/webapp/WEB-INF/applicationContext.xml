@@ -17,7 +17,7 @@
        <bean id="ConnectionManager"
              class="com.gabyval.core.commons.controllers.PersistenceManager"
              init-method="getInstance"
-             destroy-method="closeConnection"
+             scope="singleton"
         />
        
        <!--
