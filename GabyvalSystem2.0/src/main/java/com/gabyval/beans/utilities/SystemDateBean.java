@@ -51,14 +51,16 @@ public class SystemDateBean implements Serializable{
     private static final GB_Logger LOG = GB_Logger.getLogger(SystemDateBean.class);
     private String paused;
     private HashMap<String, Integer> systemState;
+    private String app_version;
 
     public SystemDateBean() {
-        systemState = GBEnvironment.getInstance().getCatalog("SYSTEM_PAUSED").getAllCatalog();
+        app_version = "1.6";
+        /**systemState = GBEnvironment.getInstance().getCatalog("SYSTEM_PAUSED").getAllCatalog();
         if(GBEnvironment.getInstance().isSystemPaused()){
             paused = ""+CatalogController.getInstance().decode(systemState, "PAUSADO");
         }else{
             paused = ""+CatalogController.getInstance().decode(systemState, "CORRIENDO");
-        }
+        }*/
     }
         
     public String getDateFormat() {
@@ -119,5 +121,13 @@ public class SystemDateBean implements Serializable{
         return GBEnvironment.getInstance().getDateFormated(
                 SystemDateController.getInstance().getServerDate(),
                 getDateTimeFormat());
+    }
+
+    public String getApp_version() {
+        return app_version;
+    }
+
+    public void setApp_version(String app_version) {
+        this.app_version = app_version;
     }
 }

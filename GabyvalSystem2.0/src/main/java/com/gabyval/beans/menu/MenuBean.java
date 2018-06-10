@@ -30,9 +30,12 @@ package com.gabyval.beans.menu;
 import com.gabyval.controller.security.SecurityEntity;
 import com.gabyval.controller.security.SecurityMan;
 import com.gabyval.beans.system.security.SessionController;
+import com.gabyval.core.commons.controllers.PersistenceManager;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
+import com.gabyval.persistence.user.security.AdSecMenulinks;
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -42,6 +45,7 @@ import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.DynamicMenuModel;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Submenu;
 
@@ -61,51 +65,32 @@ public class MenuBean implements Serializable{
     private String username; //Username logged.
     private final String command; //This represent action in click over any menu item.
     private final String target; // Page view to navigation.
+    private final String subMenuStyle = "width:100%; padding: 0 15px;border: 0;background: transparent;color: #0d6aad;font-weight: bolder;";
+    private final String menuItemStyle = "width:30%;color: #0d6aad;font-size: small;text-align: rigth;";
+    private List<AdSecMenulinks> menus;
     
     /**
      * Creates a new instance of LoginBean
      */
     public MenuBean() {
+        System.out.println("Inicia creacion del menu...");
         menu = new DynamicMenuModel();
-        DefaultSubMenu sub1 = new DefaultSubMenu("Sub 1");
-        DefaultSubMenu sub2 = new DefaultSubMenu("Sub 2");
-        DefaultSubMenu sub3 = new DefaultSubMenu("Sub 3");
-        DefaultMenuItem item1 = new DefaultMenuItem("item 1");
-        DefaultMenuItem item2 = new DefaultMenuItem("item 2");
-        DefaultMenuItem item3 = new DefaultMenuItem("item 3");
-        DefaultMenuItem item4 = new DefaultMenuItem("item 4");
-        DefaultMenuItem item5 = new DefaultMenuItem("item 5");
-        DefaultMenuItem item6 = new DefaultMenuItem("item 6");
-        DefaultMenuItem item7 = new DefaultMenuItem("item 7");
-        sub1.addElement(item1);
-        sub1.addElement(item4);
-        sub1.addElement(item5);
-        sub2.addElement(item2);
-        sub3.addElement(item3);
-        sub3.addElement(item6);
-        sub3.addElement(item7);
-        menu.addElement(sub1);
-        menu.addElement(sub2);
-        menu.addElement(sub3);
-        sub1.setStyle("nav-link-text");
-//        LOG.debug("Start with menu creation.");
+        LOG.debug("Start with menu creation.");
         command = "#{menuBean.setPageView('$')}";
-        target = "deployFunction";
-        pageView = "core/Welcome.xhtml";
-//        menu = new DynamicMenuModel();
-//        menu.generateUniqueIds();
-//        LOG.debug("All properties was charged.");
-//        try{
-//            LOG.debug("Getting the user name.");
-//            username = SessionController.getInstance().getUser((HttpSession) FacesContext.
-//                             getCurrentInstance().getExternalContext().getSession(false));
-//            LOG.debug("The user name was obtain is: "+username);
-//            LOG.debug("Creating the security tree");
-//            createMenuModel(username);
-//            LOG.debug("Menu model is complete.");
-//        }catch(GB_Exception ex){
-//            LOG.error(ex);
-//        }
+        target = "GBDeployView";
+        pageView = "pages/Welcome.xhtml";
+        LOG.debug("All properties was charged.");
+        /*try{
+            LOG.debug("Getting the user name.");
+            username = SessionController.getInstance().getUser((HttpSession) FacesContext.
+                             getCurrentInstance().getExternalContext().getSession(false));
+            LOG.debug("The user name was obtain is: "+username);
+            LOG.debug("Creating the security tree");
+            createMenuModel(username, getSubMenus(null, username));
+            LOG.debug("Menu model is complete.");
+            }catch(GB_Exception ex){
+                LOG.error(ex);
+            }*/
     }    
 
     /**
@@ -140,37 +125,42 @@ public class MenuBean implements Serializable{
         this.menu = menu;
     }
 
+    public String change_page(String page){
+        return page;
+    }
+    
     /**
      * Create a menu model from security profile of user.
      * @param username String the user.
      */
-    private void createMenuModel(String username) {
-        for(SecurityEntity entity :SecurityMan.getSecurityTree(username)){
-            LOG.debug("GABYVAL is rendering the menu view...");
-            boolean rendered = false;
-            DefaultSubMenu submenu = new DefaultSubMenu(entity.getMenu().getGbMenuName());
-            for(SecurityEntity subentity : entity.getAllSubEntities()){
-                if(subentity.getMenu().getGbMenuStatus() == 1){
-                    LOG.debug("GABYVAL load security tree for submenu...");
-                    rendered = true;
-                    DefaultMenuItem item = new DefaultMenuItem(subentity.getMenu().getGbMenuName());
-                    LOG.debug("GABYVAL put the menu: "+subentity.getMenu().getGbMenuName());
-                    item.setCommand(command.replace("$", subentity.getMenu().getGbPageView()));
-                    LOG.debug("GABYVAL put the command: "+command.replace("$", subentity.getMenu().getGbPageView())+" for the last menu item.");
-                    item.setUpdate(target);
-                    LOG.debug("GABYVAL change the target for menu item: "+target);
-                    submenu.addElement(item);
-                    LOG.debug("GABYVAL finished whit the menu item insertion.");
+    private void createMenuModel(String username, List<AdSecMenulinks> submenus) throws GB_Exception {
+        for(AdSecMenulinks m : submenus){
+            List <AdSecMenulinks> subMenuM = getSubMenus(m.getGbMenuId(), username);
+            if(!subMenuM.isEmpty()){
+                createMenuModel(username, subMenuM);
+            }else{
+                if(m.getGbPageView() == null){
+                    menu.addElement(new DefaultSubMenu(m.getGbMenuName()));
+                }else{
+                    menu.addElement(new DefaultMenuItem(m.getGbMenuName()));
                 }
-            }
-            if(rendered){
-                menu.addElement(submenu);
-                LOG.debug("GABYVAL added a submenu: "+submenu.getLabel());
             }
         }
     }
+
+    private List<AdSecMenulinks> getSubMenus(String parent, String username) throws GB_Exception {
+        return PersistenceManager
+                .getInstance()
+                .runSQL("SELECT menu.* FROM AD_SEC_MENULINKS menu\n" +
+                        "JOIN AD_SEC_MENU_PROFILING prof ON (menu.GB_MENU_ID = prof.GB_MENU_ID)\n" +
+                        "JOIN AD_USER_PROFILING uprof ON (uprof.GB_PROFILE_NAME = prof.GB_PROFILE_NAME)\n" +
+                        "WHERE uprof.GB_USERNAME = '"+username+"' \n" +
+                        "AND GB_PARENT_ID = "+parent+"\n" +
+                        "UNION\n" +
+                        "SELECT * FROM AD_SEC_MENULINKS WHERE GB_PARENT_ID = "+parent);
+    }
     
-    public String change_page(String page){
-        return page;
+    public void goHome(){
+        System.out.println("Ir a pagina bienvenida...");
     }
 }

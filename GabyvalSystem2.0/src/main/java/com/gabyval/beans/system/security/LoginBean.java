@@ -48,13 +48,14 @@ import javax.servlet.http.HttpSession;
  * @version 1.0
  * @since 26/08/2017
  */
-@Named(value = "loginBean")
+@Named(value = "LoginBean")
 @RequestScoped
 public class LoginBean implements Serializable{
 
     private static final GB_Logger LOG = GB_Logger.getLogger(LoginBean.class); // The log for this class
     private String user;//Property of view INDEX. Username.
     private String pass;//Property of view INDEX. Password.
+    private String action;
 
     /**
      * Return the value save into user.
@@ -87,6 +88,14 @@ public class LoginBean implements Serializable{
     public void setPass(String pass) {
         this.pass = pass;
     }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
     
     /**
      * This method validate the user credential, if this are valid inscribe the
@@ -95,6 +104,7 @@ public class LoginBean implements Serializable{
      * denied otherwise.
      */
     public String login(){
+        System.out.println("Login... "+user);
         LOG.debug("GABYVAL is login for user: "+user);
         if(user != null && !user.trim().equals("") &&
            pass != null && !pass.trim().equals("")){
@@ -107,6 +117,7 @@ public class LoginBean implements Serializable{
                                                                 user);
                     GBMessage.putMessage(GBEnvironment.getInstance().getError(18), user);
                     LOG.debug("GABYVAL finish, the login for user: "+user+" is correctly and complete the operation.");
+                    action = "accessGranted";
                     return "accessGranted";
                 }else{
                     UserController.getInstance().logout(user);
@@ -119,6 +130,7 @@ public class LoginBean implements Serializable{
             LOG.debug("GABYVAL requiere the password to established the connection, try again.");
             GBMessage.putMessage(GBEnvironment.getInstance().getError(13), null);
         }
+        action = "denied";
         return "denied";
     }
 }

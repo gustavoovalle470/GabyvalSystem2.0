@@ -2,22 +2,8 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="pages/grid.html" x="1150" y="150" zoom="true"/>
-        <Node id="pages/tables.html" x="1400" y="150" zoom="true"/>
-        <Node id="pages/icons.html" x="400" y="450" zoom="true"/>
-        <Node id="pages/notifications.html" x="150" y="150" zoom="true"/>
         <Node id="index.xhtml" x="150" y="600" zoom="true"/>
-        <Node id="pages/blank.html" x="150" y="300" zoom="true"/>
-        <Node id="pages/forms.html" x="650" y="300" zoom="true"/>
-        <Node id="app_master.xhtml" x="400" y="150" zoom="true"/>
-        <Node id="resources/vendor/datatables-plugins/index.html" x="150" y="450" zoom="true"/>
-        <Node id="pages/index.html" x="400" y="600" zoom="true"/>
-        <Node id="pages/typography.html" x="650" y="150" zoom="true"/>
-        <Node id="pages/panels-wells.html" x="900" y="150" zoom="true"/>
-        <Node id="pages/login.html" x="150" y="750" zoom="true"/>
-        <Node id="pages/flot.html" x="400" y="300" zoom="true"/>
-        <Node id="pages/morris.html" x="650" y="450" zoom="true"/>
-        <Node id="pages/buttons.html" x="900" y="300" zoom="true"/>
+        <Node id="app_master.xhtml" x="400" y="600" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

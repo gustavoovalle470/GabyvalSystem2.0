@@ -1,0 +1,64 @@
+<html lang="en" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>        
+        <title>GABYVAL System v#{SystemDateBean.app_version}</title>
+        <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
+    </h:head>
+
+    <h:body>
+        <p:dialog id="picture" widgetVar="GBPassChgDlg" 
+                  header="Cambio de contraseña"
+                  resizable="false" 
+                  showEffect="clip" 
+                  hideEffect="clip" 
+                  width="500px" 
+                  modal="true">
+            <h:form id="GBPassChgForm" >
+                <b:container fluid="true">
+                    <b:panel collapsible="false" id="GBCntPassChg">
+                        <b:inputSecret placeholder="Contraseña actual"/>
+                        <b:inputSecret placeholder="Nueva contraseña"/>
+                        <b:inputSecret placeholder="Repita nueva contraseña"/>
+                        <p:commandButton id="GBLoginButton" value="Cambiar contraseña"
+                                         class="btn btn-lg btn-success btn-block" style="border: none"/>
+                    </b:panel>
+                </b:container>
+            </h:form>
+        </p:dialog> 
+        <h:form id="GBBarNav">
+            <b:container>
+                <b:navBar fluid="true" fixed="top" static="true" inverse="true">
+                    <p:panelGrid columns="2" class="ui-widget-content" columnClasses="ui-panelgrid-cell" layout="grid">
+                        <p:commandLink id="GBNavBrand" value="GABYVAL" class="navbar-brand" actionListener="#{menuBean.goHome()}"/>
+                        <p:megaMenu style="border: none;background: transparent ;display: flex; flex-flow: row-reverse wrap;" >
+                            <p:submenu icon="fa fa-bell">
+                                <p:column>
+                                    <p:submenu label="Notificaciones" style="border: none;background: transparent;margin: 0">
+                                        <p:menuitem value="Cerrar sesion" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+                            <p:submenu icon="fa fa-user">
+                                <p:column>
+                                    <p:submenu label="Info usuario" style="border: none;background: transparent;margin: 0">
+                                        <p:menuitem value="Modificar informacion"/>
+                                    </p:submenu>
+                                    <p:submenu label="Sesión de usuario" style="border: none;background: transparent;margin: 0">
+                                        <p:menuitem value="Cambiar contraseña" onclick="PF('GBPassChgDlg').show();"/>
+                                        <p:menuitem value="Cerrar sesión" action="#{UserSesionBean.logout()}" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+                        </p:megaMenu>
+                    </p:panelGrid>
+                </b:navBar>
+            </b:container>
+        </h:form>
+    </h:body>
+</html>

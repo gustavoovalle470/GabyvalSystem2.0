@@ -1,33 +1,77 @@
 <!DOCTYPE html>
+<!--
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *******************************                                                                              ****************************************
+ * *******************************  ********** ********** ******    **      ** **      ** ********** **         ****************************************
+ * *******************************  ********** **********  ******   **      ** **      ** ********** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  **  **   **      ** **      ** **      ** **         ****************************************
+ * *******************************  **         **      **  ******    **    **  **      ** **      ** **         ****************************************
+ * *******************************  **    **** **********  *******    **  **   **      ** ********** **         ****************************************
+ * *******************************  **    **** **********  ********    ****    **      ** ********** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **     **      ** **      ** **         ****************************************
+ * *******************************  **      ** **      **  **    **     **      **    **  **      ** **         ****************************************
+ * *******************************  **      ** **      **  **   **      **       **  **   **      ** **         ****************************************
+ * *******************************  ********** **      **  **  **       **        ****    **      ** ********** ****************************************
+ * *******************************  ********** **      ** ******        **         **     **      ** ********** ****************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * *****************************************************************************************************************************************************
+ * |***************************************************************************************************************************************************|
+ * |                                                        Control de versiones                                                                       |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.0   |  07/09/2017  |      GAOQ      | Vista de pagina inicial del aplicativo.                                                                 |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.1   |  31/10/2017  |      GAOQ      | Actualizacion iconos.                                                                                   |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.2   |  13/11/2017  |      GAOQ      | Correccion de rutas de recursos multimedia.                                                             |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   1.3   |  13/11/2017  |      GAOQ      | Adicion de estilos a los label.                                                                         |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ * |   2.0   |  09/06/2018  |      GAOQ      | Carga de estilos BootsTrap al index de la aplicacion.                                                   |   
+ * |*********|**************|****************|*********************************************************************************************************|
+ ******************************************************************************************************************************************************
+ **Nombre del archivo: index.xhtml
+ ******************************************************************************************************************************************************
+ **Descripcion:        Vista inicial y de logueo del aplicativo.
+ ******************************************************************************************************************************************************
+ **Componentes en que se usa: faces-config.xhtml
+ ******************************************************************************************************************************************************
+-->
 <html lang="es"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui">
-
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>SB Admin 2 - Bootstrap Admin Theme</title>
-        <link href="/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="/resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet" />
-        <link href="/resources/dist/css/sb-admin-2.css" rel="stylesheet" />
-        <link href="/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <script src="/resources/vendor/jquery/jquery.min.js"></script>
-        <script src="/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/resources/vendor/metisMenu/metisMenu.min.js"></script>
-        <script src="/resources/dist/js/sb-admin-2.js"></script>
+        <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
-    <h:body class="bg-dark">
-        <b:form>
-            <b:inputText id="prueba" required="true" required-message="Prueba" requiredMessage="prueba"/>
-            <p:commandButton value="Info" update="growlSpecific"/>
- 
-<p:growl id="test" />
-<b:growl id="growlSpecific" for="prueba"/>
-        </b:form>
+    <h:body>
+        <h:form id="GBLoginForm" >
+            <b:container fluid="true">
+                <p:spacer width="10%"/>
+                <div align="center">
+                    <img src="resources/images/LogoPrincipal.png" width="177" height="106" alt="LogoPrincipal" id="GBLoginPrincipalLogo"/>
+                </div>
+                <p:spacer width="25px"/>
+                <b:row>
+                    <b:column class="col-md-4 col-md-offset-4">
+                        <b:panel class="login-panel panel panel-default" title="Inicio de sesión" collapsible="false" id="GBCntPnlLogin">
+                            <b:growl id="GBGrowlIndex" globalOnly="true" showDetail="true"
+                                     animation-enter="animated bounceInDown"
+                                     animation-exit="animated flipOutX"/>
+                            <b:inputText id="GBUserName" placeholder="Usuario" value="#{LoginBean.user}"/>
+                            <b:inputSecret id="GBPassword" placeholder="Contraseña" value="#{LoginBean.pass}"/>
+                            <p:commandButton id="GBLoginButton" value="Iniciar sesión" action="#{LoginBean.login()}"
+                                             class="btn btn-lg btn-success btn-block" update="GBGrowlIndex" style="border: none"/>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+            </b:container>
+        </h:form>
     </h:body>
 </html>

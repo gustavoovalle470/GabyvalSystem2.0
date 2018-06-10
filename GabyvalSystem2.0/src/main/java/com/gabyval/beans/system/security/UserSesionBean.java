@@ -40,6 +40,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -50,7 +51,7 @@ import javax.servlet.http.HttpSession;
  * @version 1.0
  * @since 13/11/2017
  */
-@Named(value = "userSesionBean")
+@Named(value = "UserSesionBean")
 @SessionScoped
 public class UserSesionBean implements Serializable {
     
@@ -206,6 +207,7 @@ public class UserSesionBean implements Serializable {
      * @return String the next view to navigate.
      */
     public String logout(){
+        System.out.println("Cerrar sesion.");
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             username = SessionController.getInstance().getUser(session);
