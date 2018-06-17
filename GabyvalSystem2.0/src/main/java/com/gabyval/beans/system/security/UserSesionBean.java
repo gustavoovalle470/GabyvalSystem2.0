@@ -35,6 +35,7 @@ import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import com.gabyval.core.time.SystemDateController;
 import com.gabyval.persistence.user.AdUsers;
+import java.awt.event.ActionEvent;
 import javax.inject.*;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -196,7 +197,7 @@ public class UserSesionBean implements Serializable {
                 GBMessage.putMessage(GBEnvironment.getInstance().getError(39), null);
             }
             GBMessage.putMessage(GBEnvironment.getInstance().getError(41), null);
-            return logout();
+            //return logout();
         }
         GBMessage.putMessage(GBEnvironment.getInstance().getError(40), null);
         return null;
@@ -206,7 +207,7 @@ public class UserSesionBean implements Serializable {
      * This method terminate the user session.
      * @return String the next view to navigate.
      */
-    public String logout(){
+    /**public String logout(){
         System.out.println("Cerrar sesion.");
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -220,6 +221,10 @@ public class UserSesionBean implements Serializable {
             GBMessage.putMessage(GBEnvironment.getInstance().getError(15), null);
         }
         return "logout";
+    }**/
+    
+    public void logout(){
+        System.out.println("Cerrar sesion.");
     }
     
     public void validatePassword(){

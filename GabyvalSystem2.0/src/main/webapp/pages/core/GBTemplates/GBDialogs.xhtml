@@ -24,41 +24,31 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  10/06/2018  |      GAOQ      | Creacion de la pantalla principal del aplicativo.                                                       |   
+ * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del contenedor de todos los dialogos del aplicativo web.                                       |   
  * |*********|**************|****************|*********************************************************************************************************|
  ******************************************************************************************************************************************************
- **Nombre del archivo: app_master.xhtml
+ **Nombre del archivo: GBDialogs.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Pagina principal del aplicativo, contiene la barra principal de navegacion, menu y despliegue de funciones.
+ **Descripcion:        Contenedor de dialogos.
  ******************************************************************************************************************************************************
- **Componentes en que se usa: faces-config.xhtml, index.xhtml.
+ **Componentes en que se usa: app_master.xhtml.
  ******************************************************************************************************************************************************
 -->
 <!DOCTYPE html>
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui">
-
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Página principal de acceso a la aplicacion GABYVAL System." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
-        <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
-        <h:form id="GBMasterAppForm">
-            <b:container id="GBMasterAppCont" fluid="true">
-                <b:growl id="GBGrowlAppMaster" globalOnly="true" showDetail="true"
-                                     animation-enter="animated bounceInDown"
-                                     animation-exit="animated flipOutX"/>
-                <ui:include id="GBTempDialogs" src="pages/core/GBTemplates/GBDialogs.xhtml"/>
-                <ui:include id="GBTempNavBar" src="pages/core/GBTemplates/GBNavBar.xhtml"/>
-            </b:container>
-        </h:form>
+        <ui:include src="../dialogs/System/GBPassChgDlg.xhtml" id="GBDFPassChgDlg"/>
+        <ui:include src="../dialogs/System/GBLogoutConfirmationDlg.xhtml" id="GBDFLogoutConfDlg"/>
     </h:body>
 </html>
