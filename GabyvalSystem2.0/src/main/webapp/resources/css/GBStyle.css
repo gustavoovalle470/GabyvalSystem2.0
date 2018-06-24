@@ -26,13 +26,12 @@
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  */
 .ui-widget-content {
-    border: 0px solid #a8a8a8;
+    border: none;
     background: transparent;
     color: #4f4f4f;
 }
 .ui-panelgrid-cell {
+    background: transparent;
     border-width: 0px;
-    border-style: solid;
-    border-color: inherit;
     padding: 4px 10px;
 }

@@ -51,14 +51,12 @@
         <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
+        <ui:include id="GBTempNavBar" src="/WEB-INF/pages/core/GBTemplates/GBDialogs.xhtml"/>
+        <ui:include id="GBTempNavBar" src="/WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
         <h:form id="GBMasterAppForm">
-            <b:container id="GBMasterAppCont" fluid="true">
-                <b:growl id="GBGrowlAppMaster" globalOnly="true" showDetail="true"
-                                     animation-enter="animated bounceInDown"
-                                     animation-exit="animated flipOutX"/>
-                <ui:include id="GBTempDialogs" src="pages/core/GBTemplates/GBDialogs.xhtml"/>
-                <ui:include id="GBTempNavBar" src="pages/core/GBTemplates/GBNavBar.xhtml"/>
-            </b:container>
+            <p:panelGrid >
+                
+            </p:panelGrid>
         </h:form>
     </h:body>
 </html>

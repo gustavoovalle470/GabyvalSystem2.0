@@ -24,23 +24,21 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  11/06/2018  |      GAOQ      | Creacion del dialogo que se invoca para confirmar el cierre de sesión.                                  |   
+ * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del contenedor de todos los dialogos del aplicativo web.                                       |   
  * |*********|**************|****************|*********************************************************************************************************|
  ******************************************************************************************************************************************************
- **Nombre del archivo: GBLogoutConfirmationDlg.xhtml
+ **Nombre del archivo: GBDialogs.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Dialogo de confirmacion de cierre de sesion.
+ **Descripcion:        Contenedor de dialogos.
  ******************************************************************************************************************************************************
- **Componentes en que se usa: GBDialogs.xhtml.
+ **Componentes en que se usa: app_master.xhtml.
  ******************************************************************************************************************************************************
 -->
 <!DOCTYPE html>
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     
     <h:head>
         <meta charset="utf-8" />
@@ -50,33 +48,9 @@
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
     <h:body>
-        <h:form id="GBLogoutConfirmForm" >
-            <p:dialog id="GBLogoutConfDlg" widgetVar="GBLogoutConfDlg" 
-                      header="¿Desea cerrar su sesión de usuario?"
-                      resizable="false" showEffect="clip" 
-                      hideEffect="clip" width="500px" 
-                      modal="true" closeOnEscape="true">
-                <b:container fluid="true">
-                    <b:panel collapsible="false" id="GBCntLogoutConfirm">
-                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                        <div class="modal-footer">
-                            
-                        </div>
-                    </b:panel>
-                </b:container>
-                <p:commandButton value="Cancelar" class="btn btn-secondary" onclick="PF('GBLogoutConfDlg').hide();"/>                
-                <f:facet name="footer">
-                    <p:commandButton value="Cerrar sesión" onclick="HandleLogout(xhr, status, args)"/>
-                    <p:remoteCommand name="logout" actionListener="#{UserSesionBean.logout}" action="logout"/>
-            </f:facet>
-            </p:dialog> 
-        </h:form>
-        <script type="text/javascript">
-            function HandleLogout(xhr, status, args) {
-                logout();
-                PF('GBLogoutConfDlg').hide();
-                $('logout').fadeOut();
-            }
-        </script>
+        <ui:composition>
+        <ui:include src="../dialogs/System/GBPassChgDlg.xhtml" id="GBDFPassChgDlg"/>
+        <ui:include src="../dialogs/System/GBLogoutConfirmationDlg.xhtml" id="GBDFLogoutConfDlg"/>
+        </ui:composition>
     </h:body>
 </html>

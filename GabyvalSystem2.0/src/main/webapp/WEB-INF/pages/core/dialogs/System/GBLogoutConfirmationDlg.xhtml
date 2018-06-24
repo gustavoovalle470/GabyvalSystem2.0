@@ -24,14 +24,14 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  10/06/2018  |      GAOQ      | Creacion de template para la barra de navegacion.                                                       |   
+ * |   1.0   |  11/06/2018  |      GAOQ      | Creacion del dialogo que se invoca para confirmar el cierre de sesión.                                  |   
  * |*********|**************|****************|*********************************************************************************************************|
  ******************************************************************************************************************************************************
- **Nombre del archivo: GBNavBar.xhtml
+ **Nombre del archivo: GBLogoutConfirmationDlg.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Definicion de template para la barra de navegacion.
+ **Descripcion:        Dialogo de confirmacion de cierre de sesion.
  ******************************************************************************************************************************************************
- **Componentes en que se usa: app_master.xhtml.
+ **Componentes en que se usa: GBDialogs.xhtml.
  ******************************************************************************************************************************************************
 -->
 <!DOCTYPE html>
@@ -39,40 +39,33 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Barra de navegacion superior." />
+        <meta name="description" content="Página principal de acceso a la aplicacion GABYVAL System." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
-        <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
-        <b:navBar fluid="true" fixed="top" inverse="true">
-            <p:panelGrid columns="2" layout="grid" class="ui-widget-content" columnClasses="ui-panelgrid-cell">
-                <p:commandLink id="GBNavBrand" value="GABYVAL" class="navbar-brand" actionListener="#{menuBean.goHome()}"/>
-                <p:megaMenu style="border: none;background: transparent ;display: flex; flex-flow: row-reverse wrap;" >
-                    <p:submenu icon="fa fa-bell">
-                        <p:column>
-                            <p:submenu label="Notificaciones" style="border: none;background: transparent;margin: 0">
-                                <p:menuitem value="Cerrar sesion" />
-                            </p:submenu>
-                        </p:column>
-                    </p:submenu>
-                    <p:submenu icon="fa fa-user">
-                        <p:column>
-                            <p:submenu label="Info usuario" style="border: none;background: transparent;margin: 0">
-                                <p:menuitem value="Modificar informacion"/>
-                            </p:submenu>
-                            <p:submenu label="Sesión de usuario" style="border: none;background: transparent;margin: 0">
-                                <p:menuitem value="Cambiar contraseña" onclick="PF('GBPassChgDlg').show();"/>
-                                <p:menuitem value="Cerrar sesión" onclick="PF('GBLogoutConfDlg').show();"/>
-                            </p:submenu>
-                        </p:column>
-                    </p:submenu>
-                </p:megaMenu>
-            </p:panelGrid>
-        </b:navBar>
+        <ui:composition>
+            <p:dialog id="GBLogoutConfDlg" widgetVar="GBLogoutConfDlg" 
+                      header="¿Desea cerrar su sesión de usuario?"
+                      resizable="false" width="500px" 
+                      modal="true" closeOnEscape="true">
+                <h:form id="GBLogoutConfirmForm" >
+                    <b:container fluid="true">
+                        <b:panel collapsible="false" id="GBCntLogoutConfirm">
+                            <p>Al cerrar la sesión toda las tareas que no haya finalizado se pueden perder.</p>
+                            <p>¿Esta seguro que desea cerrar su sesión?</p>
+                            <p:commandButton value="Cancelar" class="btn btn-secondary" onclick="PF('GBLogoutConfDlg').hide();"/>
+                            <p:commandButton value="Cerrar sesión" class="btn btn-primary" action="#{UserSesionBean.logout()}" onclick="PF('GBLogoutConfDlg').hide();"/>
+                        </b:panel>
+                    </b:container>
+                </h:form>
+            </p:dialog> 
+        </ui:composition>
     </h:body>
 </html>

@@ -24,12 +24,12 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del contenedor de todos los dialogos del aplicativo web.                                       |   
+ * |   1.0   |  10/06/2018  |      GAOQ      | Creacion de template para la barra de navegacion.                                                       |   
  * |*********|**************|****************|*********************************************************************************************************|
  ******************************************************************************************************************************************************
- **Nombre del archivo: GBDialogs.xhtml
+ **Nombre del archivo: GBNavBar.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Contenedor de dialogos.
+ **Descripcion:        Definicion de template para la barra de navegacion.
  ******************************************************************************************************************************************************
  **Componentes en que se usa: app_master.xhtml.
  ******************************************************************************************************************************************************
@@ -38,17 +38,48 @@
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Página principal de acceso a la aplicacion GABYVAL System." />
+        <meta name="description" content="Barra de navegacion superior." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
+        <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
-        <ui:include src="../dialogs/System/GBPassChgDlg.xhtml" id="GBDFPassChgDlg"/>
-        <ui:include src="../dialogs/System/GBLogoutConfirmationDlg.xhtml" id="GBDFLogoutConfDlg"/>
+        <ui:composition id="BarNavComp">
+            <h:form id="GBNavBarForm" style="background: transparent;">
+                <b:container id="GBNavBarCont" fluid="true" style="background: transparent;border: none;">
+                    <b:navBar fluid="true" fixed="top" inverse="true" style="border: none;">
+                        <p:panelGrid columns="2" layout="grid" class="ui-widget-content" columnClasses="ui-panelgrid-cell">
+                            <p:commandLink id="GBNavBrand" value="GABYVAL" class="navbar-brand" actionListener="#{menuBean.goHome()}"/>
+                            <p:megaMenu style="border: none;background: transparent ;display: flex; flex-flow: row-reverse wrap;" >
+                                <p:submenu icon="fa fa-bell">
+                                    <p:column>
+                                        <p:submenu label="Notificaciones" style="border: none;background: transparent;margin: 0">
+                                            <p:menuitem value="Cerrar sesion" />
+                                        </p:submenu>
+                                    </p:column>
+                                </p:submenu>
+                                <p:submenu icon="fa fa-user">
+                                    <p:column>
+                                        <p:submenu label="Info usuario" style="border: none;background: transparent;margin: 0">
+                                            <p:menuitem value="Modificar informacion"/>
+                                        </p:submenu>
+                                        <p:submenu label="Sesión de usuario" style="border: none;background: transparent;margin: 0">
+                                            <p:menuitem value="Cambiar contraseña" onclick="PF('GBPassChgDlg').show();"/>
+                                            <p:menuitem value="Cerrar sesión" onclick="PF('GBLogoutConfDlg').show();"/>
+                                        </p:submenu>
+                                    </p:column>
+                                </p:submenu>
+                            </p:megaMenu>
+                        </p:panelGrid>
+                    </b:navBar>
+                </b:container>
+            </h:form>
+        </ui:composition>
     </h:body>
 </html>

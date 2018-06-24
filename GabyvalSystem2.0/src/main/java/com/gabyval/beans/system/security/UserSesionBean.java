@@ -207,7 +207,7 @@ public class UserSesionBean implements Serializable {
      * This method terminate the user session.
      * @return String the next view to navigate.
      */
-    /**public String logout(){
+    public String logout(){
         System.out.println("Cerrar sesion.");
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -221,12 +221,8 @@ public class UserSesionBean implements Serializable {
             GBMessage.putMessage(GBEnvironment.getInstance().getError(15), null);
         }
         return "logout";
-    }**/
-    
-    public void logout(){
-        System.out.println("Cerrar sesion.");
     }
-    
+
     public void validatePassword(){
         System.out.println("PPPPPP");
         if(changePass1 != null && changePass2!= null){
