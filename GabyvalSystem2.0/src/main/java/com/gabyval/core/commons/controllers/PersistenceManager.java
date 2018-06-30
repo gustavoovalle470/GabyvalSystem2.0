@@ -48,8 +48,6 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 
 /**
  * This class will control the persistence with database.
@@ -60,14 +58,15 @@ import org.springframework.context.annotation.Scope;
 public class PersistenceManager implements EntityManager{
     
     private final GB_Logger LOG = GB_Logger.getLogger(PersistenceManager.class);//Central log for this class.
-    private final Session SESSION = ConnectionFactory.getConnection();//Connection with database.
+    private final Session SESSION;
     private static PersistenceManager instance;//Instance of this class.
     private final Lock lock = new ReentrantLock();
     
     public PersistenceManager() throws GB_Exception{
-        if(SESSION == null){
-            throw new GB_Exception(60);
-        }
+        SESSION = ConnectionFactory.getConnection();//Connection with database.
+        //if(SESSION == null){
+        //    throw new GB_Exception("No se pudo establecer comunicacion....");
+        //}
     }
     
     /**
@@ -76,8 +75,6 @@ public class PersistenceManager implements EntityManager{
      * @throws GB_Exception if:
      * <ol><li>The database session is null</li></ol>
      */
-    @Bean("ConnectionManager")
-    @Scope("Singleton")
     public static PersistenceManager getInstance() throws GB_Exception{
         if (instance == null){
             instance = new PersistenceManager();
@@ -107,9 +104,8 @@ public class PersistenceManager implements EntityManager{
                 return null;
             }
         }catch(Exception ex){
-            LOG.error(new GB_Exception(7));
             LOG.error(ex);
-            return null;
+            throw ex;
         }
     }
 
@@ -136,12 +132,10 @@ public class PersistenceManager implements EntityManager{
                 return true;
             } catch (Exception ex){
                 lock.unlock();
-                LOG.error(new GB_Exception(3));
                 LOG.error(ex);
                 tx.rollback();
                 SESSION.clear();
-                LOG.error(new GB_Exception(8));
-                throw new GB_Exception(ex);
+                throw ex;
             }
         }else{
            GB_Exception ex = new GB_Exception(6);
@@ -174,11 +168,9 @@ public class PersistenceManager implements EntityManager{
                    return true;
                 } catch (Exception ex){
                    lock.unlock();
-                   LOG.error(new GB_Exception(2));
                    LOG.error(ex);
                    tx.rollback();
-                   LOG.error(new GB_Exception(8));
-                   throw new GB_Exception(ex);
+                   throw ex;
                 }
            }else{
                GB_Exception ex = new GB_Exception(9);
@@ -293,5 +285,18 @@ public class PersistenceManager implements EntityManager{
            LOG.error(ex);
            throw ex; 
         }
+    }
+    
+    public boolean isOpen(){
+        if(SESSION == null){
+            return false;
+        }
+        return SESSION.isOpen();
+    }
+    
+    public void closeSesion(){
+        SESSION.clear();
+        SESSION.close();
+        instance = null;
     }
 }

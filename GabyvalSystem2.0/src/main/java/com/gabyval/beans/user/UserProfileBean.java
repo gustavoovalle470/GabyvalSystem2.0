@@ -40,6 +40,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -179,7 +181,13 @@ public class UserProfileBean implements Serializable{
      * @return String the date formated.
      */    
     public String getDateString(Date date){
-        return SystemDateController.getInstance().getDateFormated(date);
+        try {
+            return SystemDateController.getInstance().getDateFormated(date);
+        } catch (GB_Exception ex) {
+            Logger.getLogger(UserProfileBean.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return "";
+        }
     }
     
     /**

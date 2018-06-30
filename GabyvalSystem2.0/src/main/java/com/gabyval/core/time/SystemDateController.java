@@ -48,8 +48,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class control all fields status of system date.
@@ -64,11 +62,12 @@ public final class SystemDateController {
     private static final GB_Logger LOG = GB_Logger.getLogger(SystemDateController.class); //Log central of this class.
     private static Date systemDate;
     
-    public SystemDateController(){
+    public SystemDateController() throws GB_Exception{
         try {
             control = (AdSystemControl)PersistenceManager.getInstance().load(AdSystemControl.class, 1);
         } catch (GB_Exception ex) {
             LOG.error(ex);
+            throw ex;
         }
         systemDate = ChargeSystemDate();
     }
@@ -77,7 +76,7 @@ public final class SystemDateController {
      * Return the instance of this controller.
      * @return SystemDateController this instance.
      */
-    public static SystemDateController getInstance(){
+    public static SystemDateController getInstance() throws GB_Exception{
         if(instance == null){
             instance = new  SystemDateController();
         }
@@ -241,11 +240,12 @@ public final class SystemDateController {
     /**
      * This method update the control from data base.
      */
-    public void refreshControl(){
+    public void refreshControl() throws GB_Exception{
         try {
             PersistenceManager.getInstance().refresh(control);
         } catch (GB_Exception ex) {
             LOG.fatal(ex);
+            throw new GB_Exception("No se pudo refrescar los controles de scheduler.");
         }
     }
     

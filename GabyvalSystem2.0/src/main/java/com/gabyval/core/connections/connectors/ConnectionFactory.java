@@ -37,12 +37,15 @@
  * |   1.7   |  09/04/2017  |      GAOQ      | Se establece el mecanismo de carga de clases para que se realice por medio de la base de datos          |
  * |         |              |                | unicamente. Se crea la precarga y apertura de sesion y el manejo transaccional.                         |   
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
- */
+ * |   1.8   |  30/06/2018  |     GAOQ       | Se modifica la forma como carga la parametria para que la tome desde el archivo de configuracion.       |   
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
+*/
 
 package com.gabyval.core.connections.connectors;
 
 import com.gabyval.core.connections.classloader.AdResource;
 import com.gabyval.core.logger.GB_Logger;
+import java.io.File;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -65,7 +68,6 @@ public class ConnectionFactory{
      * @return Session whit database.
      */
     public static Session getConnection() {
-        System.out.println("Configurando sesion...");
         try{
             configure();
             classLoader();
@@ -81,7 +83,7 @@ public class ConnectionFactory{
      * Restart pool connection whit database.
      * @return true if connection was restart. False otherwise.
      */
-    public static boolean restartConnection(){
+    public static boolean restartConnection() throws ClassNotFoundException{
         sessionFactory = null;
         configure();
         classLoader();
@@ -101,25 +103,18 @@ public class ConnectionFactory{
     /**
      * This method configure all parameters to establish the data base connection.
      */
-    private static void configure(){
-        System.out.println("Iniciando configuracion de la sesion...");
+    private static void configure() throws ClassNotFoundException{
+        LOG.info("Iniciando conexión a la base de datos.");
         conf = new Configuration();
-        conf.configure();
-        LOG.info("Iniciando conexcion a la base de datos.");
-        LOG.info("Finalizo con exito la carga de la conexion.");
-        Class c;
-        try {
-            LOG.info("Cargando modulo de lectura de entidades de persistencia. Clase a cargar com.gabyval.core.connections.classloader.AdResource");
-            c = Class.forName("com.gabyval.core.connections.classloader.AdResource");
-            LOG.info("Instancia creada para com.gabyval.core.connections.classloader.AdResource. Cargando en configuracion.");
-            conf.addAnnotatedClass(c);
-            LOG.info("Configuracion actualizada.");
-        } catch (ClassNotFoundException ex) {
-            LOG.fatal(ex);
-        }
-        LOG.info("Creando session de trabajo...");
+        LOG.info("se creo corretacmente el configurador de sesion, se procedera a configurar con el archivo: "+new File("/GABYVAL/conf/hibernate.xml").getAbsolutePath());
+        conf.configure(new File("/GABYVAL/conf/hibernate.xml"));
+        LOG.info("se configuro correctamente la sesion. Adicionando la clase de configuracion com.gabyval.core.connections.classloader.AdResource");
+        conf.addAnnotatedClass(Class.forName("com.gabyval.core.connections.classloader.AdResource"));
+        LOG.info("Se adiciono correctamente la clase de carga de entidades. Se va a construir la sesion.");
         sessionFactory = conf.buildSessionFactory();
-        LOG.info("Sesion activa y en espera de la carga de los modulos de persistencia.");
+        LOG.info("La configuracion se construyo correctamente. Abriendo una sesion de trabajo.");
+        Session s = sessionFactory.openSession();
+        LOG.info("La sesion de trabajo esta activa y en espera de la carga de los modulos de persistencia.");
     }
     
     /**

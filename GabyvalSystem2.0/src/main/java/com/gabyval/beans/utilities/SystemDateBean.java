@@ -35,6 +35,8 @@ import com.gabyval.core.logger.GB_Logger;
 import com.gabyval.core.time.SystemDateController;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -108,19 +110,38 @@ public class SystemDateBean implements Serializable{
     }
 
     public String getSystemDate() {
-        return GBEnvironment.getInstance().getDateFormated(
-                SystemDateController.getInstance().getSystemDate(),
-                getDateTimeFormatFull());
+        try {
+            return GBEnvironment.getInstance().getDateFormated(
+                    SystemDateController.getInstance().getSystemDate(),
+                    getDateTimeFormatFull());
+        } catch (GB_Exception ex) {
+            Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return "";
+        }
     }
+    
     public String getSystemDateConfiguration() {
-        return GBEnvironment.getInstance().getDateFormated(
-                SystemDateController.getInstance().getSystemDate(),
-                getDateTimeFormat());
+        try {
+            return GBEnvironment.getInstance().getDateFormated(
+                    SystemDateController.getInstance().getSystemDate(),
+                    getDateTimeFormat());
+        } catch (GB_Exception ex) {
+            Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return "";
+        }
     }
     public String getServerDate() {
-        return GBEnvironment.getInstance().getDateFormated(
-                SystemDateController.getInstance().getServerDate(),
-                getDateTimeFormat());
+        try {
+            return GBEnvironment.getInstance().getDateFormated(
+                    SystemDateController.getInstance().getServerDate(),
+                    getDateTimeFormat());
+        } catch (GB_Exception ex) {
+            Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return "";
+        }
     }
 
     public String getApp_version() {

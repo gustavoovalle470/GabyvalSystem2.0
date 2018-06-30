@@ -26,7 +26,10 @@
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  * |   1.1   |  13/11/2017  |      GAOQ      | Adicion de busqueda de configuraciones por nombre, adicion metodo de busqueda de errores de sistema.    |   
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
- */
+ * |   1.2   |  30/06/2018  |      GAOQ      | Se modifica la forma como el sistema retorna un error no encontrado o si no hay conexion a la base de   |
+ * |         |              |                | datos.                                                                                                  |   
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
+*/
 package com.gabyval.core;
 
 import com.gabyval.core.commons.controllers.IdControl;
@@ -51,8 +54,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Level;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 
 /**
  * This class define de Class environment for core utilities.
@@ -69,8 +70,6 @@ public class GBEnvironment {
      * Return the instance of GABYVAL Environment core.
      * @return GBEnvironment this instance.
      */
-    @Bean("EnviromentStartUp")
-    @Scope("Singleton")
     public static GBEnvironment getInstance(){
         if(instance == null){
             instance = new GBEnvironment();
@@ -170,7 +169,7 @@ public class GBEnvironment {
      * Return the System date for app.
      * @return Date the actually System date.
      */
-    public Date systemDate(){
+    public Date systemDate() throws GB_Exception{
         return SystemDateController.getInstance().getSystemDate();
     }
     
@@ -186,7 +185,7 @@ public class GBEnvironment {
      * Return the last close date.
      * @return Date the last close date.
      */
-    public Date getLastCloseDate(){
+    public Date getLastCloseDate() throws GB_Exception{
         return SystemDateController.getInstance().getLastClose();
     }
     
@@ -194,7 +193,7 @@ public class GBEnvironment {
      * Return the next close date.
      * @return Date the next close date.
      */
-    public Date getNextCloseDate(){
+    public Date getNextCloseDate() throws GB_Exception{
         return SystemDateController.getInstance().getNextClose();
     }
     
@@ -245,19 +244,20 @@ public class GBEnvironment {
      * @return String the string whit error message.
      */
     public AdError getError(int IdError) {
-        String message ="Mensaje de error no disponible.";
         AdError error = null;
         try {
             error = (AdError) PersistenceManager.getInstance().load(AdError.class, IdError);
             PersistenceManager.getInstance().refresh(error);
         } catch (GB_Exception ex) {
             LOG.error(ex);
+        } finally{
+            if (error == null){
+                error = new AdError(0, "ERROR INESPERADO. Se ha producido un error inesperado en la aplicación y el sistema no se pudo recuperar. Si el problema persiste comuniquese con su administrador.", Calendar.getInstance().getTime(), 0);
+                error.setGbErrorLevel("FATAL");
+                LOG.error("El sistema no pudo encontrar el error con identificador "+IdError+" o no se pudo establecer la conexión a la base de datos para obtenerlo.");
+            }
+            return error;
         }
-        if (error == null){
-            error = new AdError(0, "UNEXPECTED BEHAVIOR. The error is not controlled. ID Error: "+IdError, Calendar.getInstance().getTime(), 0);
-            LOG.error(message);
-        }
-        return error;
     }
     
     public String replaceMessage(String original, String replace) {
@@ -293,11 +293,11 @@ public class GBEnvironment {
         return base64EncryptedString;
     }
     
-    public Date getServerDate(){
+    public Date getServerDate() throws GB_Exception{
         return SystemDateController.getInstance().getServerDate();
     }
     
-    public Date getSystemDate(){
+    public Date getSystemDate() throws GB_Exception{
         return SystemDateController.getInstance().getSystemDate();
     }
     
@@ -309,7 +309,12 @@ public class GBEnvironment {
     
     public void SystemPause(boolean isPaused) throws GB_Exception{
         LOG.info("The system was changing the state to "+(isPaused? "paused":"unpaused"));
-        SystemDateController.getInstance().pauseUnPauseSys(isPaused);
+        try{
+            SystemDateController.getInstance().pauseUnPauseSys(isPaused);
+        }catch (Exception e){
+            LOG.fatal(e);
+            throw new GB_Exception("Error al tratar de pausar el sistema.");
+        }
         LOG.info("The "+(isPaused? "paused":"unpaused")+" was finished.");
     }
     
@@ -320,7 +325,7 @@ public class GBEnvironment {
         LOG.info("The log was changing to "+logLevel);
     }
     
-    public boolean isSystemPaused(){
+    public boolean isSystemPaused() throws GB_Exception{
         return SystemDateController.getInstance().isSystemPaused();
     }
 }

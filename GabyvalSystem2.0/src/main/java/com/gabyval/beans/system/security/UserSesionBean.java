@@ -41,6 +41,8 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -84,7 +86,13 @@ public class UserSesionBean implements Serializable {
      * @return String date formated.
      */
     public String getFormatDate(Date date){
-        return SystemDateController.getInstance().getDateFormated(date);
+        try {
+            return SystemDateController.getInstance().getDateFormated(date);
+        } catch (GB_Exception ex) {
+            Logger.getLogger(UserSesionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return "";
+        }
     }
     
     /**

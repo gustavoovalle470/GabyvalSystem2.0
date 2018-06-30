@@ -37,6 +37,8 @@ import com.gabyval.core.constants.GB_CommonStrConstants;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PreDestroy;
 import org.quartz.Job;
 import org.quartz.JobKey;
@@ -44,8 +46,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 
 /**
  * This class control the scheduler and jobs running.
@@ -63,9 +63,7 @@ public class GB_Scheduler{
      * Return the instance of this controller.
      * @return GB_Scheduler this instance.
      */
-    @Bean("ScheduleService")
-    @Scope("Singleton")
-    public static GB_Scheduler getInstance(){
+    public static GB_Scheduler getInstance() throws SchedulerException, GB_Exception{
         if(instance == null){
             instance = new GB_Scheduler();
         }
@@ -75,13 +73,14 @@ public class GB_Scheduler{
     /**
      * Create a new instance of this controller.
      */
-    public GB_Scheduler(){
+    public GB_Scheduler() throws SchedulerException, GB_Exception{
         try {
             SCH = StdSchedulerFactory.getDefaultScheduler();
-        } catch (SchedulerException ex) {
+            configureControl();
+        } catch (SchedulerException | GB_Exception ex) {
             LOG.fatal(ex);
+            throw ex;
         }
-        configureControl();
     }
     
     /**
@@ -173,7 +172,7 @@ public class GB_Scheduler{
     /**
      * Configure the Job that control the pause and unpause jobs.
      */
-    private void configureControl() {
+    private void configureControl() throws GB_Exception {
         try {
             GB_JobDetail jd = new GB_JobDetail(new JobKey(GB_CommonStrConstants.SCH_CONTROL), //JobKey is the Job name in data base.
                                                SchedulerControl.class, //Class that difine the job.
@@ -188,6 +187,7 @@ public class GB_Scheduler{
         } catch (SchedulerException | ParseException ex) {
             LOG.fatal("The scheduler can't start, the process finish with the next error:");
             LOG.fatal(ex);
+            throw new GB_Exception(ex);
         }
     }
     

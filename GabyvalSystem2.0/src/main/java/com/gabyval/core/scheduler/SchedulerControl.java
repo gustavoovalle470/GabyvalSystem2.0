@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
+import org.quartz.SchedulerException;
 
 /**
  * This class describe the control job, manager all jobs.
@@ -62,31 +63,38 @@ public class SchedulerControl extends Job{
      */
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
-        SystemDateController.getInstance().refreshControl();
-        if(JobProperty.getIntJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_CHARGE_FIELD) == 0){
-            chargeJobs();
-        }
-        if(SystemDateController.getInstance().isSystemPaused()){
-            LOG.debug("The system is pause, stoppin all Jobs in execution...");
-            GB_Scheduler.getInstance().stop();
-            try {
-                JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_DT_FIELD, 0);
-                SystemDateController.getInstance().pauseUnPauseSys(true);
-            } catch (GB_Exception ex) {
-                LOG.fatal(ex);
+        try{
+            SystemDateController.getInstance().refreshControl();
+            if(JobProperty.getIntJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_CHARGE_FIELD) == 0){
+                chargeJobs();
             }
-        }else{
-            LOG.debug("The system is not pause, starting all Jobs to execution...");
-            JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_DT_FIELD, 1);
-            systemDateSch();
-            GB_Scheduler.getInstance().resume();
+            if(SystemDateController.getInstance().isSystemPaused()){
+                LOG.debug("The system is pause, stoppin all Jobs in execution...");
+                GB_Scheduler.getInstance().stop();
+                try {
+                    JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_DT_FIELD, 0);
+                    SystemDateController.getInstance().pauseUnPauseSys(true);
+                } catch (GB_Exception ex) {
+                    LOG.fatal(ex);
+                }
+            }else{
+                LOG.debug("The system is not pause, starting all Jobs to execution...");
+                JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_DT_FIELD, 1);
+                systemDateSch();
+                GB_Scheduler.getInstance().resume();
+            }
+        }catch (GB_Exception ex){
+            LOG.error(ex);
+            throw new JobExecutionException("El sistema no pudo iniciar la ejecucion del control central de Scheduler.");
+        } catch (SchedulerException ex) {
+            Logger.getLogger(SchedulerControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     /**
      * Charge the jobs into Scheduler.
      */
-    private void chargeJobs() {
+    private void chargeJobs() throws SchedulerException, GB_Exception {
         LOG.debug("Charging all jobs.");
         int totalJobs;
         try {

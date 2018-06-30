@@ -181,7 +181,6 @@ public class GB_Exception extends Exception{
         try {
             error= (AdError) PersistenceManager.getInstance().load(AdError.class, errorId);
             PersistenceManager.getInstance().refresh(error);
-            
         } catch (GB_Exception ex) {
             error = getUnexpectedError(errorId);
           }

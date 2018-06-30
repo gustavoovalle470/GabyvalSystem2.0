@@ -47,14 +47,14 @@
         <meta name="description" content="Barra de navegacion superior." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
-        <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="../../../../resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
         <ui:composition id="BarNavComp">
-            <h:form id="GBNavBarForm" style="background: transparent;">
-                <b:container id="GBNavBarCont" fluid="true" style="background: transparent;border: none;">
-                    <b:navBar fluid="true" fixed="top" inverse="true" style="border: none;">
-                        <p:panelGrid columns="2" layout="grid" class="ui-widget-content" columnClasses="ui-panelgrid-cell">
+            <h:form id="GBNavBarForm">
+                <b:container id="GBNavBarCont" fluid="true" styleClass="ui-widget-content">
+                    <b:navBar fluid="true" fixed="static" inverse="true">
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-noborder ui-widget-content" columnClasses="ui-panelgrid-cell">
                             <p:commandLink id="GBNavBrand" value="GABYVAL" class="navbar-brand" actionListener="#{menuBean.goHome()}"/>
                             <p:megaMenu style="border: none;background: transparent ;display: flex; flex-flow: row-reverse wrap;" >
                                 <p:submenu icon="fa fa-bell">

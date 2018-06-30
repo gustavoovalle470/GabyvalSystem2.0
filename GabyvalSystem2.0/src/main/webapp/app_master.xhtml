@@ -51,12 +51,14 @@
         <link href="resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
+        <p:panelGrid columns="1" layout="grid" styleClass="ui-noborder" columnClasses="ui-panelgrid-cell">
+            <ui:include id="GBTempNavBar" src="/WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
+            <h:form id="GBMasterAppForm">
+                <p:panelGrid >
+                    BODY
+                </p:panelGrid>
+            </h:form>
+        </p:panelGrid>
         <ui:include id="GBTempNavBar" src="/WEB-INF/pages/core/GBTemplates/GBDialogs.xhtml"/>
-        <ui:include id="GBTempNavBar" src="/WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
-        <h:form id="GBMasterAppForm">
-            <p:panelGrid >
-                
-            </p:panelGrid>
-        </h:form>
     </h:body>
 </html>
