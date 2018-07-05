@@ -36,7 +36,9 @@
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  * |   1.6   |  13/11/2017  |      GAOQ      | Cambio de nombre de propiedades de fecha y hora, adicion de nombre de modulo para fecha y hora.         |   
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
- */
+ * |   1.7   |  04/06/2018  |      GAOQ      | Correcion de los archivos de configuracion.                                                             |   
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
+*/
 package com.gabyval.core.constants;
 
 /**
@@ -51,10 +53,9 @@ public class GB_CommonStrConstants {
      ***************************************************************************************************************************/
     public static final String APP_NAME = "GABYVAL System";
     public static final String SYS_DATE_KEY = "SysDate";
-    public static final String SCH_GROUP = "GBScheduler";
-    public static final String SCH_CONTROL = "ControlSch";
-    public static final String SCH_CHARGE_FIELD = "ControlSch";
-    public static final String SCH_DT_FIELD = "ControlSch";
+    public static final String GBCENTRALSCH = "GBCentral";
+    public static final String GB_EACH_SEC_SCH = "0/1 * * * * ?";
+    public static final String GB_SCH = "GBJobTr";
     public static final String ERROR_RPLCE  = "$";
     public static final String PUBLIC_APP_KEY = "GabyValSystemsG&TSystemsCorporation.";
     /***************************************************************************************************************************
@@ -62,8 +63,8 @@ public class GB_CommonStrConstants {
      ***************************************************************************************************************************/
     public static final String PAHT_EXIT_LOG_LOG4J = "/GABYVAL/gblogs/SystemOut.log";
     public static final String PAHT_EXIT_LOG_SCH = "/GABYVAL/gblogs/SchOut.log";
-    public static final String CONNECT_PROP = "/GABYVAL/server/conf/connection.properties";
-    public static final String SYS_PARAMS = "/GABYVAL/server/conf/SystemParams.properties";
+    public static final String CONNECT_PROP = "/GABYVAL/conf/connection.properties";
+    public static final String SYS_PARAMS = "/GABYVAL/conf/SystemParams.properties";
     /***************************************************************************************************************************
      *PATTERNS
      ***************************************************************************************************************************/

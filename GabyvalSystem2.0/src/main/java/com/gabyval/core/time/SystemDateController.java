@@ -34,6 +34,8 @@
  * |   1.4   |  07/09/2017  |      GAOQ      | Adicion de metodo que permite retornar una fecha cualquiera formateada segun la mascara del sistema.    |
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  * |   1.5   |  13/11/2017  |      GAOQ      | Adicion de modulo de configuracion para parametria de formatos de fecha.                                |
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------| 
+ * |   1.6   |  04/06/2018  |      GAOQ      | Correcciones para ejecucion del scheduler del sistema.                                                  |
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  */
 package com.gabyval.core.time;
@@ -87,8 +89,9 @@ public final class SystemDateController {
      * Indicate if system is paused or not.
      * @return boolean true if system is paused, false otherwise.
      */
-    public boolean isSystemPaused(){
+    public boolean isSystemPaused() throws GB_Exception{
         LOG.debug("Verify if the system is paused.");
+        refreshControl();
         if(control.getGbSystemPause().equals("Y")){
             LOG.debug("The system is pasued actually.");
             return true;

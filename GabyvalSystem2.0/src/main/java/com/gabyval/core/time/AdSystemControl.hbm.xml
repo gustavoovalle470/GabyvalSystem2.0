@@ -8,9 +8,6 @@
             <column name="GB_SYSTEM_CONTROL_ID" precision="22" scale="0" />
             <generator class="assigned" />
         </id>
-        <property name="gbSystemDate" type="timestamp">
-            <column name="GB_SYSTEM_DATE" not-null="true" />
-        </property>
         <property name="gbSystemPause" type="string">
             <column name="GB_SYSTEM_PAUSE" length="1" not-null="true" />
         </property>

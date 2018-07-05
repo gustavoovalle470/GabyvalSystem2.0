@@ -30,9 +30,9 @@
        
         
         <!--Inicializacion del sistema de scheduler de GABYVAL.-->
-        <!--<bean id="ScheduleService"
+        <bean id="ScheduleService"
               class="com.gabyval.core.scheduler.GB_Scheduler"
               init-method="getInstance"
-              destroy-method="stop"
-        />-->
+              destroy-method="shutdownSchedulerModule"
+        />
 </beans>

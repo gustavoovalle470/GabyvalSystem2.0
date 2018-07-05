@@ -28,23 +28,28 @@
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  * |   1.2   |  19/06/2017  |      GAOQ      | Se adiciona la informacion de las constantes.                                                           |
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
- */
+ * |   1.3   |  04/06/2018  |      GAOQ      | Division de los scheduler por grupos de trabajo.                                                        |
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
+*/
 package com.gabyval.core.scheduler;
 
-import com.gabyval.core.GBEnvironment;
 import com.gabyval.core.commons.controllers.PersistenceManager;
 import com.gabyval.core.constants.GB_CommonStrConstants;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import java.text.ParseException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PreDestroy;
 import org.quartz.Job;
+import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.triggers.CronTriggerImpl;
 
 /**
@@ -58,6 +63,8 @@ public class GB_Scheduler{
     private final GB_Logger LOG = GB_Logger.getLogger(GB_Scheduler.class);//Central LOG.
     private Scheduler SCH; //Central Scheduler.
     private static GB_Scheduler instance;//Instance of this controller.
+    private final Trigger GbCentraltrigger; //This is the trigger that execute each second, without system pause validation.
+    private Trigger GbJobTrigger; //This is the trigger that configure each job to execute. Applied the systen pause validation.
     
     /**
      * Return the instance of this controller.
@@ -73,13 +80,16 @@ public class GB_Scheduler{
     /**
      * Create a new instance of this controller.
      */
-    public GB_Scheduler() throws SchedulerException, GB_Exception{
+    public GB_Scheduler() throws GB_Exception{
         try {
+            GbCentraltrigger = new CronTriggerImpl(GB_CommonStrConstants.GBCENTRALSCH, 
+                                                   GB_CommonStrConstants.GBCENTRALSCH, 
+                                                   GB_CommonStrConstants.GB_EACH_SEC_SCH);
             SCH = StdSchedulerFactory.getDefaultScheduler();
-            configureControl();
-        } catch (SchedulerException | GB_Exception ex) {
+            start();
+        } catch (SchedulerException | ParseException ex) {
             LOG.fatal(ex);
-            throw ex;
+            throw new GB_Exception(ex);
         }
     }
     
@@ -91,13 +101,12 @@ public class GB_Scheduler{
         AdJob job;
         try {
             job = (AdJob)PersistenceManager.getInstance().load(AdJob.class, job_id);
-            GB_JobDetail jd = new GB_JobDetail(new JobKey(job.getGbJobName()), //JobKey is the Job name in data base.
-                                                   (Class<? extends Job>) Class.forName(job.getGbJobClass()), //Class that difine the job.
-                                                    new CronTriggerImpl(job.getGbJobDesc(), GB_CommonStrConstants.SCH_GROUP, job.getGbExpCron()), //Difine the trigger. 
-                                                    job.getGbJobDesc(), //Job description.
-                                                    job.getGbJobId()); //Database Job Id.
+            JobDetail jd = new JobDetailImpl(job.getGbJobName(), 
+                                             GB_CommonStrConstants.GB_SCH, 
+                                             (Class<? extends Job>) Class.forName(job.getGbJobClass()));
+            GbJobTrigger = new CronTriggerImpl(GB_CommonStrConstants.GB_SCH, GB_CommonStrConstants.GB_SCH, job.getGbExpCron());
             if(!SCH.checkExists(jd.getKey())){
-                SCH.scheduleJob(jd, jd.getJobTrigger());            
+                SCH.scheduleJob(jd, GbJobTrigger);
             }
         } catch (ClassNotFoundException | ParseException | SchedulerException | GB_Exception ex) {
             LOG.fatal(ex);
@@ -107,10 +116,9 @@ public class GB_Scheduler{
     /**
      * Restart the central scheduler 
      */
-    public void restart_sch(){
-        stop();
-        JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_CHARGE_FIELD, 0);
-        resume();
+    public void restart_sch() throws GB_Exception{
+        shutdownService();
+        start();
     }
     
     /**
@@ -119,23 +127,11 @@ public class GB_Scheduler{
     public void start(){
         try {
             if(!isSchedulerRunning()){
+                configureControl();
                 SCH.start();
             }
-        } catch (SchedulerException ex) {
+        } catch (Exception ex) {
             LOG.fatal(ex);
-        }
-    }
-
-    /**
-     * Stop the scheduler service.
-     */
-    @PreDestroy
-    public void stop() {
-        try {
-            SCH.pauseAll();
-            SCH.resumeJob(new JobKey(GB_CommonStrConstants.SCH_CONTROL));
-        } catch (SchedulerException ex) {
-            LOG.error(ex);
         }
     }
     
@@ -146,9 +142,9 @@ public class GB_Scheduler{
      */
     public void shutdownService() throws GB_Exception {
         try {
-            SCH.pauseAll();
-            SCH.deleteJob(new JobKey(GB_CommonStrConstants.SCH_CONTROL));
-            GBEnvironment.getInstance().SystemPause(true);
+            if(SCH.isStarted()){
+                SCH.shutdown();
+            }
         } catch (SchedulerException ex) {
             LOG.error(ex);
             throw new GB_Exception("Ha ocurrido un error al tratar de apagar el servicio de Scheduler...");
@@ -174,31 +170,17 @@ public class GB_Scheduler{
      */
     private void configureControl() throws GB_Exception {
         try {
-            GB_JobDetail jd = new GB_JobDetail(new JobKey(GB_CommonStrConstants.SCH_CONTROL), //JobKey is the Job name in data base.
-                                               SchedulerControl.class, //Class that difine the job.
-                                               new CronTriggerImpl(GB_CommonStrConstants.SCH_CONTROL, Scheduler.DEFAULT_GROUP, "0/1 * * * * ?"), //Difine the trigger. 
-                                               "This is a central job out system controls.", //Job description.
-                                               0); //Database Job Id.
-            SCH.scheduleJob(jd, jd.getJobTrigger());
-            SCH.start();
-            JobProperty.putJob(new JobKey(GB_CommonStrConstants.SCH_CONTROL), jd);
-            JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_CHARGE_FIELD, 0);
-            JobProperty.putJobField(new JobKey(GB_CommonStrConstants.SCH_CONTROL), GB_CommonStrConstants.SCH_DT_FIELD, 0);
-        } catch (SchedulerException | ParseException ex) {
+            if (SCH.getJobDetail(new JobKey(GB_CommonStrConstants.GBCENTRALSCH)) == null){
+                JobDetail jd = new JobDetailImpl(GB_CommonStrConstants.GBCENTRALSCH, 
+                                                 GB_CommonStrConstants.GBCENTRALSCH, 
+                                                 SchedulerControl.class);
+                SCH.scheduleJob(jd, GbCentraltrigger);
+            }
+            putAllAutoStartJob();
+        } catch (SchedulerException ex) {
             LOG.fatal("The scheduler can't start, the process finish with the next error:");
             LOG.fatal(ex);
             throw new GB_Exception(ex);
-        }
-    }
-    
-    /**
-     * Restart all jobs.
-     */
-    public void resume(){
-        try {
-            SCH.resumeAll();
-        } catch (SchedulerException ex) {
-            LOG.fatal(ex);
         }
     }
     
@@ -208,6 +190,61 @@ public class GB_Scheduler{
         } catch (SchedulerException ex) {
             LOG.error(ex);
             return false;
+        }
+    }
+
+    private void putAllAutoStartJob() {
+        LOG.debug("Charging all jobs.");
+        try {
+            List<AdJob> l = PersistenceManager.getInstance().getAll(AdJob.class);
+            if(!l.isEmpty()){
+                LOG.debug("Starting whit job charging... "+l.size()+" to load.");
+                for(AdJob job : l){
+                    if(job.getGbAutoRun().endsWith("S")){
+                        JobDetail jd = new JobDetailImpl(job.getGbJobName(), 
+                                                         GB_CommonStrConstants.GB_SCH,
+                                                         (Class<? extends Job>) Class.forName(job.getGbJobClass()));
+                        GbJobTrigger = new CronTriggerImpl(GB_CommonStrConstants.GB_SCH, GB_CommonStrConstants.GB_SCH, job.getGbExpCron());
+                        if(!SCH.checkExists(jd.getKey())){
+                            SCH.scheduleJob(jd, GbJobTrigger);
+                        }
+                    }
+                }
+            }else{
+                LOG.debug("Not exist any job to load.");
+            }
+        } catch (Exception ex) {
+            LOG.fatal(ex);
+        }
+    }
+    
+    public void shutdownSchedulerModule(){
+        try {
+            SCH.shutdown(true);
+        } catch (SchedulerException ex) {
+            Logger.getLogger(GB_Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This method start all jobs for Gabyval System.
+     */
+    public void stopGBJobs(){
+        try {
+            SCH.pauseJobs(GroupMatcher.jobGroupEquals(GB_CommonStrConstants.GB_SCH));
+        } catch (SchedulerException ex) {
+            Logger.getLogger(GB_Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This method stop all jobs for Gabyval System.
+     */
+    public void startGBJobs(){
+        try {
+            SCH.resumeJobs(GroupMatcher.jobGroupEquals("GBJobTr"));
+        } catch (SchedulerException ex) {
+            Logger.getLogger(GB_Scheduler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
