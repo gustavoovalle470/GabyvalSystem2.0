@@ -16,7 +16,7 @@
        <bean id="ConnectionManager"
              class="com.gabyval.core.commons.controllers.PersistenceManager"
              init-method="getInstance"
-             destroy-method=""
+             destroy-method="closeSesion"
              scope="singleton"
         />
        
@@ -26,6 +26,7 @@
         <bean id="EnviromentStartUp"
               class="com.gabyval.core.GBEnvironment"
               init-method="getInstance"
+              depends-on="ConnectionManager"
         />
        
         
@@ -34,5 +35,6 @@
               class="com.gabyval.core.scheduler.GB_Scheduler"
               init-method="getInstance"
               destroy-method="shutdownSchedulerModule"
+              depends-on="ConnectionManager"
         />
 </beans>

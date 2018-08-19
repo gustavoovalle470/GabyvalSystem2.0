@@ -25,13 +25,11 @@
  * |   1.0   |  10/06/2018  |      GAOQ      | Creacion de las hojas de estilo personalizadas para GabyvalSystem.                                      |   
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  */
-.ui-widget-content {
-    border: none;
-    background: transparent;
-    color: #4f4f4f;
+.GBFooter{
+    font-style: italic; 
+    font-size: 15px;
 }
-.ui-panelgrid-cell {
-    background: transparent;
-    border-width: 0px;
-    padding: 4px 10px;
+
+.GBPanelLayout{
+    border: 0px;
 }

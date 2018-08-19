@@ -38,9 +38,9 @@
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:head>
         <meta charset="utf-8" />
@@ -51,21 +51,19 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <p:dialog id="GBLogoutConfDlg" widgetVar="GBLogoutConfDlg" 
-                      header="¿Desea cerrar su sesión de usuario?"
-                      resizable="false" width="500px" 
-                      modal="true" closeOnEscape="true">
-                <h:form id="GBLogoutConfirmForm" >
-                    <b:container fluid="true">
-                        <b:panel collapsible="false" id="GBCntLogoutConfirm">
-                            <p>Al cerrar la sesión toda las tareas que no haya finalizado se pueden perder.</p>
-                            <p>¿Esta seguro que desea cerrar su sesión?</p>
-                            <p:commandButton value="Cancelar" class="btn btn-secondary" onclick="PF('GBLogoutConfDlg').hide();"/>
-                            <p:commandButton value="Cerrar sesión" class="btn btn-primary" action="#{UserSesionBean.logout()}" onclick="PF('GBLogoutConfDlg').hide();"/>
-                        </b:panel>
-                    </b:container>
-                </h:form>
-            </p:dialog> 
+            <b:modal id="GBLogoutConfModal" 
+                     title="¿Desea cerrar su sesión?" 
+                     styleClass="GBLogoutConfDlg"
+                     closable="false"
+                     closeOnEscape="false"
+                     backdrop="false">
+                <p>Si cierra su sesión de usuario, las tareas que no haya guardado se pueden perder.</p>
+                <p>¿Desea igual proceder?</p>
+                <f:facet name="footer">
+                  <b:button value="Cancelar" dismiss="modal" />
+                  <b:commandButton value="Cerrar sesión" look="primary" onclick="$('.GBLogoutConfDlg').hide()" action="#{UserSesionBean.logout()}"/>
+                </f:facet>
+            </b:modal>
         </ui:composition>
     </h:body>
 </html>

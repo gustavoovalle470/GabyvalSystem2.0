@@ -35,7 +35,6 @@ import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import com.gabyval.core.time.SystemDateController;
 import com.gabyval.persistence.user.AdUsers;
-import java.awt.event.ActionEvent;
 import javax.inject.*;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -43,7 +42,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -62,22 +60,16 @@ public class UserSesionBean implements Serializable {
     private String username;   //Username.
     private String changePass1;// For change, the first password.
     private String changePass2; //For change, the second password. Confirnation.
+    private String actualPass;
     private AdUsers user;       //User entity.
     private String home_page = "app_master.xhtml";
+    private String navRule;
     
     /**
      * Creates a new instance of UserSesionBean
      */
     public UserSesionBean() {
-        try{
-            username = SessionController.getInstance().getUser((HttpSession) FacesContext
-                                                                    .getCurrentInstance()
-                                                                    .getExternalContext()
-                                                                    .getSession(false));
-            user =UserController.getInstance().getUser(username);
-        }catch(GB_Exception ex){
-            
-        }
+        putUserName();
     }
 
     /**
@@ -196,19 +188,40 @@ public class UserSesionBean implements Serializable {
      * This method evaluate and change de password.
      * @return String the next view to navigate.
      */
+    /**
+     * This method evaluate and change de password.
+     * @return String the next view to navigate.
+     */
     public String changePassword(){
-        if(changePass1.equals(changePass2)){
-            try {
-                UserController.getInstance().changePassword(username, GBEnvironment.getInstance().criptPwd(changePass1));
-            } catch (GB_Exception ex) {
-                LOG.error(ex);
-                GBMessage.putMessage(GBEnvironment.getInstance().getError(39), null);
+        System.out.println("com.gabyval.beans.system.security.UserSesionBean.changePassword()");
+        boolean flag = false;
+        try{
+            if(GBEnvironment.getInstance().criptPwd(actualPass).equals(user.getGbPassword())){
+                if(actualPass.equals(changePass1)){
+                    GBMessage.putMessage(GBEnvironment.getInstance().getError(35), null);
+                } else if(changePass1.equals(changePass2)){
+                    UserController.getInstance().changePassword(username, GBEnvironment.getInstance().criptPwd(changePass1));
+                    GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
+                    flag = true;
+                } else {
+                    GBMessage.putMessage(GBEnvironment.getInstance().getError(32), null);
+                }
+            } else {
+                GBMessage.putMessage(GBEnvironment.getInstance().getError(33), null);
             }
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(41), null);
-            //return logout();
+            if (flag){
+                return logout();
+            } else {
+                actualPass = null;
+                changePass1 = null;
+                changePass2 = null;
+                return null;
+            }
+        } catch (GB_Exception ex) {
+            LOG.error(ex);
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(34), null);
+            return null;
         }
-        GBMessage.putMessage(GBEnvironment.getInstance().getError(40), null);
-        return null;
     }
     
     /**
@@ -219,20 +232,34 @@ public class UserSesionBean implements Serializable {
         System.out.println("Cerrar sesion.");
         try {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            username = SessionController.getInstance().getUser(session);
-            SessionController.getInstance().removeSession(session);
-            UserController.getInstance().logout(username);
-            session.invalidate();
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(19), null);
+            if(session != null){
+                username = SessionController.getInstance().getUser(session);
+                SessionController.getInstance().removeSession(session);
+                UserController.getInstance().logout(username);
+                session.invalidate();
+                GBMessage.putMessage(GBEnvironment.getInstance().getError(19), null);  
+            }
         } catch (GB_Exception ex) {
             LOG.error(ex);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(15), null);
         }
+        navRule = "logout";
         return "logout";
     }
-
+    
+    public boolean isValidSession(){
+        System.out.println("Validando sesion.");
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        boolean validSession = SessionController.getInstance().isValidSession(session.getId());
+        if(validSession && username == null){
+            putUserName();
+        }
+        System.out.println("La sesion es valida? "+SessionController.getInstance().isValidSession(session.getId()));
+        
+        return SessionController.getInstance().isValidSession(session.getId());
+    }
+    
     public void validatePassword(){
-        System.out.println("PPPPPP");
         if(changePass1 != null && changePass2!= null){
             if(!changePass1.equals(changePass2)){
                 GBMessage.putMessage(GBEnvironment.getInstance().getError(41), null);
@@ -243,5 +270,37 @@ public class UserSesionBean implements Serializable {
     
     public String home_page(){
         return home_page;
+    }
+
+    public String getActualPass() {
+        return actualPass;
+    }
+
+    public void setActualPass(String actualPass) {
+        this.actualPass = actualPass;
+    }
+    
+    public void listener(){
+        System.out.println("Click");
+    }
+
+    public String getNavRule() {
+        return navRule;
+    }
+
+    public void setNavRule(String navRule) {
+        this.navRule = navRule;
+    }
+
+    private void putUserName() {
+        try{
+            username = SessionController.getInstance().getUser((HttpSession) FacesContext
+                                                                    .getCurrentInstance()
+                                                                    .getExternalContext()
+                                                                    .getSession(false));
+            user =UserController.getInstance().getUser(username);
+        }catch(GB_Exception ex){
+            
+        }
     }
 }

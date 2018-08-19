@@ -38,9 +38,9 @@
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:head>
         <meta charset="utf-8" />
@@ -50,24 +50,18 @@
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
     <h:body>
-        <p:dialog id="GBPassChgDlg" widgetVar="GBPassChgDlg" 
-                  header="Cambio de contraseña"
-                  resizable="false" 
-                  showEffect="clip" 
-                  hideEffect="clip" 
-                  width="500px" 
-                  modal="true">
-            <h:form id="GBPassChgForm" >
-                <b:container fluid="true">
-                    <b:panel collapsible="false" id="GBCntPassChg">
-                        <b:inputSecret placeholder="Contraseña actual"/>
-                        <b:inputSecret placeholder="Nueva contraseña"/>
-                        <b:inputSecret placeholder="Repita nueva contraseña"/>
-                        <p:commandButton id="GBBtnChgPass" value="Cambiar contraseña" action="#{menuBean.goHome()}"
-                                         class="btn btn-lg btn-success btn-block" style="border: none"/>
-                    </b:panel>
-                </b:container>
-            </h:form>
-        </p:dialog> 
+        <ui:composition>
+            <b:modal id="GBModalChgPwd" 
+                     title="Cambio de contraseña" 
+                     styleClass="GBModalChgPwdDlg"
+                     closeOnEscape="false"
+                     backdrop="false">
+                Cambio de contraseña
+                <f:facet name="footer">
+                  <b:button value="Cancelar" dismiss="modal" />
+                  <b:commandButton value="Cambiar contraseña" look="primary" onclick="$('.GBModalChgPwdDlg').hide()" action="#{UserSesionBean.logout()}"/>
+                </f:facet>
+            </b:modal>
+        </ui:composition>
     </h:body>
 </html>

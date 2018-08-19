@@ -54,29 +54,55 @@
         <meta name="description" content="Página principal de acceso a la aplicacion GABYVAL System." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
+        <link rel="icon" type="image/x-icon" href="resources/images/FavIcon.png"/>
+        <link href="resources/css/GBStyle.css" rel="stylesheet"/>
+        <script type="text/javascript">
+            history.pushState(null, "http://localhost:7001/GabyvalSystem2_0/faces/", "index.xhtml");
+        </script>
     </h:head>
     <h:body>
-        <h:form id="GBLoginForm" >
-            <b:container fluid="true">
-                <p:spacer width="10%"/>
-                <div align="center">
-                    <img src="resources/images/LogoPrincipal.png" width="177" height="106" alt="LogoPrincipal" id="GBLoginPrincipalLogo"/>
-                </div>
-                <p:spacer width="25px"/>
-                <b:row>
-                    <b:column class="col-md-4 col-md-offset-4">
-                        <b:panel class="login-panel panel panel-default" title="Inicio de sesión" collapsible="false" id="GBCntPnlLogin">
-                            <b:growl id="GBGrowlIndex" globalOnly="true" showDetail="true"
-                                     animation-enter="animated bounceInDown"
-                                     animation-exit="animated flipOutX"/>
-                            <b:inputText id="GBUserName" placeholder="Usuario" value="#{LoginBean.user}"/>
-                            <b:inputSecret id="GBPassword" placeholder="Contraseña" value="#{LoginBean.pass}"/>
-                            <p:commandButton id="GBLoginButton" value="Iniciar sesión" action="#{LoginBean.login()}"
-                                             class="btn btn-lg btn-success btn-block" update="GBGrowlIndex" style="border: none"/>
-                        </b:panel>
-                    </b:column>
-                </b:row>
-            </b:container>
+        <h:form id="GBLoginForm">
+            <p:layout id="GBLoginLayout" fullPage="true" style="border: 0px;">
+                <p:layoutUnit id="GBLoginLTCenter" position="center" style="border: 0px;">
+                    <b:growl id="GBGrowlIndex" globalOnly="true" showDetail="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+                    <p:spacer height="100px;"/>
+                    <div align="center">
+                        <img src="resources/images/LogoPrincipal.png" 
+                             width="177" 
+                             height="106" 
+                             alt="LogoPrincipal" 
+                             id="GBLoginPrincipalLogo"/>
+                        <b:container fluid="true" class="container">
+                            <b:panel title="Inicio de sesión"
+                                    id="GBCntPnlLogin"
+                                    collapsible="false"
+                                    style="width: 400px;"> 
+                                <p:inputText id="GBUserName" placeholder="Usuario" value="#{LoginBean.user}" class="form-control"/>
+                                <p:spacer height="5"/>
+                                <p:password id="GBPassword" placeholder="Contraseña" value="#{LoginBean.pass}" class="form-control"/>
+                                <p:spacer height="5"/>
+                                <b:commandButton value="Iniciar sesión" 
+                                                 action="#{LoginBean.login()}" 
+                                                 size="lg" 
+                                                 class="btn btn-block btn-success"
+                                                 iconAwesome="fa-sign-in"/>
+                           </b:panel>
+                        </b:container>
+                    </div>
+                </p:layoutUnit>
+                <p:layoutUnit id="GBLoginLTFooter" position="south" style="border: 0px;" size="20%" class="sticky-footer">
+                    <div align="center">
+                        <p class="GBFooter">
+                            GABYVAL System 2018 ® Gota IT Solutions
+                        </p>
+                        <p class="GBFooter">
+                            Powered by Java
+                        </p>
+                    </div>
+                </p:layoutUnit>
+            </p:layout>
         </h:form>
-    </h:body>
+     </h:body>
 </html>
