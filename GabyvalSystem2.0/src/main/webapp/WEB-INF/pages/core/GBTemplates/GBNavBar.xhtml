@@ -39,8 +39,6 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <meta charset="utf-8" />
@@ -55,7 +53,7 @@
                     <b:navbarLinks pull="right">
                         <b:dropMenu value="#{UserSesionBean.username}" iconAwesome="fa-user" >
                             <b:navCommandLink value="Modificar informacion" action="#{UserSesionBean.logout()}" iconAwesome="fa-edit"/>
-                            <b:navCommandLink value="Cambiar contraseña" onclick="$('.GBModalChgPwdDlg').modal()" iconAwesome="fa-key"/>
+                            <b:navCommandLink value="Cambiar contraseña" onclick="PF('GBModalChgPass').show();" iconAwesome="fa-key"/>
                             <b:navLink></b:navLink>
                             <b:navCommandLink value="Cerrar sesión" onclick="$('.GBLogoutConfDlg').modal()" iconAwesome="fa-power-off"/>
                         </b:dropMenu>

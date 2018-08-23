@@ -22,24 +22,6 @@
                 location.replace("http://localhost:7001/GabyvalSystem2_0/faces/index.xhtml");
             }
         </script>
-    </h:head>
-    <h:body>
-        <h:form id="GBMasterForm">
-            <b:growl id="GBGrowlMaster" globalOnly="true" showDetail="true"
-                     animation-enter="animated bounceInDown"
-                     animation-exit="animated flipOutX"/>
-            <ui:include src="WEB-INF/pages/core/GBTemplates/GBDialogs.xhtml"/>
-            <ui:include src="WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
-        <b:container fluid="true">
-            <b:row>
-                <b:column col-sm="3" col-md="2" styleClass="sidebar">
-                    <ui:include id="GBDeploy" src="WEB-INF/pages/core/GBTemplates/GBMenuBar.xhtml"/>
-                </b:column>
-                <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
-                    <ui:include id="GBDeploy" src="WEB-INF/pages#{MenuBean.actualView}"/>
-                </b:column>
-            </b:row>
-        </b:container> 
         <style type="text/css">
             .sub-header {
                 border-bottom: 1px solid #eee;
@@ -83,6 +65,25 @@
                 padding: 20px;
             }
         </style>
+    </h:head>
+    <h:body>
+        <ui:include src="WEB-INF/pages/core/GBTemplates/GBDialogs.xhtml"/>
+        <h:form id="GBMasterForm">
+            <b:growl id="GBGrowlMaster" globalOnly="true" showDetail="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"
+                     autoUpdate="true"/>
+            <ui:include src="WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
+                <b:container fluid="true">
+                    <b:row>
+                        <b:column col-sm="3" col-md="2" styleClass="sidebar">
+                            <ui:include src="WEB-INF/pages/core/GBTemplates/GBMenuBar.xhtml"/>
+                        </b:column>
+                        <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                            <ui:include id="GBDeploy" src="WEB-INF/pages#{MenuBean.actualView}"/>
+                        </b:column>
+                    </b:row>
+                </b:container>
         </h:form>
     </h:body>
 </html>

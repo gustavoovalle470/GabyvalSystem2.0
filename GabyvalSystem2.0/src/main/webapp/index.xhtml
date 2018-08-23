@@ -57,7 +57,13 @@
         <link rel="icon" type="image/x-icon" href="resources/images/FavIcon.png"/>
         <link href="resources/css/GBStyle.css" rel="stylesheet"/>
         <script type="text/javascript">
-            history.pushState(null, "http://localhost:7001/GabyvalSystem2_0/faces/", "index.xhtml");
+            if (location.href.indexOf("faces") == -1){
+                history.pushState(null, "", "faces/index.xhtml");
+            }
+            if (location.href.indexOf("app_master") != -1){
+                history.pushState(null, "", "index.xhtml");
+            }
+            
         </script>
     </h:head>
     <h:body>
@@ -78,7 +84,7 @@
                             <b:panel title="Inicio de sesión"
                                     id="GBCntPnlLogin"
                                     collapsible="false"
-                                    style="width: 400px;"> 
+                                    style="width: 400px;">
                                 <p:inputText id="GBUserName" placeholder="Usuario" value="#{LoginBean.user}" class="form-control"/>
                                 <p:spacer height="5"/>
                                 <p:password id="GBPassword" placeholder="Contraseña" value="#{LoginBean.pass}" class="form-control"/>

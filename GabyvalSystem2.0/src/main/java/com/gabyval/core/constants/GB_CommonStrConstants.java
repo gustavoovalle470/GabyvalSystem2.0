@@ -91,4 +91,20 @@ public class GB_CommonStrConstants {
     public static final String ERROR = "ERROR";
     public static final String WARN = "WARN";
     public static final String INFO = "INFO";
+    
+  /***************************************************************************************************************************
+   *EXPRESIONES REGULARES
+   ***************************************************************************************************************************/    
+    public static final String MAYUS_REG = "(?=.*?[A-Z])";
+    public static final String MINUS_REG = "(?=.*?[a-z])";
+    public static final String DIGIT_REG = "(?=.*?[0-9])";
+    public static final String SPCHR_REG = "(?=.*?[#?!@$%^&*-])";
+    public static final String LNGTH_REG = ".{#,}$";
+    public static final String PASS_EXPIR = "PASS_EXPIRE_TIME";
+    public static final String PASS_STORE = "PASS_STORE";
+    public static final String PASS_LNGTH = "PASS_MIN_LENGTH";
+    public static final String PASS_RQMYU = "PASS_REQ_MAYUS";
+    public static final String PASS_RQMIN = "PASS_REQ_MINUS";
+    public static final String PASS_RQSPE = "PASS_REQ_SPCHR";
+    public static final String PASS_RQNUM = "PASS_REQ_NUMBR";
 }

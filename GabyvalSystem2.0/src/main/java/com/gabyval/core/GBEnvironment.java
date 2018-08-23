@@ -328,4 +328,47 @@ public class GBEnvironment {
     public boolean isSystemPaused() throws GB_Exception{
         return SystemDateController.getInstance().isSystemPaused();
     }
+
+    public boolean isValidPassword(String password, String username) throws GB_Exception {
+        LOG.debug("Start password validation.");
+        if(isValidContent(password) && noUsePassword(password, username)){
+            LOG.debug("The password accomplish all policies.");
+            return true;
+        }
+        LOG.debug("The password doesn´t accomplish all policies.");
+        return false;
+    }
+
+    private boolean isValidContent(String password) throws GB_Exception {
+        LOG.debug("Loading the content policies...");
+        String regex ="^";
+        if((boolean)getModuleConfiguration(GB_CommonStrConstants.PASS_RQMYU)){
+            LOG.debug("The password should contain at least a uppercase.");
+            regex = regex+GB_CommonStrConstants.MAYUS_REG;
+        }
+        if((boolean)getModuleConfiguration(GB_CommonStrConstants.PASS_RQMIN)){
+            LOG.debug("The password should contain at least a lowercase.");
+            regex = regex+GB_CommonStrConstants.MINUS_REG;
+        }
+        if((boolean)getModuleConfiguration(GB_CommonStrConstants.PASS_RQNUM)){
+            LOG.debug("The password should contain at least a digit.");
+            regex = regex+GB_CommonStrConstants.DIGIT_REG;
+        }
+        if((boolean)getModuleConfiguration(GB_CommonStrConstants.PASS_RQSPE)){
+            LOG.debug("The password should contain at least a special character.");
+            regex = regex+GB_CommonStrConstants.SPCHR_REG;
+        }
+        regex = regex+(GB_CommonStrConstants.LNGTH_REG.replace("#", ""+getModuleConfiguration(GB_CommonStrConstants.PASS_LNGTH)));
+        LOG.debug("The password should contain at least "+getModuleConfiguration(GB_CommonStrConstants.PASS_LNGTH)+" characters.");
+        LOG.debug("The password passed the content validations? "+password.matches(regex));
+        return password.matches(regex);
+    }
+
+    private boolean noUsePassword(String password, String username) throws GB_Exception {
+        LOG.debug("Loading store policies...");
+        LOG.debug("The password cannot repeat in "+getModuleConfiguration(GB_CommonStrConstants.PASS_LNGTH)+" changes.");
+        LOG.debug("Searching if the password was used by user "+username);
+        PersistenceManager.getInstance().runCriteria(username);
+        return true;
+    }
 }

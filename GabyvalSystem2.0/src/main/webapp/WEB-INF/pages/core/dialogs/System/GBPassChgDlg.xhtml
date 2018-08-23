@@ -40,7 +40,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     
     <h:head>
         <meta charset="utf-8" />
@@ -51,17 +51,19 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <b:modal id="GBModalChgPwd" 
-                     title="Cambio de contraseña" 
-                     styleClass="GBModalChgPwdDlg"
-                     closeOnEscape="false"
-                     backdrop="false">
-                Cambio de contraseña
-                <f:facet name="footer">
-                  <b:button value="Cancelar" dismiss="modal" />
-                  <b:commandButton value="Cambiar contraseña" look="primary" onclick="$('.GBModalChgPwdDlg').hide()" action="#{UserSesionBean.logout()}"/>
-                </f:facet>
-            </b:modal>
+                <p:dialog widgetVar ="GBModalChgPass"
+                          modal="true" 
+                          id="GBModalChgPass" 
+                          header="Cambio de contraseña"
+                          resizable="false"
+                          style="width: 400px;">
+                    <h:form id="Prueba">
+                    <b:inputSecret id="GBActualPasschg" placeholder="Contraseña actual" value="#{UserSesionBean.actualPass}"/>
+                    <b:inputSecret id="GBNuevaPasschg" placeholder="Nueva contraseña" value="#{UserSesionBean.changePass1}"/>
+                    <b:inputSecret id="GBNuevaPassConfchg" placeholder="Repita nueva contraseña" value="#{UserSesionBean.changePass2}"/>
+                    <b:commandButton value="Cambiar contraseña" action="#{UserSesionBean.changePassword()}"/>
+                </h:form>
+            </p:dialog>
         </ui:composition>
     </h:body>
 </html>
