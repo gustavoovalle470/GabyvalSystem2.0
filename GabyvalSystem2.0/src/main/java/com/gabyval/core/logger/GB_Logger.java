@@ -61,7 +61,6 @@ public class GB_Logger extends Logger {
      * </ol>
      */
     public static void GB_setLevel(Level level){
-        System.out.println(level.toString());
         Logger.getRootLogger().setLevel(level);
     }
     

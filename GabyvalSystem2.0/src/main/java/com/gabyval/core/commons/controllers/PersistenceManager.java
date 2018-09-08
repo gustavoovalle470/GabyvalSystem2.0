@@ -97,16 +97,13 @@ public class PersistenceManager implements EntityManager{
         LOG.debug("The system has gone to load the object... Entity to recovery "+classType.getCanonicalName());
         try{
             Object o = SESSION.get(classType, id);
-            System.out.println("Objeto encontrado: "+o);
             if(o != null){
                 return o;
             }else{
-                System.err.println("No se encontro el registro con id "+id);
                 LOG.error(new GB_Exception(1));
                 return null;
             }
         }catch(Exception ex){
-            System.err.println("Error en la sesion.");
             LOG.error(ex);
             throw ex;
         }

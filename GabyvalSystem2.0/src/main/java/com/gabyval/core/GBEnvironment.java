@@ -320,7 +320,6 @@ public class GBEnvironment {
     
     public void changeLogLevel(String logLevel){
         LOG.info("The log is changing its level... new level "+logLevel);
-        System.out.println("LEVEL EN EL ENVIROMENT: "+logLevel);
         GB_Logger.GB_setLevel(Level.toLevel(logLevel));
         LOG.info("The log was changing to "+logLevel);
     }

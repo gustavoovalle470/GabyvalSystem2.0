@@ -221,16 +221,13 @@ public class UserSesionBean implements Serializable {
      * @return String the next view to navigate.
      */
     public String changePasswordExpire(){
-        System.out.println("Cambio de contraseña expirada.");
         try{
             if(isValidatePassword()){
-                System.out.println("Validada la contraseña.");
                 UserController.getInstance().changePassword(username, GBEnvironment.getInstance().criptPwd(changePass1));
                 GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
                 return logout();
             }
         } catch (GB_Exception ex) {
-            System.err.println(ex.getCause());
             LOG.error(ex);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(33), null);
         } finally{

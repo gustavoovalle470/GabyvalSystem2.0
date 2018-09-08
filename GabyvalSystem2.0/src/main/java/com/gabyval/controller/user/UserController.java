@@ -33,7 +33,6 @@ public class UserController {
     public boolean login(String username, String pass) throws GB_Exception{
         AdUsers user = getUser(username);
         LOG.debug("GABYVAL start the user validations.");
-        System.out.println("Password base de datos:"+user.getGbPassword()+" ingresada:"+pass);
         int errorId=0;
         if(user == null){
             errorId=10;
