@@ -39,20 +39,29 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Barra de menu central y zona de despliegue de funcionalidades." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
+        <link href="resources/css/GBStyle.css" rel="stylesheet"/>
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
     <h:body>
         <ui:composition id="BarMenuComp">
-            <b:listLinks>
-                <b:navCommandLink value="Page 1" action="#{MenuBean.setView(1)}" update="@form"/>
-                <b:navCommandLink value="Page 2" action="#{MenuBean.setView(2)}" update="@form"/>
-            </b:listLinks>
+            <b:container fluid="true" id="GBCTMenuBar">
+                <b:row id="GBROWMenuBar">
+                    <b:column id="GBCLMenuDefinition" col-sm="3" col-md="2" class="GBSidebar">
+                        <p:slideMenu style="border: 0px;background: transparent;" model="#{MenuBean.menu}"/>
+                    </b:column>
+                    <b:column id="GBCLMenuDeployment" col-sm="9" offset-sm="3" 
+                              col-md="10" offset="2" class="GBContent">
+                        <ui:include id="GBFunctionDeployment" src="../../../pages#{MenuBean.actualView}"/>
+                    </b:column>
+                </b:row>
+            </b:container>
         </ui:composition>
     </h:body>
 </html>

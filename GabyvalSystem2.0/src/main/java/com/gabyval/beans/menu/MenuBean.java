@@ -27,26 +27,12 @@
  */
 package com.gabyval.beans.menu;
 
-import com.gabyval.controller.security.SecurityEntity;
-import com.gabyval.controller.security.SecurityMan;
-import com.gabyval.beans.system.security.SessionController;
-import com.gabyval.core.commons.controllers.PersistenceManager;
-import com.gabyval.core.exception.GB_Exception;
-import com.gabyval.core.logger.GB_Logger;
-import com.gabyval.persistence.user.security.AdSecMenulinks;
 import java.io.Serializable;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
-import net.bootsfaces.component.listLinks.ListLinks;
-import org.primefaces.component.submenu.UISubmenu;
-import org.primefaces.model.menu.BaseMenuModel;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.DynamicMenuModel;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Submenu;
@@ -62,9 +48,11 @@ import org.primefaces.model.menu.Submenu;
 public class MenuBean implements Serializable{
     
     private String pageView;
+    private MenuModel menu;
     
     public MenuBean(){
         pageView = "/core/welcome.xhtml";
+        chargeMenuOptions();
     }
     
     public void goHome(){
@@ -86,5 +74,28 @@ public class MenuBean implements Serializable{
         }else{
             setActualView("/core/welcome_1.xhtml");
         }
+    }
+
+    private void chargeMenuOptions() {
+        menu = new DefaultMenuModel();
+        DefaultSubMenu sub1 = new DefaultSubMenu("PRUEBA");
+        sub1.setStyle("height: 100px; border: 0px;background: transparent;");
+        DefaultMenuItem item1 = new DefaultMenuItem("Prueba 1");
+        item1.setCommand("#{MenuBean.setView('1')}");
+        item1.setUpdate("@form");
+        DefaultMenuItem item2 = new DefaultMenuItem("Prueba 2");
+        item2.setCommand("#{MenuBean.setView('2')}");
+        item2.setUpdate("@form");
+        sub1.addElement(item1);
+        sub1.addElement(item2);
+        menu.addElement(sub1);
+    }
+
+    public MenuModel getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuModel menu) {
+        this.menu = menu;
     }
 }
