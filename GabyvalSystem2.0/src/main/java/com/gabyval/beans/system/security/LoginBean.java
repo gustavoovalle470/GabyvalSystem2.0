@@ -110,13 +110,18 @@ public class LoginBean implements Serializable{
             try{
                 if(UserController.getInstance().login(user, GBEnvironment.getInstance().criptPwd(pass))){
                     SessionController.getInstance().addSession((HttpSession) FacesContext
-                                                                    .getCurrentInstance()
-                                                                    .getExternalContext()
-                                                                    .getSession(false), 
+                                                                .getCurrentInstance()
+                                                                .getExternalContext()
+                                                                .getSession(false), 
                                                                 user);
                     GBMessage.putMessage(GBEnvironment.getInstance().getError(18), user);
                     LOG.debug("GABYVAL finish, the login for user: "+user+" is correctly and complete the operation.");
-                    return "accessGranted";
+                    if(!UserController.getInstance().isNeedChangePasswor(user)){
+                        return "accessGranted";
+                    }else{
+                        LOG.debug("GABYVAL finish login the user: "+user+" has expire password");
+                        return "changePassword";
+                    }
                 }else{
                     UserController.getInstance().logout(user);
                 }

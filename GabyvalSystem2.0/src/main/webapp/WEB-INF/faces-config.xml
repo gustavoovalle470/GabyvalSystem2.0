@@ -6,11 +6,22 @@
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
+            <from-outcome>changePassword</from-outcome>
+            <to-view-id>/change_password.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>accessGranted</from-outcome>
             <to-view-id>/app_master.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>denied</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/change_password.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>logout</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>

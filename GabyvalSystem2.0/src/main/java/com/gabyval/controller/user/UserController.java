@@ -8,9 +8,13 @@ package com.gabyval.controller.user;
 import com.gabyval.beans.utilities.GBMessage;
 import com.gabyval.core.GBEnvironment;
 import com.gabyval.core.commons.controllers.PersistenceManager;
+import com.gabyval.core.constants.GB_CommonStrConstants;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import com.gabyval.persistence.user.AdUsers;
+import com.gabyval.persistence.user.security.AdPwdHistory;
+import com.gabyval.persistence.user.security.AdPwdHistoryId;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -102,6 +106,7 @@ public class UserController {
     
     public void changePassword(String username, String password) throws GB_Exception{
         AdUsers user = getUser(username);
+        savePrevPassword(user.getGbPassword(), username);
         user.setGbPassword(password);
         user.setGbLastPwdXgeDt(GBEnvironment.getInstance().serverDate());
         try {
@@ -145,5 +150,22 @@ public class UserController {
     
     public void setAllUsers(List<AdUsers> users){
         
+    }
+
+    private void savePrevPassword(String prevPassword, String username) throws GB_Exception {
+        int passStored = Integer.parseInt(GBEnvironment.getInstance()
+                                        .getModuleConfiguration(GB_CommonStrConstants.PASS_STORE).toString());
+        List l = PersistenceManager.getInstance().runCriteria("FROM AdPwdHistory a WHERE a.id.gbUsername ='"+username+"'");
+        
+        if(l.size() >= passStored){
+            System.out.println(l.get(0).toString());
+            PersistenceManager.getInstance().delete((AdPwdHistory) l.get(l.size()-1));   
+        }
+        savePassword(prevPassword, username);
+    }
+    
+    private void savePassword(String prevPassword, String username) throws GB_Exception{
+        AdPwdHistory pwdSaved = new AdPwdHistory(new AdPwdHistoryId(prevPassword, username), GBEnvironment.getInstance().serverDate(), GBEnvironment.getInstance().serverDate(), BigDecimal.ZERO);
+        PersistenceManager.getInstance().save(pwdSaved);
     }
 }

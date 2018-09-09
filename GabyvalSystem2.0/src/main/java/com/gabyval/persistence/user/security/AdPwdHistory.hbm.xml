@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8/09/2018 01:25:30 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.gabyval.persistence.user.security.AdPwdHistory" table="AD_PWD_HISTORY" schema="GABYVAL" optimistic-lock="version">
+        <composite-id name="id" class="com.gabyval.persistence.user.security.AdPwdHistoryId">
+            <key-property name="gbPwdSaved" type="string">
+                <column name="GB_PWD_SAVED" length="200" />
+            </key-property>
+            <key-property name="gbUsername" type="string">
+                <column name="GB_USERNAME" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="gbPwdInsDt" type="serializable">
+            <column name="GB_PWD_INS_DT" not-null="true" />
+        </property>
+        <property name="createDt" type="date">
+            <column name="CREATE_DT" length="7" not-null="true" />
+        </property>
+        <property name="rowversion" type="big_decimal">
+            <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

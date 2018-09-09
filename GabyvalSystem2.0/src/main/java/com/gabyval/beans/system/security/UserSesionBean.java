@@ -206,13 +206,11 @@ public class UserSesionBean implements Serializable {
                 GBMessage.putMessage(GBEnvironment.getInstance().getError(32), null);
             }
         } catch (GB_Exception ex) {
+            cleanPwdFields();
             LOG.error(ex);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(33), null);
-        } finally{
-            actualPass = null;
-            changePass1 = null;
-            changePass2 = null;
         }
+        cleanPwdFields();
         return null;
     }
     
@@ -228,12 +226,11 @@ public class UserSesionBean implements Serializable {
                 return logout();
             }
         } catch (GB_Exception ex) {
+            cleanPwdFields();
             LOG.error(ex);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(33), null);
-        } finally{
-            changePass1 = null;
-            changePass2 = null;
         }
+        cleanPwdFields();
         return null;
     }
     
@@ -301,5 +298,11 @@ public class UserSesionBean implements Serializable {
         }catch(GB_Exception ex){
             LOG.fatal(ex);
         }
+    }
+    
+    private void cleanPwdFields(){
+        actualPass = null;
+        changePass1 = null;
+        changePass2 = null;
     }
 }

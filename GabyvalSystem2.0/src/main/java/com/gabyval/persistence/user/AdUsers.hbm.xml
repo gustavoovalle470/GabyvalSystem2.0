@@ -9,7 +9,7 @@
             <generator class="assigned" />
         </id>
         <property name="gbPassword" type="string">
-            <column name="GB_PASSWORD" length="60" not-null="true" />
+            <column name="GB_PASSWORD" length="200" not-null="true" />
         </property>
         <property name="gbLoginStatus" type="int">
             <column name="GB_LOGIN_STATUS" precision="22" scale="0" not-null="true" />

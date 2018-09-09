@@ -60,10 +60,9 @@
             if (location.href.indexOf("faces") == -1){
                 history.pushState(null, "", "faces/index.xhtml");
             }
-            if (location.href.indexOf("app_master") != -1){
+            if (location.href.indexOf("app_master") != -1 || location.href.indexOf("change_password") != -1){
                 history.pushState(null, "", "index.xhtml");
             }
-            
         </script>
     </h:head>
     <h:body>

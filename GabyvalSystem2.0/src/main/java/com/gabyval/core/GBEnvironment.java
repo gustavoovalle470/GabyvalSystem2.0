@@ -98,6 +98,7 @@ public class GBEnvironment {
     public Object getModuleConfiguration(int module_configuracion_id) throws GB_Exception{
         AdModuleConfiguration mc = (AdModuleConfiguration) PersistenceManager.getInstance().load(AdModuleConfiguration.class, 
                                                                                             module_configuracion_id);
+        PersistenceManager.getInstance().update(mc);
         if(mc != null){
             switch(mc.getGbModuleConfigType()){
                 case 1:
@@ -272,23 +273,20 @@ public class GBEnvironment {
     
     public String criptPwd(String pwd){
         String base64EncryptedString = "";
- 
         try {
- 
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] digestOfPassword = md.digest(GB_CommonStrConstants.PUBLIC_APP_KEY.getBytes("utf-8"));
             byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
- 
             SecretKey key = new SecretKeySpec(keyBytes, "DESede");
             Cipher cipher = Cipher.getInstance("DESede");
             cipher.init(Cipher.ENCRYPT_MODE, key);
- 
             byte[] plainTextBytes = pwd.getBytes("utf-8");
             byte[] buf = cipher.doFinal(plainTextBytes);
             byte[] base64Bytes = Base64.encodeBase64(buf);
             base64EncryptedString = new String(base64Bytes);
- 
         } catch (Exception ex) {
+            LOG.fatal("The system failed to encryp the string. Throw the next exception:");
+            LOG.fatal(ex);
         }
         return base64EncryptedString;
     }
@@ -330,7 +328,7 @@ public class GBEnvironment {
 
     public boolean isValidPassword(String password, String username) throws GB_Exception {
         LOG.debug("Start password validation.");
-        if(isValidContent(password) && noUsePassword(password, username)){
+        if(isValidContent(password) && noUsePassword(criptPwd(password), username)){
             LOG.debug("The password accomplish all policies.");
             return true;
         }
@@ -367,7 +365,8 @@ public class GBEnvironment {
         LOG.debug("Loading store policies...");
         LOG.debug("The password cannot repeat in "+getModuleConfiguration(GB_CommonStrConstants.PASS_LNGTH)+" changes.");
         LOG.debug("Searching if the password was used by user "+username);
-        PersistenceManager.getInstance().runCriteria(username);
-        return true;
+        List l = PersistenceManager.getInstance().runSQL("SELECT * FROM AD_PWD_HISTORY WHERE GB_USERNAME='"+username+"' AND GB_PWD_SAVED = '"+password+"'");
+        LOG.debug("The password was used by user? "+l.isEmpty());
+        return l.isEmpty();
     }
 }

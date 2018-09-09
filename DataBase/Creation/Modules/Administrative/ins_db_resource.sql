@@ -24,7 +24,7 @@
 /* *****************************************************************
  * Esquema: GABYVAL
  * Tabla: AD_RESOURCE
- * Cantidad inserts: 5
+ * Cantidad inserts: 13
  * Descripcion: Inserts iniciales de recursos predeterminados.
  * *****************************************************************/
 INSERT INTO GABYVAL.AD_RESOURCE (GB_RESOURCE_ID,GB_RESOURCE,GB_RESOURCE_DESC,CREATE_DT,ROWVERSION) VALUES (1,'com.gabyval.core.module.configuration.AdModuleConfiguration','Controlador central de configuracion',SYSDATE,0);
@@ -39,4 +39,5 @@ INSERT INTO GABYVAL.AD_RESOURCE (GB_RESOURCE_ID,GB_RESOURCE,GB_RESOURCE_DESC,CRE
 INSERT INTO GABYVAL.AD_RESOURCE (GB_RESOURCE_ID,GB_RESOURCE,GB_RESOURCE_DESC,CREATE_DT,ROWVERSION) VALUES (10,'com.gabyval.persistence.user.security.AdUserProfile','Perfiles de usuarios configurados.',SYSDATE,0);
 INSERT INTO GABYVAL.AD_RESOURCE (GB_RESOURCE_ID,GB_RESOURCE,GB_RESOURCE_DESC,CREATE_DT,ROWVERSION) VALUES (11,'com.gabyval.persistence.user.security.AdSecMenulinks','Menus activos del sistema.',SYSDATE,0);
 INSERT INTO GABYVAL.AD_RESOURCE (GB_RESOURCE_ID,GB_RESOURCE,GB_RESOURCE_DESC,CREATE_DT,ROWVERSION) VALUES (12,'com.gabyval.persistence.user.security.AdSecMenuProfiling','Tabla de relacion entre menus y perfiles de usuario',SYSDATE,0);
+INSERT INTO GABYVAL.AD_RESOURCE (GB_RESOURCE_ID,GB_RESOURCE,GB_RESOURCE_DESC,CREATE_DT,ROWVERSION) values (13,'com.gabyval.persistence.user.security.AdPwdHistory','Tabla de historia de contraseñas, para aplicacion de politicas de seguridad.',SYSDATE,0);
 COMMIT;

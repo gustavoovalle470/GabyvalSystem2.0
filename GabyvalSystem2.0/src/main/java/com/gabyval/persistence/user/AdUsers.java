@@ -57,7 +57,7 @@ public class AdUsers  implements java.io.Serializable {
     }
 
     
-    @Column(name="GB_PASSWORD", nullable=false, length=60)
+    @Column(name="GB_PASSWORD", nullable=false, length=200)
     public String getGbPassword() {
         return this.gbPassword;
     }

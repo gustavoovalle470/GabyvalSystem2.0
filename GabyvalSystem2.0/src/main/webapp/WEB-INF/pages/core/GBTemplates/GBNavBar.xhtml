@@ -39,8 +39,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -52,14 +51,14 @@
         <ui:composition id="BarNavComp">
             <b:navBar brand="GABYVAL" brandImg="resources/images/FavIcon.png" fluid="true" fixed="top">
                 <b:navbarLinks pull="right" class="navbar">
-                        <b:dropMenu value="#{UserSesionBean.username}" iconAwesome="fa-user" >
+                        <b:dropMenu value="#{UserSesionBean.username}" iconAwesome="fa-user">
                             <b:navCommandLink value="Modificar informacion" action="#{UserSesionBean.logout()}" iconAwesome="fa-edit"/>
-                            <b:navCommandLink value="Cambiar contraseña" onclick="PF('GBModalChgPass').show();" iconAwesome="fa-key"/>
+                            <b:navCommandLink value="Cambiar contraseña" onclick="$('.GBModalChgPass').modal()" iconAwesome="fa-key"/>
                             <b:navLink></b:navLink>
-                            <b:navCommandLink value="Cerrar sesión" onclick="$('.GBLogoutConfDlg').modal()" iconAwesome="fa-power-off"/>
+                            <b:navCommandLink id="Prueba" value="Cerrar sesión" onclick="$('.GBLogoutConfDlg').modal()" iconAwesome="fa-power-off"/>
                         </b:dropMenu>
                 </b:navbarLinks>
-                </b:navBar>
+            </b:navBar>
         </ui:composition>
     </h:body>
 </html>

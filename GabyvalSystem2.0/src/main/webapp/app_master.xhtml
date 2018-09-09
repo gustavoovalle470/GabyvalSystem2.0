@@ -15,7 +15,7 @@
         <link href="resources/css/GBStyle.css" rel="stylesheet"/>
         <script type="text/javascript">
             history.pushState(null, "http://localhost:7001/GabyvalSystem2_0/faces/", "app_master.xhtml");
-            if(history.forward(1)){
+            if(history.forward(1)){                
                 location.replace( history.forward(1) );
             }
             if(!#{UserSesionBean.isValidSession()}){
@@ -31,8 +31,8 @@
                      animation-enter="animated bounceInDown"
                      animation-exit="animated flipOutX"
                      autoUpdate="true"/>
-            <ui:include src="WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
-            <ui:include src="WEB-INF/pages/core/GBTemplates/GBMenuBar.xhtml"/>
+            <ui:include src="/WEB-INF/pages/core/GBTemplates/GBNavBar.xhtml"/>
+            <ui:include src="/WEB-INF/pages/core/GBTemplates/GBMenuBar.xhtml"/>
         </h:form>
     </h:body>
 </html>
