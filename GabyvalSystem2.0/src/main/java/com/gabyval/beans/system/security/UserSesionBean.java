@@ -241,7 +241,8 @@ public class UserSesionBean implements Serializable {
      * <ol><li>Any error finding the password policies.</li></ol>
      */
     private boolean isValidatePassword() throws GB_Exception{
-        if(changePass1 == null ||
+        if(user.getGbPassword().equals(GBEnvironment.getInstance().criptPwd(changePass1)) ||
+           changePass1 == null ||
            changePass2 == null ||
            !changePass1.equals(changePass2) || 
            !GBEnvironment.getInstance().isValidPassword(changePass1, username)){
