@@ -228,6 +228,7 @@ public class GBEnvironment {
         CatalogEntity catalog = new CatalogEntity();
         try {
             List objects = PersistenceManager.getInstance().runCriteria("FROM AdCatalogs c WHERE c.gbCatalogName = '"+catalog_name+"'");
+            System.out.println("Lista de objetos encontrados: "+objects.size());
             for(Object o : objects){
                 AdCatalogs c = (AdCatalogs) o;
                 catalog.putValues(c.getGbCatagogItemId(), c.getGbCatalogItem());

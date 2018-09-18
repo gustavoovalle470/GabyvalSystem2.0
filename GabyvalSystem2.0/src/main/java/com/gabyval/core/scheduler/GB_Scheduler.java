@@ -62,6 +62,7 @@ public class GB_Scheduler{
     
     private final GB_Logger LOG = GB_Logger.getLogger(GB_Scheduler.class);//Central LOG.
     private Scheduler SCH; //Central Scheduler.
+    private Scheduler ControlSCH; //Central Scheduler.
     private static GB_Scheduler instance;//Instance of this controller.
     private final Trigger GbCentraltrigger; //This is the trigger that execute each second, without system pause validation.
     private Trigger GbJobTrigger; //This is the trigger that configure each job to execute. Applied the systen pause validation.
@@ -86,6 +87,7 @@ public class GB_Scheduler{
                                                    GB_CommonStrConstants.GBCENTRALSCH, 
                                                    GB_CommonStrConstants.GB_EACH_SEC_SCH);
             SCH = StdSchedulerFactory.getDefaultScheduler();
+            ControlSCH = StdSchedulerFactory.getDefaultScheduler();
             start();
         } catch (SchedulerException | ParseException ex) {
             LOG.fatal(ex);
@@ -170,11 +172,11 @@ public class GB_Scheduler{
      */
     private void configureControl() throws GB_Exception {
         try {
-            if (SCH.getJobDetail(new JobKey(GB_CommonStrConstants.GBCENTRALSCH)) == null){
+            if (ControlSCH.getJobDetail(new JobKey(GB_CommonStrConstants.GBCENTRALSCH)) == null){
                 JobDetail jd = new JobDetailImpl(GB_CommonStrConstants.GBCENTRALSCH, 
                                                  GB_CommonStrConstants.GBCENTRALSCH, 
                                                  SchedulerControl.class);
-                SCH.scheduleJob(jd, GbCentraltrigger);
+                ControlSCH.scheduleJob(jd, GbCentraltrigger);
             }
             putAllAutoStartJob();
         } catch (SchedulerException ex) {
@@ -200,6 +202,7 @@ public class GB_Scheduler{
             if(!l.isEmpty()){
                 LOG.debug("Starting whit job charging... "+l.size()+" to load.");
                 for(AdJob job : l){
+                    System.out.println("Job a agregar..."+job.getGbJobName());
                     if(job.getGbAutoRun().endsWith("S")){
                         JobDetail jd = new JobDetailImpl(job.getGbJobName(), 
                                                          GB_CommonStrConstants.GB_SCH,

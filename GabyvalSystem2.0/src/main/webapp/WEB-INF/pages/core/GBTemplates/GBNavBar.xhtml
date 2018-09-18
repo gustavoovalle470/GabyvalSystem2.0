@@ -39,7 +39,8 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,12 +52,18 @@
         <ui:composition id="BarNavComp">
             <b:navBar brand="GABYVAL" brandImg="resources/images/FavIcon.png" fluid="true" fixed="top">
                 <b:navbarLinks pull="right" class="navbar">
-                        <b:dropMenu value="#{UserSesionBean.username}" iconAwesome="fa-user">
-                            <b:navCommandLink value="Modificar informacion" action="#{UserSesionBean.logout()}" iconAwesome="fa-edit"/>
-                            <b:navCommandLink value="Cambiar contraseña" onclick="$('.GBModalChgPass').modal()" iconAwesome="fa-key"/>
-                            <b:navLink></b:navLink>
-                            <b:navCommandLink id="Prueba" value="Cerrar sesión" onclick="$('.GBLogoutConfDlg').modal()" iconAwesome="fa-power-off"/>
-                        </b:dropMenu>
+                    <p:poll id="GBPollGlobalSystemDate" autoStart="true" listener="#{SystemDateBean.refreshGlobalDate()}" interval="1"/>
+                    <b:navLink id="GBGloblaSystemDate" value="#{SystemDateBean.systemDate}" active="false" autoUpdate="true"/> 
+                    <b:dropMenu value="" iconAwesome="fa-tasks">
+                    </b:dropMenu>
+                    <b:dropMenu value="" iconAwesome="fa-bell">
+                    </b:dropMenu>
+                    <b:dropMenu value="#{UserSesionBean.username}" iconAwesome="fa-user">
+                        <b:navCommandLink value="Modificar informacion" onclick="$('.GBUserProfViewDlg').modal()" iconAwesome="fa-edit"/>
+                        <b:navCommandLink value="Cambiar contraseña" onclick="$('.GBModalChgPass').modal()" iconAwesome="fa-key"/>
+                        <b:navLink></b:navLink>
+                        <b:navCommandLink id="Prueba" value="Cerrar sesión" onclick="$('.GBLogoutConfDlg').modal()" iconAwesome="fa-power-off"/>
+                    </b:dropMenu>
                 </b:navbarLinks>
             </b:navBar>
         </ui:composition>

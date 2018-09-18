@@ -91,6 +91,7 @@ public class StaffBean implements Serializable{
         try {
             username = SessionController.getInstance().getUser((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false));
             genders = GBEnvironment.getInstance().getCatalog(GB_CommonStrConstants.CT_GENDER).getAllCatalog();
+            System.out.println("Tamaño catalogo: "+genders.size());
             id_types= GBEnvironment.getInstance().getCatalog(GB_CommonStrConstants.CT_IDTYPE).getAllCatalog();
             charge_up();
         } catch (GB_Exception ex) {
@@ -318,9 +319,9 @@ public class StaffBean implements Serializable{
                 photo_profile = new ByteArrayContent(imagePic.getBytes(1, size.intValue()));
             } catch (SQLException ex) {
                 LOG.error(ex);
-                GBMessage.putMessage(GBEnvironment.getInstance().getError(30), null);
+                //GBMessage.putMessage(GBEnvironment.getInstance().getError(30), null);
             }
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
+            //GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
         }
     }
     

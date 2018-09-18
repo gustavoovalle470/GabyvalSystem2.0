@@ -24,14 +24,14 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  10/06/2018  |      GAOQ      | Creacion de template para la barra de navegacion.                                                       |   
+ * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del dialogo que se invoca para el cambio de contraseña a peticion.                             |   
  * |*********|**************|****************|*********************************************************************************************************|
  ******************************************************************************************************************************************************
- **Nombre del archivo: GBMenuBar.xhtml
+ **Nombre del archivo: GBPassChgDlg.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Definicion de template para la barra de menu principal y zona de despliegue.
+ **Descripcion:        Dialogo que permite al usuario cambiar su contraseña a peticion.
  ******************************************************************************************************************************************************
- **Componentes en que se usa: app_master.xhtml.
+ **Componentes en que se usa: GBDialogs.xhtml.
  ******************************************************************************************************************************************************
 -->
 <!DOCTYPE html>
@@ -39,61 +39,68 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Barra de menu central y zona de despliegue de funcionalidades." />
+        <meta name="description" content="Dialogo de despliegue del perfil de usuario." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
-        <link href="resources/css/GBStyle.css" rel="stylesheet"/>
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
     <h:body>
-        <ui:composition id="BarMenuComp">
-            <b:container fluid="true" id="GBCTMenuBar">
-                <b:row id="GBROWMenuBar">
-                    <b:column id="GBCLMenuDefinition" col-sm="3" col-md="2" class="GBSidebar">
-                        <b:panel collapsible="true" collapsed="true" title="Sistema">
-                            <b:navbarLinks>
-                                <b:navCommandLink value="Administrar errores"/>
-                                <b:navCommandLink value="Administrar catalogos"/>
-                                <b:navCommandLink value="Administrar funciones"/>
-                            </b:navbarLinks>
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Usuarios">
-                            <b:navbarLinks>
-                                <b:navCommandLink value="Administrar Usuarios"/>
-                                <b:navCommandLink value="Administrar Perfiles"/>
-                            </b:navbarLinks>
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Seguridad">
-                            <b:navbarLinks>
-                                <b:navCommandLink value="Asignar permisos"/>
-                            </b:navbarLinks>
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Control inventario">
-                            <b:navbarLinks>
-                                <b:navCommandLink value="Administrar productos"/>
-                                <b:navCommandLink value="Administrar unidades"/>
-                            </b:navbarLinks>
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Ventas" disabled="true" showCollapseLink="false" >
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Finanzas" disabled="true" showCollapseLink="false">
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Nomina" disabled="true" showCollapseLink="false">
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Cierre automatico" disabled="true" showCollapseLink="false">
-                        </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Reportes" disabled="true" showCollapseLink="false">
-                        </b:panel>
-                    </b:column>
-                    <b:column id="GBCLMenuDeployment" col-sm="9" offset-sm="3" 
-                              col-md="10" offset="2" class="GBContent">
-                        <ui:include id="GBFunctionDeployment" src="../../../pages#{MenuBean.actualView}"/>
-                    </b:column>
-                </b:row>
-            </b:container>
+        <ui:composition>
+            <h:form id="GBUserProfViewForm">
+                <b:modal id="GBUserProfViewDlg" 
+                         title="Usuario #{UserSesionBean.username}" 
+                         styleClass="GBUserProfViewDlg"
+                         closable="false"
+                         closeOnEscape="true"
+                         backdrop="true"
+                         size="modal-lg" >
+                    <b:row id="Picture">
+                        <b:column col-sm="1" col-md="5" style="align-items: center;">
+                            <b:panelGrid columns="1">
+                                <p:graphicImage value="#{StaffBean.photo_profile}" id="ProfileViewPic" cache="false" width="145px" height="125px;"/>
+                                <p:fileUpload label="Seleccionar foto" 
+                                              id="ChgProfilePic" 
+                                              auto="true" 
+                                              multiple="false" 
+                                              fileUploadListener="#{StaffBean.upload}" 
+                                              sizeLimit="9000000"/>
+                            </b:panelGrid>
+                        </b:column>
+                        <b:column col-sm="1" col-md="7">
+                            <b:panelGrid columns="2">
+                                <p:outputLabel value="Nombre:"/>
+                                <b:inputText value="#{StaffBean.staff_name}"/>
+                                <p:outputLabel value="Apellido:"/>
+                                <b:inputText value="#{StaffBean.staff_surname}"/>
+                                <p:outputLabel value="Tipo documento:"/>
+                                <b:selectOneMenu value="#{StaffBean.id_type}">
+                                    <f:selectItems value="#{StaffBean.id_types}"/>
+                                </b:selectOneMenu>
+                                <p:outputLabel value="Nro. documento:"/>
+                                <b:inputText value="#{StaffBean.id_number}"/>
+                                <p:outputLabel value="Fecha nacimiento:"/>
+                                <b:datepicker value="#{StaffBean.birthdate}" 
+                                              changeMonth="true" 
+                                              changeYear="true"/>
+                                <p:outputLabel value="Sexo:"/>
+                                <b:selectOneMenu value="#{StaffBean.gender}">
+                                    <f:selectItems value="#{StaffBean.genders}"/>
+                                </b:selectOneMenu>
+                            </b:panelGrid>
+                        </b:column>
+                    </b:row>
+                    <f:facet name="footer">
+                      <b:button value="Cerrar" dismiss="modal" />
+                      <b:commandButton value="Actualizar" look="primary" onclick="$('.GBUserProfViewDlg').hide()"/>
+                    </f:facet>
+                </b:modal>
+            </h:form>
         </ui:composition>
     </h:body>
 </html>

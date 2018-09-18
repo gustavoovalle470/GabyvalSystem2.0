@@ -109,6 +109,10 @@ public class SystemDateBean implements Serializable{
         this.systemState = systemState;
     }
 
+    public void refreshGlobalDate(){
+        getSystemDate();
+    }
+    
     public String getSystemDate() {
         try {
             return GBEnvironment.getInstance().getDateFormated(
@@ -116,9 +120,8 @@ public class SystemDateBean implements Serializable{
                     getDateTimeFormatFull());
         } catch (GB_Exception ex) {
             Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            return "";
         }
+        return "Fecha y hora no disponible.";
     }
     
     public String getSystemDateConfiguration() {

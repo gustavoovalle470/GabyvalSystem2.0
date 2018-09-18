@@ -15,19 +15,25 @@ and open the template in the editor.
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Barra de menu central y zona de despliegue de funcionalidades." />
+        <meta name="description" content="Pagina inicial de bienvenida al aplicativo." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
-        <link href="../../../../resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
-        <link href="../../../../resources/css/GBStyle.css" rel="stylesheet" type="text/css"/>
-        <link href="../../../../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-        <link href="../../../../resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="../../../../resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet"/>
-        <link href="../../../../resources/css/sb-admin.css" rel="stylesheet"/>
     </h:head>
     <body>
-        <ui:composition id="Welcome1">
-            Welcome page
+        <ui:composition id="GBWelcome">
+            <div align="center">
+                <b:row>
+                    <p:outputLabel value="Bienvenido a GABYVAL System" style="padding-top: 200px;"/>
+                </b:row>
+                <b:row>
+                    <img src="resources/images/LogoPrincipal.png" 
+                             width="177" 
+                             height="106" 
+                             alt="LogoPrincipal" 
+                             id="GBLoginPrincipalLogo"/>
+                </b:row>
+                
+            </div>
         </ui:composition>
     </body>
 </html>
