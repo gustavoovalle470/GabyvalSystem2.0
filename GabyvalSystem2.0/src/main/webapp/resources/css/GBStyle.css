@@ -35,6 +35,11 @@
     font-size: 15px;
 }
 
+.GBTitle{
+    text-align: center; 
+    font-size: 30px;
+}
+
 /**
  * Definicion del estilo de la barra de menu lateral.
  */

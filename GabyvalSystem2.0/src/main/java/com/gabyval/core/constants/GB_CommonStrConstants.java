@@ -107,4 +107,5 @@ public class GB_CommonStrConstants {
     public static final String PASS_RQMIN = "PASS_REQ_MINUS";
     public static final String PASS_RQSPE = "PASS_REQ_SPCHR";
     public static final String PASS_RQNUM = "PASS_REQ_NUMBR";
+    public static final String GB_APP_VERSION = "GB_APP_VERSION"; 
 }

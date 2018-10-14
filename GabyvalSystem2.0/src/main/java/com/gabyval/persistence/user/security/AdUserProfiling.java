@@ -28,17 +28,19 @@ public class AdUserProfiling  implements java.io.Serializable {
      private Date gbLastUpDt;
      private Date createDt;
      private int rowversion;
+     private int gbProfileStatus;
 
     public AdUserProfiling() {
     }
 
-    public AdUserProfiling(AdUserProfilingId id, String gbUserCreate, String gbLastUserUp, Date gbLastUpDt, Date createDt, int rowversion) {
+    public AdUserProfiling(AdUserProfilingId id, String gbUserCreate, String gbLastUserUp, Date gbLastUpDt, Date createDt, int rowversion, int gbProfileStatus) {
        this.id = id;
        this.gbUserCreate = gbUserCreate;
        this.gbLastUserUp = gbLastUserUp;
        this.gbLastUpDt = gbLastUpDt;
        this.createDt = createDt;
        this.rowversion = rowversion;
+       this.gbProfileStatus = gbProfileStatus;
     }
    
      @EmbeddedId
@@ -105,9 +107,14 @@ public class AdUserProfiling  implements java.io.Serializable {
         this.rowversion = rowversion;
     }
 
+    @Column(name="GB_PROFILE_STATUS", nullable=false, precision=22, scale=0)
+    public int getGbProfileStatus() {
+        return gbProfileStatus;
+    }
 
-
-
+    public void setGbProfileStatus(int gbProfileStatus) {
+        this.gbProfileStatus = gbProfileStatus;
+    }
 }
 
 

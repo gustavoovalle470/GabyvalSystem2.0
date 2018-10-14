@@ -53,39 +53,39 @@
             <b:container fluid="true" id="GBCTMenuBar">
                 <b:row id="GBROWMenuBar">
                     <b:column id="GBCLMenuDefinition" col-sm="3" col-md="2" class="GBSidebar">
-                        <b:panel collapsible="true" collapsed="true" title="Sistema">
+                        <b:panel collapsible="true" collapsed="true" title="Sistema" rendered="#{MenuBean.isRenderedPrincipalMenu('GBSystemMenu')}">
                             <b:navbarLinks>
-                                <b:navCommandLink value="Administrar errores"/>
-                                <b:navCommandLink value="Administrar catalogos"/>
-                                <b:navCommandLink value="Administrar funciones"/>
+                                <b:navCommandLink value="#{MenuBean.getMenuName('GBSysAdminErrors')}" rendered="#{MenuBean.isRenderedComponent('GBSysAdminErrors')}" action="#{MenuBean.setActualView('GBSysAdminErrors')}"/>
+                                <b:navCommandLink value="#{MenuBean.getMenuName('GBSysAdminCatalog')}" rendered="#{MenuBean.isRenderedComponent('GBSysAdminCatalog')}" action="#{MenuBean.setActualView('GBSysAdminCatalog')}"/>
+                                <b:navCommandLink value="Administrar funciones" rendered="#{MenuBean.isRenderedComponent('GBSystemMenu')}"/>
                             </b:navbarLinks>
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Usuarios">
+                        <b:panel collapsible="true" collapsed="true" title="Usuarios" rendered="#{MenuBean.isRenderedPrincipalMenu('GBUserMenu')}">
                             <b:navbarLinks>
                                 <b:navCommandLink value="Administrar Usuarios"/>
                                 <b:navCommandLink value="Administrar Perfiles"/>
                             </b:navbarLinks>
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Seguridad">
+                        <b:panel collapsible="true" collapsed="true" title="Seguridad" rendered="#{MenuBean.isRenderedPrincipalMenu('GBSecurityMenu')}">
                             <b:navbarLinks>
                                 <b:navCommandLink value="Asignar permisos"/>
                             </b:navbarLinks>
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Control inventario">
+                        <b:panel collapsible="true" collapsed="true" title="Control inventario" rendered="#{MenuBean.isRenderedPrincipalMenu('GBInventoryMenu')}">
                             <b:navbarLinks>
                                 <b:navCommandLink value="Administrar productos"/>
                                 <b:navCommandLink value="Administrar unidades"/>
                             </b:navbarLinks>
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Ventas" disabled="true" showCollapseLink="false" >
+                        <b:panel collapsible="true" collapsed="true" title="Ventas" disabled="true" showCollapseLink="false" rendered="#{MenuBean.isRenderedPrincipalMenu('GBSalesMenu')}">
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Finanzas" disabled="true" showCollapseLink="false">
+                        <b:panel collapsible="true" collapsed="true" title="Finanzas" disabled="true" showCollapseLink="false" rendered="#{MenuBean.isRenderedPrincipalMenu('GBFinantialMenu')}">
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Nomina" disabled="true" showCollapseLink="false">
+                        <b:panel collapsible="true" collapsed="true" title="Nomina" disabled="true" showCollapseLink="false" rendered="#{MenuBean.isRenderedPrincipalMenu('GBNominaMenu')}">
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Cierre automatico" disabled="true" showCollapseLink="false">
+                        <b:panel collapsible="true" collapsed="true" title="Cierre automatico" disabled="true" showCollapseLink="false" rendered="#{MenuBean.isRenderedPrincipalMenu('GBEODMenu')}">
                         </b:panel>
-                        <b:panel collapsible="true" collapsed="true" title="Reportes" disabled="true" showCollapseLink="false">
+                        <b:panel collapsible="true" collapsed="true" title="Reportes" disabled="true" showCollapseLink="false" rendered="#{MenuBean.isRenderedPrincipalMenu('GBReportsMenu')}">
                         </b:panel>
                     </b:column>
                     <b:column id="GBCLMenuDeployment" col-sm="9" offset-sm="3" 

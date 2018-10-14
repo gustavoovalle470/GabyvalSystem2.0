@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
@@ -47,22 +48,18 @@ import javax.inject.Named;
  * @since 26/08/2017
  */
 @Named(value = "SystemDateBean")
-@RequestScoped
+@SessionScoped
 public class SystemDateBean implements Serializable{
 
     private static final GB_Logger LOG = GB_Logger.getLogger(SystemDateBean.class);
     private String paused;
     private HashMap<String, Integer> systemState;
     private String app_version;
+    private String dateTimeFormatFull;
 
     public SystemDateBean() {
-        app_version = "1.6";
-        /**systemState = GBEnvironment.getInstance().getCatalog("SYSTEM_PAUSED").getAllCatalog();
-        if(GBEnvironment.getInstance().isSystemPaused()){
-            paused = ""+CatalogController.getInstance().decode(systemState, "PAUSADO");
-        }else{
-            paused = ""+CatalogController.getInstance().decode(systemState, "CORRIENDO");
-        }*/
+        app_version = getAppVersion();
+        dateTimeFormatFull = getDateTimeFormatFull();
     }
         
     public String getDateFormat() {
@@ -92,6 +89,15 @@ public class SystemDateBean implements Serializable{
             return GB_CommonStrConstants.DEFAULT_DATETIME_FORMAT;
         }
     }
+    
+    public String getAppVersion(){
+        try {
+            return (String) GBEnvironment.getInstance().getModuleConfiguration(GB_CommonStrConstants.GB_APP_VERSION);
+        } catch (GB_Exception ex) {
+            LOG.error(ex);
+            return "1.0 BETA";
+        }
+    }
 
     public String getPaused() {
         return paused;
@@ -117,7 +123,7 @@ public class SystemDateBean implements Serializable{
         try {
             return GBEnvironment.getInstance().getDateFormated(
                     SystemDateController.getInstance().getSystemDate(),
-                    getDateTimeFormatFull());
+                    dateTimeFormatFull);
         } catch (GB_Exception ex) {
             Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
         }

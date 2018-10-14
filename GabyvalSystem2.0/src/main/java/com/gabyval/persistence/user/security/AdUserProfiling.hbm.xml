@@ -27,5 +27,8 @@
         <property name="rowversion" type="int">
             <column name="ROWVERSION" precision="22" scale="0" not-null="true" />
         </property>
+        <property name="gbProfileStatus" type="int">
+            <column name="GB_PROFILE_STATUS" precision="22" scale="0" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

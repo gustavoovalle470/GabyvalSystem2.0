@@ -27,9 +27,21 @@
  */
 package com.gabyval.beans.menu;
 
+import com.gabyval.beans.system.security.SessionController;
+import com.gabyval.controller.security.SecurityEntity;
+import com.gabyval.controller.security.SecurityMan;
+import com.gabyval.core.exception.GB_Exception;
+import com.gabyval.persistence.user.security.AdSecMenulinks;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -48,19 +60,23 @@ import org.primefaces.model.menu.Submenu;
 public class MenuBean implements Serializable{
     
     private String pageView;
-    private MenuModel menu;
+    private String username;
+    private HashMap<String, AdSecMenulinks> rendered_menus;
+    private ArrayList<String> rendered_p_menus;
     
     public MenuBean(){
-        pageView = "/core/welcome.xhtml";
-        chargeMenuOptions();
+        try {
+            username = SessionController.getInstance().getUser((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false));
+            rendered_p_menus = SecurityMan.getInstance(username).getPrincipals();
+            rendered_menus = SecurityMan.getInstance(username).getFunctionsAllowed();
+            pageView = "/core/welcome.xhtml";
+        } catch (GB_Exception ex) {
+            Logger.getLogger(MenuBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public void goHome(){
-        System.out.println("Ir a pagina bienvenida...");
-    }
-    
-    public void setActualView(String pageView){
-        this.pageView = pageView;
+    public void setActualView(String menu_id){
+        this.pageView = getDestination(menu_id);
     }
     
     public String getActualView(){
@@ -75,27 +91,32 @@ public class MenuBean implements Serializable{
             setActualView("/core/welcome_1.xhtml");
         }
     }
-
-    private void chargeMenuOptions() {
-        menu = new DefaultMenuModel();
-        DefaultSubMenu sub1 = new DefaultSubMenu("PRUEBA");
-        sub1.setStyle("height: 100px; border: 0px;background: transparent;");
-        DefaultMenuItem item1 = new DefaultMenuItem("Prueba 1");
-        item1.setCommand("#{MenuBean.setView('1')}");
-        item1.setUpdate("@form");
-        DefaultMenuItem item2 = new DefaultMenuItem("Prueba 2");
-        item2.setCommand("#{MenuBean.setView('2')}");
-        item2.setUpdate("@form");
-        sub1.addElement(item1);
-        sub1.addElement(item2);
-        menu.addElement(sub1);
+    
+    public String getMenuName(String menu_id){
+        if(isRenderedComponent(menu_id)){
+            return rendered_menus.get(menu_id).getGbMenuName();
+        }
+        return "Funcion no disponible";
     }
-
-    public MenuModel getMenu() {
-        return menu;
+    
+    public String getDestination(String menu_id){
+        if(isRenderedComponent(menu_id)){
+            return rendered_menus.get(menu_id).getGbPageView();
+        }
+        return "#";
     }
-
-    public void setMenu(MenuModel menu) {
-        this.menu = menu;
+    
+    public boolean isRenderedComponent(String menu_id){
+        if(rendered_menus != null){
+            return rendered_menus.containsKey(menu_id);
+        }
+        return false;
+    }
+    
+    public boolean isRenderedPrincipalMenu(String p_menu_id){
+        if(rendered_p_menus != null){
+            return rendered_p_menus.contains(p_menu_id);
+        }
+        return false;
     }
 }

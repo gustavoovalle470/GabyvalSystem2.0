@@ -5,12 +5,15 @@
  */
 package com.gabyval.controller.security;
 
+import com.gabyval.core.GBEnvironment;
 import com.gabyval.core.commons.controllers.PersistenceManager;
+import com.gabyval.core.constants.CatalogEntity;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import com.gabyval.persistence.user.security.AdSecMenulinks;
 import com.gabyval.persistence.user.security.AdUserProfiling;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,22 +21,36 @@ import java.util.List;
  * @author gusta
  */
 public class SecurityMan {
-    private static final GB_Logger LOG = GB_Logger.getLogger(SecurityMan.class);
-    private static List<SecurityEntity> menus;
+    private static SecurityMan instance;
+    private final GB_Logger LOG = GB_Logger.getLogger(SecurityMan.class);
+    private HashMap<String, AdSecMenulinks> menus;
+    private ArrayList<String> principals;
     
-    public static List<SecurityEntity> getSecurityTree(String username){
+    public SecurityMan(String username){
+        getSecurityTree(username);
+    }
+    
+    public static SecurityMan getInstance(String username){
+        if(instance == null){
+            instance = new SecurityMan(username);
+        }
+        return instance;
+    }
+    
+    private HashMap<String, AdSecMenulinks> getSecurityTree(String username){
         LOG.debug("GABYVAL is obtaing the security tree.");
-        menus  = new ArrayList<>();
+        menus  = new HashMap<>();
+        principals = new ArrayList<String>();
         LOG.debug("GABYVAL is creating dependens.");
-        putNodes(username);
+        getAllMenusAllowed(username);
         LOG.debug("GABYVAL finished the load the security tree.");
         return menus;
     }
     
-    private static List<AdUserProfiling> getProfile(String username) {
+    private List<AdUserProfiling> getProfile(String username) {
         try {
             return PersistenceManager.getInstance().
-                    runCriteria("FROM AdUserProfiling a WHERE a.id.gbUsername='"+username+"' AND a.id.gbProfileName IN (SELECT B.gbProfileName FROM AdUserProfile B WHERE B.gbProfileStatus = 1)");
+                    runCriteria("FROM AdUserProfiling a WHERE a.id.gbUsername='"+username+"' AND a.gbProfileStatus = 1");
         } catch (GB_Exception ex) {
             LOG.error(ex);
             return null;
@@ -41,47 +58,44 @@ public class SecurityMan {
         
     }
 
-    private static void putNodes(String username) {
+    private void getAllMenusAllowed(String username) {
+        boolean include_principal = false;
         try {
-            List<AdSecMenulinks> nodes = PersistenceManager.getInstance()
-                    .runCriteria("FROM AdSecMenulinks a WHERE a.gbMenuParId IS NULL AND a.gbPageView IS NULL AND a.gbMenuStatus = 1");
-            for(AdSecMenulinks node : nodes){
-                SecurityEntity entidad = new SecurityEntity(node, getAllMenusAllowed(node.getGbMenuId(), username));
-                if(entidad.isAllowedMenu()){
-                    menus.add(entidad);
-                }
-            }
-        } catch (GB_Exception ex) {
-            LOG.fatal(ex);
-        }
-    }
-
-    private static List<SecurityEntity> getAllMenusAllowed(String gbMenuId, String username) {
-        List<SecurityEntity> menusAllowed = new ArrayList<>();
-        try {
-            for(AdUserProfiling profile: getProfile(username)){
-                for(AdSecMenulinks menu: (List<AdSecMenulinks>)PersistenceManager.getInstance()
-                    .runCriteria("FROM AdSecMenulinks A where A.gbMenuId IN "
-                              + "(SELECT B.id.gbMenuId FROM AdSecMenuProfiling B WHERE "
-                              + "B.id.gbProfileName = '"+profile.getId().getGbProfileName()+"') "
-                              + "AND A.gbMenuStatus = 1 AND A.gbMenuParId ='"+gbMenuId+"'")){
-                    if(notRepeatMenu(menusAllowed, menu)){
-                        menusAllowed.add(new SecurityEntity(menu));
+            CatalogEntity principalMenus = GBEnvironment.getInstance().getCatalog("PRINCIPAL_MENUS");
+            if(principalMenus != null && getProfile(username) != null){
+                System.out.println("Se encontraron catalogos disponibles y perfiles de usuario activos.");
+                for(String gbPrincipalMenu: principalMenus.getAllCatalog().keySet()){
+                    System.out.println("Cargando funcionalidades para el menu principal: "+gbPrincipalMenu);
+                    for(AdUserProfiling profile: getProfile(username)){
+                        System.out.println("Cargando funcionalidades para el perfil: "+profile);
+                        for(AdSecMenulinks menu: (List<AdSecMenulinks>)PersistenceManager.getInstance()
+                            .runCriteria("FROM AdSecMenulinks A where A.gbMenuId IN "
+                                         + "(SELECT B.id.gbMenuId FROM AdSecMenuProfiling B WHERE "
+                                         + "B.id.gbProfileName = '"+profile.getId().getGbProfileName()+"') "
+                                         + "AND A.gbMenuStatus = 1 AND A.gbMenuParId ='"+gbPrincipalMenu+"'")){
+                            include_principal = true;
+                            System.out.println("Incluir menu principal? "+include_principal);
+                            if(menus.get(menu.getGbMenuId()) == null){
+                                System.out.println("Agregar menu: "+menu.getGbMenuId());
+                                menus.put(menu.getGbMenuId(), menu);
+                            }
+                        }
                     }
-                } 
+                    if(include_principal){
+                        principals.add(gbPrincipalMenu);
+                    }
+                }
             }
         } catch (GB_Exception ex) {
             LOG.error(ex);
         }
-        return menusAllowed;
     }
-
-    private static boolean notRepeatMenu(List<SecurityEntity> menusAllowed, AdSecMenulinks menu) {
-        for(SecurityEntity e : menusAllowed){
-            if(e.getMenu().getGbMenuId().equals(menu.getGbMenuId())){
-                return false;
-            }
-        }
-        return true;
+    
+    public ArrayList<String> getPrincipals(){
+        return principals;
+    }
+    
+    public HashMap<String, AdSecMenulinks> getFunctionsAllowed(){
+        return menus;
     }
 }

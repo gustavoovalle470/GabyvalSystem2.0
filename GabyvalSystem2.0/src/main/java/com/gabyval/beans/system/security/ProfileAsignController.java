@@ -42,7 +42,7 @@ public class ProfileAsignController {
         List<String> usersInPrev = getAllUsersInProf(profilename);
         if(usersInProf.size() > usersInPrev.size()){
             for(String user: cleanUsers(usersInProf, usersInPrev)){
-                PersistenceManager.getInstance().save(new AdUserProfiling(new AdUserProfilingId(profilename, user), username, username, GBEnvironment.getInstance().serverDate(), GBEnvironment.getInstance().serverDate(), 0));
+                PersistenceManager.getInstance().save(new AdUserProfiling(new AdUserProfilingId(profilename, user), username, username, GBEnvironment.getInstance().serverDate(), GBEnvironment.getInstance().serverDate(), 0, 1));
             }
         }else{
             for(String user: cleanUsers(usersInPrev, usersInProf)){
