@@ -28,26 +28,18 @@
 package com.gabyval.beans.menu;
 
 import com.gabyval.beans.system.security.SessionController;
-import com.gabyval.controller.security.SecurityEntity;
 import com.gabyval.controller.security.SecurityMan;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.persistence.user.security.AdSecMenulinks;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Submenu;
 
 /**
  * This class controlled the principal menu bar of application.
