@@ -38,6 +38,7 @@ import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
@@ -116,12 +117,7 @@ public class LoginBean implements Serializable{
                                                                 user);
                     GBMessage.putMessage(GBEnvironment.getInstance().getError(18), user);
                     LOG.debug("GABYVAL finish, the login for user: "+user+" is correctly and complete the operation.");
-                    if(!UserController.getInstance().isNeedChangePasswor(user)){
-                        return "accessGranted";
-                    }else{
-                        LOG.debug("GABYVAL finish login the user: "+user+" has expire password");
-                        return "changePassword";
-                    }
+                    return "GBAppMaster";
                 }else{
                     UserController.getInstance().logout(user);
                 }
@@ -133,6 +129,6 @@ public class LoginBean implements Serializable{
             LOG.debug("GABYVAL requiere the password to established the connection, try again.");
             GBMessage.putMessage(GBEnvironment.getInstance().getError(13), null);
         }
-        return "denied";
+        return "index";
     }
 }

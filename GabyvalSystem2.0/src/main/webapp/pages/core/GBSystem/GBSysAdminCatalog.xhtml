@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="es" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Pagina inicial de bienvenida al aplicativo." />
+        <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
+        <title>GABYVAL System v#{SystemDateBean.app_version}</title>
+    </h:head>
+    <body>
+        <ui:composition id="GBAdminCatalogComp">
+            <div align="center">
+                <b:row>
+                    <p:outputLabel value="Administrador de catalogos" class="GBTitle"/>
+                </b:row>                
+            </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <p>A continuación se listan todos los catalogos disponibles dentro del sistema:</p>
+            <br></br>
+            <b:dataTable value="#{CatalogBean.catalogs}" var="catalog" class="editableCarTable">
+                <b:dataTableColumn label="ID" value="#{catalog.gbCatalogId}" />
+                <b:dataTableColumn label="Nombre" value="#{catalog.gbCatalogName}" />
+                <b:dataTableColumn label="Item" value="#{catalog.gbCatalogItem}" />
+                <b:dataTableColumn>
+                  <b:commandButton value="Editar" icon="edit" ajax="true" />
+                </b:dataTableColumn>
+            </b:dataTable>
+        </ui:composition>
+    </body>
+</html>

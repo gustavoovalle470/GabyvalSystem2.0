@@ -5,50 +5,35 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:pa="http://primefaces.org/manhattan">
-
+    
     <div class="layout-topbar">
         <a href="#" id="layout-menu-btn" class="menu-btn">
             <i class="fa fa-bars"></i>
         </a>
-        
-        <div class="topbar-search">
-            <input type="text" class="ui-widget" />
-            <i class="fa fa-search"></i>
-        </div>
-        
         <div class="layout-topbar-menu-wrapper">            
             <ul class="topbar-menu">
                 <li class="profile-item">
                     <a href="#">                            
-                        <p:graphicImage name="images/avatar.png" library="manhattan-layout" />
-                        <span class="topbar-item-name profile-name">Madison Hughes</span>
+                        <p:graphicImage value="#{StaffBean.photo_profile}"/>
+                        <span class="topbar-item-name profile-name">#{UserSesionBean.username}</span>
                     </a>
-                    
                     <ul class="animated">
                         <li role="menuitem">
                             <a href="#">
-                                <i class="fa fa-fw fa-user"></i>
-                                <span>Profile</span>
-                                <span class="topbar-badge">5</span>
-                            </a>
-                        </li>
-                        <li role="menuitem">
-                            <a href="#">
                                 <i class="fa fa-fw fa-user-secret"></i>
-                                <span>Privacy</span>
-                                <span class="topbar-badge">2</span>
+                                <span>Perfil de usuario</span>
                             </a>
                         </li>
                         <li role="menuitem">
                             <a href="#">
-                                <i class="fa fa-fw fa-cog"></i>
-                                <span>Settings</span>
+                                <i class="fa fa-fw fa-key"></i>
+                                <span>Cambiar contraseña</span>
                             </a>
                         </li>
                         <li role="menuitem">
-                            <a href="#">
+                            <a href="#" onclick="PF('GBLogoutConfirmDlg').show();">
                                 <i class="fa fa-fw fa-sign-out"></i>
-                                <span>Logout</span>
+                                <span>Cerrar sesión</span>
                             </a>
                         </li>
                     </ul>
@@ -126,6 +111,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="profile-item"> 
+                    <h:form id="GBClockForm">
+                        <p:poll autoStart="true" interval="1" update="GBClockLabel"/>
+                        <p:outputLabel id="GBClockLabel" value="#{SystemInfoBean.systemDate}"/>
+                    </h:form>
+                </li>
             </ul>
             
             <a href="#" class="topbar-menu-btn">
@@ -137,5 +128,4 @@
             </a>
         </div>
     </div>
-
 </ui:composition>

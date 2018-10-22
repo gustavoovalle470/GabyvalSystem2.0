@@ -27,7 +27,6 @@
  */
 package com.gabyval.beans.utilities;
 
-import com.gabyval.controller.commons.CatalogController;
 import com.gabyval.core.GBEnvironment;
 import com.gabyval.core.constants.GB_CommonStrConstants;
 import com.gabyval.core.exception.GB_Exception;
@@ -37,7 +36,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -47,38 +45,19 @@ import javax.inject.Named;
  * @version 1.0
  * @since 26/08/2017
  */
-@Named(value = "SystemDateBean")
+@Named(value = "SystemInfoBean")
 @SessionScoped
-public class SystemDateBean implements Serializable{
+public class SystemInfoBean implements Serializable{
 
-    private static final GB_Logger LOG = GB_Logger.getLogger(SystemDateBean.class);
-    private String paused;
-    private HashMap<String, Integer> systemState;
+    private static final GB_Logger LOG = GB_Logger.getLogger(SystemInfoBean.class);
     private String app_version;
-    private String dateTimeFormatFull;
+    private final String dateTimeFormatFull;
+    private final String theme;
 
-    public SystemDateBean() {
+    public SystemInfoBean() {
         app_version = getAppVersion();
         dateTimeFormatFull = getDateTimeFormatFull();
-    }
-        
-    public String getDateFormat() {
-        try {
-            return (String) GBEnvironment.getInstance().getModuleConfiguration(GB_CommonStrConstants.PROPERTY_DATE_FORMAT);
-        } catch (GB_Exception ex) {
-            LOG.error(ex);
-            GBMessage.putException(ex);
-            return GB_CommonStrConstants.DEFAULT_DATE_FORMAT;
-        }
-    }
-    
-    public String getDateTimeFormat() {
-        try {
-            return (String) GBEnvironment.getInstance().getModuleConfiguration(GB_CommonStrConstants.PROPERTY_DATETIME_FORMAT);
-        } catch (GB_Exception ex) {
-            LOG.error(ex);
-            return GB_CommonStrConstants.DEFAULT_DATETIME_FORMAT;
-        }
+        theme = getApplicationTheme();
     }
     
     public String getDateTimeFormatFull() {
@@ -99,65 +78,31 @@ public class SystemDateBean implements Serializable{
         }
     }
 
-    public String getPaused() {
-        return paused;
+    public String getTheme() {
+        return theme;
     }
 
-    public void setPaused(String paused) {
-        this.paused = paused;
-    }
-
-    public HashMap<String, Integer> getSystemState() {
-        return systemState;
-    }
-
-    public void setSystemState(HashMap<String, Integer> systemState) {
-        this.systemState = systemState;
-    }
-
-    public void refreshGlobalDate(){
-        getSystemDate();
-    }
-    
     public String getSystemDate() {
         try {
             return GBEnvironment.getInstance().getDateFormated(
                     SystemDateController.getInstance().getSystemDate(),
                     dateTimeFormatFull);
         } catch (GB_Exception ex) {
-            Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error(ex);
         }
         return "Fecha y hora no disponible.";
     }
     
-    public String getSystemDateConfiguration() {
-        try {
-            return GBEnvironment.getInstance().getDateFormated(
-                    SystemDateController.getInstance().getSystemDate(),
-                    getDateTimeFormat());
-        } catch (GB_Exception ex) {
-            Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            return "";
-        }
-    }
-    public String getServerDate() {
-        try {
-            return GBEnvironment.getInstance().getDateFormated(
-                    SystemDateController.getInstance().getServerDate(),
-                    getDateTimeFormat());
-        } catch (GB_Exception ex) {
-            Logger.getLogger(SystemDateBean.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            return "";
-        }
-    }
-
     public String getApp_version() {
         return app_version;
     }
 
-    public void setApp_version(String app_version) {
-        this.app_version = app_version;
+    private String getApplicationTheme() {
+        try {
+            return (String) GBEnvironment.getInstance().getModuleConfiguration(GB_CommonStrConstants.APP_THEME);
+        } catch (GB_Exception ex) {
+            LOG.error(ex);
+            return "layout-orange-indigo.css";
+        }
     }
 }

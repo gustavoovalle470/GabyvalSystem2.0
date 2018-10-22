@@ -45,6 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 
 /**
@@ -266,11 +267,11 @@ public class UserSesionBean implements Serializable {
                 session.invalidate();
                 GBMessage.putMessage(GBEnvironment.getInstance().getError(19), null);  
             }
-        } catch (GB_Exception ex) {
+        } catch (GB_Exception ex) { 
             LOG.error(ex);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(15), null);
         }
-        return "logout";
+        return "index";
     }
     
     /**

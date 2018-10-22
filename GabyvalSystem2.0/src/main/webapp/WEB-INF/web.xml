@@ -5,7 +5,7 @@
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
     <welcome-file-list>
-        <welcome-file>login.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
