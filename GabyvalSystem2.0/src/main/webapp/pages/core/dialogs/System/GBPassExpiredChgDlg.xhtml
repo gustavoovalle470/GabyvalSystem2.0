@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * *****************************************************************************************************************************************************
  * *****************************************************************************************************************************************************
@@ -23,37 +24,56 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  09/09/2018  |      GAOQ      | Creacion la pantalla de cambio de contraseña vencida.                                                   |   
+ * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del dialogo que se invoca para el cambio de contraseña a peticion.                             |   
  * |*********|**************|****************|*********************************************************************************************************|
- * |   2.0   |  21/10/2018  |      GAOQ      | Adicion del template Manhattan al aplicativo.                                                           |   
- * |*********|**************|****************|*********************************************************************************************************|
-******************************************************************************************************************************************************
- **Nombre del archivo: GBAppMaster.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Pantalla principal de despliegue del aplicativo.
+ **Nombre del archivo: GBPassChgDlg.xhtml
  ******************************************************************************************************************************************************
- **Componentes en que se usa: index.xhtml.
+ **Descripcion:        Dialogo que permite al usuario cambiar su contraseña a peticion.
+ ******************************************************************************************************************************************************
+ **Componentes en que se usa: GBDialogs.xhtml.
  ******************************************************************************************************************************************************
 -->
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+<!DOCTYPE html>
+<html lang="es" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     
-    <ui:define name="content">
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="card">
-                    <div align ="center">
-                        <br></br>
-                        <br></br>
-                        <p:graphicImage alt="Icono pagina principal" url="resources/manhattan-layout/images/logo-manhattan.png"/>
-                        <br></br>
-                        <br></br>
-                        <p>BIENVENIDO A GABYVAL SYSTEM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ui:define>
-</ui:composition>
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Página principal de acceso a la aplicacion GABYVAL System." />
+        <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
+        <title>GABYVAL System v#{SystemDateBean.app_version}</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:dialog header="Su contraseña expiro" 
+                      widgetVar="GBChgExpPwdDlg" 
+                      id="GBChgExpPwdDlg" 
+                      resizable="false" 
+                      draggable="false" 
+                      responsive="true" 
+                      modal="true" visible="#{UserSesionBean.needChangePassword}">
+                <h:form>
+                    <p>Su contraseña se ha vencido, por favor ingrese una nueva y vuelva a iniciar sesión.</p>
+                    <p>Las politicas de contraseña son:</p>
+                    <p:panelGrid columns="2" 
+                                 layout="grid" 
+                                 styleClass="ui-panelgrid-blank" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-8">
+                        <p:outputLabel value="Contraseña nueva:" for="GBchgExpPwdNew"/>
+                        <p:password id="GBchgExpPwdNew" value="#{UserSesionBean.changePass1}" feedback="true" required="true"/>
+                        <p:outputLabel value="Confirmar contraseña:" for="GBchgExpPwdConfirm"/>
+                        <p:password id="GBchgExpPwdConfirm" value="#{UserSesionBean.changePass2}" feedback="true" required="true"/>
+                        <p:commandButton value="Cambiar" action="#{UserSesionBean.changePasswordExpire()}" 
+                                         onclick="PF('GBChgExpPwdDlg').hide()" icon="fa fa-key" update="GBCentralGrowl"/>
+                        <p:commandButton value="Cancelar" onclick="PF('GBChgExpPwdDlg').hide()"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:composition>
+    </h:body>
+</html>

@@ -38,9 +38,8 @@
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     
     <h:head>
         <meta charset="utf-8" />
@@ -51,22 +50,30 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <h:form id="GBModalChgPassForm">
-                <b:modal id="GBModalChgPass" 
-                         title="Cambio de contraseña de usuario." 
-                         styleClass="GBModalChgPass"
-                         closable="false"
-                         closeOnEscape="false"
-                         backdrop="false">
-                    <b:inputSecret id="GBActualPasschg" placeholder="Contraseña actual" value="#{UserSesionBean.actualPass}" maxlength="140"/>
-                    <b:inputSecret id="GBNuevaPasschg" placeholder="Nueva contraseña" value="#{UserSesionBean.changePass1}" maxlength="140"/>
-                    <b:inputSecret id="GBNuevaPassConfchg" placeholder="Repita nueva contraseña" value="#{UserSesionBean.changePass2}" maxlength="140"/>
-                    <f:facet name="footer">
-                      <b:button value="Cancelar" dismiss="modal" />
-                      <b:commandButton value="Cambiar contraseña" look="primary" onclick="$('.GBModalChgPass').hide()" action="#{UserSesionBean.changePassword()}"/>
-                    </f:facet>
-                </b:modal>
-            </h:form>
+            <p:dialog header="Cambio de contraseña de usuario" 
+                      widgetVar="GBChgPwdDlg" 
+                      id="GBChgPwdDlg" 
+                      resizable="false" 
+                      draggable="false" 
+                      responsive="true" 
+                      modal="true">
+                <h:form>
+                    <p:panelGrid columns="2" 
+                                 layout="grid" 
+                                 styleClass="ui-panelgrid-blank" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-8">
+                        <p:outputLabel value="Contraseña actual:" for="GBchgPwdActual"/>
+                        <p:password id="GBchgPwdActual" value="#{UserSesionBean.actualPass}"/>
+                        <p:outputLabel value="Contraseña nueva:" for="GBchgPwdNew"/>
+                        <p:password id="GBchgPwdNew" value="#{UserSesionBean.changePass1}" feedback="true" required="true"/>
+                        <p:outputLabel value="Confirmar contraseña:" for="GBchgPwdConfirm"/>
+                        <p:password id="GBchgPwdConfirm" value="#{UserSesionBean.changePass2}" feedback="true" required="true"/>
+                        <p:commandButton value="Cambiar" action="#{UserSesionBean.changePassword()}" 
+                                         onclick="PF('GBChgPwdDlg').hide()" icon="fa fa-key" update="GBCentralGrowl"/>
+                        <p:commandButton value="Cancelar" onclick="PF('GBChgPwdDlg').hide()"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
         </ui:composition>
     </h:body>
 </html>

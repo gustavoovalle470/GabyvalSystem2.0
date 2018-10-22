@@ -168,6 +168,7 @@ public class UserSesionBean implements Serializable {
      */
     public boolean isNeedChangePassword(){
         try {
+            System.out.println("Requiere cambiar contraseña: "+UserController.getInstance().isNeedChangePasswor(username));
             return UserController.getInstance().isNeedChangePasswor(username);
         } catch (GB_Exception ex) {
             LOG.error(ex);

@@ -20,7 +20,9 @@ public class GBMessage {
     
     public static void putMessage(AdError error, String replace){
         FacesMessage message = new FacesMessage(getSeverity(error.getGbErrorLevel()), error.getGbErrorTitle(), GBEnvironment.getInstance().replaceMessage(error.getGbErrorDesc(), replace));
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage(null, message);
     }
     
     public static void putException(GB_Exception ex){
@@ -54,7 +56,9 @@ public class GBMessage {
     }
 
     private static void putIntoContext(FacesMessage message){
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage(null, message);
     }
     
     private static FacesMessage.Severity getSeverity(String gbErrorLevel) {
