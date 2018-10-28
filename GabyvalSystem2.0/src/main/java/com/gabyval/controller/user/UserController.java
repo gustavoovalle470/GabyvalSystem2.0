@@ -158,7 +158,6 @@ public class UserController {
         List l = PersistenceManager.getInstance().runCriteria("FROM AdPwdHistory a WHERE a.id.gbUsername ='"+username+"'");
         
         if(l.size() >= passStored){
-            System.out.println(l.get(0).toString());
             PersistenceManager.getInstance().delete((AdPwdHistory) l.get(l.size()-1));   
         }
         savePassword(prevPassword, username);

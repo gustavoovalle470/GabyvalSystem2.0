@@ -56,7 +56,7 @@
                       resizable="false" 
                       draggable="false" 
                       responsive="true" 
-                      modal="true" visible="#{UserSesionBean.needChangePassword}">
+                      modal="true">
                 <h:form>
                     <p>Su contraseña se ha vencido, por favor ingrese una nueva y vuelva a iniciar sesión.</p>
                     <p>Las politicas de contraseña son:</p>
@@ -69,11 +69,20 @@
                         <p:outputLabel value="Confirmar contraseña:" for="GBchgExpPwdConfirm"/>
                         <p:password id="GBchgExpPwdConfirm" value="#{UserSesionBean.changePass2}" feedback="true" required="true"/>
                         <p:commandButton value="Cambiar" action="#{UserSesionBean.changePasswordExpire()}" 
-                                         onclick="PF('GBChgExpPwdDlg').hide()" icon="fa fa-key" update="GBCentralGrowl"/>
-                        <p:commandButton value="Cancelar" onclick="PF('GBChgExpPwdDlg').hide()"/>
+                                         oncomplete="handleLoginRequest(xhr, status, args)" icon="fa fa-key" update="GBCentralGrowl"/>
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if(!#{UserSesionBean.chgExpPwdSucess}) {
+                        PF('GBChgExpPwdDlg').jq.effect("shake", {times:5}, 100);
+                    }
+                    else {
+                        PF('GBChgExpPwdDlg').hide();
+                    }
+                }
+            </script>
         </ui:composition>
     </h:body>
 </html>

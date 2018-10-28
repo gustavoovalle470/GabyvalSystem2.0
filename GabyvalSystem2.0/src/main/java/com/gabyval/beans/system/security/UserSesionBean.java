@@ -26,7 +26,9 @@
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  * |   1.1   |  22/08/2018  |      GAOQ      | Se modifica la forma como se cambia la contraseña bajo demanda. Correccion de la navegacion.            |   
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
-*/
+ * |   1.2   |  28/10/2018  |      GAOQ      | Se agrega marcador para cierre de los dialogos.                                                         |   
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
+ */
 package com.gabyval.beans.system.security;
 
 import com.gabyval.beans.utilities.GBMessage;
@@ -45,13 +47,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 
 
 /**
  * This class contol the user session into the aplication.
  * @author GAOQ
- * @version 1.1
+ * @version 1.2
  * @since 13/11/2017
  */
 @Named(value = "UserSesionBean")
@@ -64,6 +65,7 @@ public class UserSesionBean implements Serializable {
     private String changePass2; //For change, the second password. Confirnation.
     private String actualPass;  // Actual password for change by demand.
     private AdUsers user;       //User entity.
+    private boolean ChgExpPwdSucess = false;
     
     /**
      * Creates a new instance of UserSesionBean
@@ -168,7 +170,6 @@ public class UserSesionBean implements Serializable {
      */
     public boolean isNeedChangePassword(){
         try {
-            System.out.println("Requiere cambiar contraseña: "+UserController.getInstance().isNeedChangePasswor(username));
             return UserController.getInstance().isNeedChangePasswor(username);
         } catch (GB_Exception ex) {
             LOG.error(ex);
@@ -191,17 +192,27 @@ public class UserSesionBean implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public boolean isChgExpPwdSucess() {
+        return ChgExpPwdSucess;
+    }
+
+    public void setChgExpPwdSucess(boolean ChgExpPwdSucess) {
+        this.ChgExpPwdSucess = ChgExpPwdSucess;
+    }
     
     /**
      * This method evaluate and change de password.
      * @return String the next view to navigate.
      */
     public String changePassword(){
+        ChgExpPwdSucess = false;
         try{
             if(GBEnvironment.getInstance().criptPwd(actualPass).equals(user.getGbPassword())){
                 if(isValidatePassword()){
                     UserController.getInstance().changePassword(username, GBEnvironment.getInstance().criptPwd(changePass1));
                     GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
+                    ChgExpPwdSucess = true;
                     return logout();
                 }
             } else {
@@ -221,10 +232,12 @@ public class UserSesionBean implements Serializable {
      * @return String the next view to navigate.
      */
     public String changePasswordExpire(){
+        ChgExpPwdSucess = false;
         try{
             if(isValidatePassword()){
                 UserController.getInstance().changePassword(username, GBEnvironment.getInstance().criptPwd(changePass1));
                 GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
+                ChgExpPwdSucess = true;
                 return logout();
             }
         } catch (GB_Exception ex) {
@@ -303,6 +316,9 @@ public class UserSesionBean implements Serializable {
         }
     }
     
+    /**
+     * This method clean the change password fields.
+     */
     private void cleanPwdFields(){
         actualPass = null;
         changePass1 = null;

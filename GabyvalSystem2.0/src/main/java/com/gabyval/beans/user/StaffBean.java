@@ -44,6 +44,8 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -89,7 +91,6 @@ public class StaffBean implements Serializable{
         try {
             username = SessionController.getInstance().getUser((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false));
             genders = GBEnvironment.getInstance().getCatalog(GB_CommonStrConstants.CT_GENDER).getAllCatalog();
-            System.out.println("Tamaño catalogo: "+genders.size());
             id_types= GBEnvironment.getInstance().getCatalog(GB_CommonStrConstants.CT_IDTYPE).getAllCatalog();
             charge_up();
         } catch (GB_Exception ex) {
@@ -314,12 +315,15 @@ public class StaffBean implements Serializable{
             try {
                 imagePic = new OracleSerialBlob(file.getContents());
                 Long size = imagePic.length();
-                photo_profile = new ByteArrayContent(imagePic.getBytes(1, size.intValue()));
+                putProfPic(imagePic);
+                //setPhoto_profile(new ByteArrayContent(imagePic.getBytes(1, size.intValue())));
             } catch (SQLException ex) {
                 LOG.error(ex);
-                //GBMessage.putMessage(GBEnvironment.getInstance().getError(30), null);
+                GBMessage.putErrorMessage("Error al subir el archivo");
+            } catch (IOException ex) {
+                Logger.getLogger(StaffBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //GBMessage.putMessage(GBEnvironment.getInstance().getError(31), null);
+            GBMessage.putInfoMessage("Carga correcta");
         }
     }
     

@@ -96,7 +96,6 @@ public class GBEnvironment {
      * @throws GB_Exception if: SI
      */
     public Object getModuleConfiguration(int module_configuracion_id) throws GB_Exception{
-        System.out.println("Buscando moduleConfiguration: "+module_configuracion_id);
         AdModuleConfiguration mc = (AdModuleConfiguration) PersistenceManager.getInstance().load(AdModuleConfiguration.class, 
                                                                                             module_configuracion_id);
         PersistenceManager.getInstance().update(mc);
@@ -226,11 +225,9 @@ public class GBEnvironment {
      * @return CatalogEntity a catalog entity.
      */
     public CatalogEntity getCatalog(String catalog_name){
-        System.out.println("Buscando catalogo: "+catalog_name);
         CatalogEntity catalog = new CatalogEntity();
         try {
             List objects = PersistenceManager.getInstance().runCriteria("FROM AdCatalogs c WHERE c.gbCatalogName = '"+catalog_name+"'");
-            System.out.println("Lista de objetos encontrados: "+objects.size());
             for(Object o : objects){
                 AdCatalogs c = (AdCatalogs) o;
                 catalog.putValues(c.getGbCatagogItemId(), c.getGbCatalogItem());

@@ -69,11 +69,23 @@
                         <p:outputLabel value="Confirmar contraseña:" for="GBchgPwdConfirm"/>
                         <p:password id="GBchgPwdConfirm" value="#{UserSesionBean.changePass2}" feedback="true" required="true"/>
                         <p:commandButton value="Cambiar" action="#{UserSesionBean.changePassword()}" 
-                                         onclick="PF('GBChgPwdDlg').hide()" icon="fa fa-key" update="GBCentralGrowl"/>
+                                         onclick="PF('GBChgPwdDlg').hide()" 
+                                         oncomplete="handleLoginRequest(xhr, status, args)"
+                                         icon="fa fa-key" update="GBCentralGrowl"/>
                         <p:commandButton value="Cancelar" onclick="PF('GBChgPwdDlg').hide()"/>
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if(!#{UserSesionBean.chgExpPwdSucess}) {
+                        PF('GBChgExpPwdDlg').jq.effect("shake", {times:5}, 100);
+                    }
+                    else {
+                        PF('GBChgExpPwdDlg').hide();
+                    }
+                }
+            </script>
         </ui:composition>
     </h:body>
 </html>

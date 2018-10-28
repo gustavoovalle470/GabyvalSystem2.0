@@ -38,69 +38,69 @@
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Dialogo de despliegue del perfil de usuario." />
+        <meta name="description" content="Página principal de acceso a la aplicacion GABYVAL System." />
         <meta name="author" content="Gustavo Adolfo Ovalle Quintero." />
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
     <h:body>
         <ui:composition>
-            <h:form id="GBUserProfViewForm">
-                <b:modal id="GBUserProfViewDlg" 
-                         title="Usuario #{UserSesionBean.username}" 
-                         styleClass="GBUserProfViewDlg"
-                         closable="false"
-                         closeOnEscape="true"
-                         backdrop="true"
-                         size="modal-lg" >
-                    <b:row id="Picture">
-                        <b:column col-sm="1" col-md="5" style="align-items: center;">
-                            <b:panelGrid columns="1">
-                                <p:graphicImage value="#{StaffBean.photo_profile}" id="ProfileViewPic" cache="false" width="145px" height="125px;"/>
-                                <p:fileUpload label="Seleccionar foto" 
-                                              id="ChgProfilePic" 
-                                              auto="true" 
-                                              multiple="false" 
-                                              fileUploadListener="#{StaffBean.upload}" 
-                                              sizeLimit="9000000"/>
-                            </b:panelGrid>
-                        </b:column>
-                        <b:column col-sm="1" col-md="7">
-                            <b:panelGrid columns="2">
-                                <p:outputLabel value="Nombre:"/>
-                                <b:inputText value="#{StaffBean.staff_name}"/>
-                                <p:outputLabel value="Apellido:"/>
-                                <b:inputText value="#{StaffBean.staff_surname}"/>
-                                <p:outputLabel value="Tipo documento:"/>
-                                <b:selectOneMenu value="#{StaffBean.id_type}">
-                                    <f:selectItems value="#{StaffBean.id_types}"/>
-                                </b:selectOneMenu>
-                                <p:outputLabel value="Nro. documento:"/>
-                                <b:inputText value="#{StaffBean.id_number}"/>
-                                <p:outputLabel value="Fecha nacimiento:"/>
-                                <b:datepicker value="#{StaffBean.birthdate}" 
-                                              changeMonth="true" 
-                                              changeYear="true"/>
-                                <p:outputLabel value="Sexo:"/>
-                                <b:selectOneMenu value="#{StaffBean.gender}">
-                                    <f:selectItems value="#{StaffBean.genders}"/>
-                                </b:selectOneMenu>
-                            </b:panelGrid>
-                        </b:column>
-                    </b:row>
-                    <f:facet name="footer">
-                      <b:button value="Cerrar" dismiss="modal" />
-                      <b:commandButton value="Actualizar" look="primary" onclick="$('.GBUserProfViewDlg').hide()"/>
-                    </f:facet>
-                </b:modal>
-            </h:form>
+            <p:dialog header="#{UserSesionBean.username}" 
+                      widgetVar="GBProfileViewdDlg" 
+                      id="GBProfileViewdDlg" 
+                      resizable="false" 
+                      draggable="false" 
+                      responsive="true" 
+                      modal="true">
+                <h:form>
+                    <p:panelGrid columns="2" layout="grid" class="ui-panelgrid-blank lesspad">
+                        <p:panelGrid columns="1">
+                            <p:graphicImage id="GBProfAvatar" alt="Profile Image" value="#{StaffBean.photo_profile}"/>
+                            <p:fileUpload fileUploadListener="#{StaffBean.upload}"
+                                          auto="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                          update="GBProfAvatar,GBCentralGrowl"/>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="Nombre:" for="GBProfname"/>
+                            <p:inputText id="GBProfname" value="#{StaffBean.staff_name}"/>
+                            <p:outputLabel value="Apellido:" for="GBProfSurname"/>
+                            <p:inputText id="GBProfSurname" value="#{StaffBean.staff_surname}"/>
+                            <p:outputLabel value="Tipo documento:" for="GBProfIdType"/>
+                            <p:selectOneMenu id="GBProfIdType" value="#{StaffBean.id_type}">
+                                <f:selectItems value="#{StaffBean.id_types}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Numero documento:" for="GBProfIdNumber"/>
+                            <p:inputText id="GBProfIdNumber" value="#{StaffBean.id_number}"/>
+                            <p:outputLabel value="Sexo:"/>
+                            <p:selectOneMenu id="GBProfIdGender" value="#{StaffBean.gender}">
+                                <f:selectItems value="#{StaffBean.genders}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Telefono:" for="GBProfPhone"/>
+                            <p:inputText id="GBProfPhone" value="#{StaffBean.phone_number}"/>
+                            <p:outputLabel value="Celular:" for="GBProfMobile"/>
+                            <p:inputText id="GBProfMobile" value="#{StaffBean.mobile_number}"/>
+                            <p:outputLabel value="Correo electronico:" for="GBProfEmail"/>
+                            <p:inputText id="GBProfEmail" value="#{StaffBean.email}"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if(!#{UserSesionBean.chgExpPwdSucess}) {
+                        PF('GBChgExpPwdDlg').jq.effect("shake", {times:5}, 100);
+                    }
+                    else {
+                        PF('GBChgExpPwdDlg').hide();
+                    }
+                }
+            </script>
         </ui:composition>
     </h:body>
 </html>

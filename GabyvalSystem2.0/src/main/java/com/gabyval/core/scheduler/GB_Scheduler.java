@@ -202,7 +202,6 @@ public class GB_Scheduler{
             if(!l.isEmpty()){
                 LOG.debug("Starting whit job charging... "+l.size()+" to load.");
                 for(AdJob job : l){
-                    System.out.println("Job a agregar..."+job.getGbJobName());
                     if(job.getGbAutoRun().endsWith("S")){
                         JobDetail jd = new JobDetailImpl(job.getGbJobName(), 
                                                          GB_CommonStrConstants.GB_SCH,
