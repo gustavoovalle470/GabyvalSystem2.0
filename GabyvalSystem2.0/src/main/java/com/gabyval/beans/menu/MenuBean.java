@@ -24,91 +24,100 @@
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
  * |   1.0   |  13/11/2017  |      GAOQ      | Creacion del bean de creacion del menu principal de la aplicacion.                                      |   
  * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
- */
+ * |   2.0   |  02/11/2018  |      GAOQ      | Se re crea la forma como se obtine el arbol de seguridad por usuario. Adaptacion para Manhattan theme.  |   
+ * |---------|--------------|----------------|---------------------------------------------------------------------------------------------------------|
+*/
 package com.gabyval.beans.menu;
 
 import com.gabyval.beans.system.security.SessionController;
+import com.gabyval.beans.utilities.GBMessage;
 import com.gabyval.controller.security.SecurityMan;
 import com.gabyval.core.exception.GB_Exception;
+import com.gabyval.core.logger.GB_Logger;
 import com.gabyval.persistence.user.security.AdSecMenulinks;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuElement;
 
 /**
  * This class controlled the principal menu bar of application.
  * @author GAOQ
- * @version 1.0
+ * @version 2.0
  * @since 13/11/2017
  */
 @ManagedBean(name = "MenuBean")
 @SessionScoped
 public class MenuBean implements Serializable{
     
-    private String pageView;
+    private GB_Logger LOG = GB_Logger.getLogger(MenuBean.class);
     private String username;
-    private HashMap<String, AdSecMenulinks> rendered_menus;
-    private ArrayList<String> rendered_p_menus;
+    private DefaultMenuModel menu;
     
     public MenuBean(){
         try {
             username = SessionController.getInstance().getUser((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false));
-            rendered_p_menus = SecurityMan.getInstance(username).getPrincipals();
-            rendered_menus = SecurityMan.getInstance(username).getFunctionsAllowed();
-            pageView = "/core/welcome.xhtml";
+            menu = new DefaultMenuModel();
+            chargeMenus(); 
+            
         } catch (GB_Exception ex) {
-            Logger.getLogger(MenuBean.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.fatal(ex);
+            GBMessage.putException(ex);
         }
     }
     
-    public void setActualView(String menu_id){
-        this.pageView = getDestination(menu_id);
+    public DefaultMenuModel getMenu() {
+        return menu;
+    }
+
+    public void setMenu(DefaultMenuModel menu) {
+        this.menu = menu;
+    }
+
+    private void chargeMenus() {
+        try {
+            for(AdSecMenulinks m: SecurityMan.getAllNodesMenus()){
+                List<AdSecMenulinks> allowed = SecurityMan.getAllowedMenus(m, username);
+                if(allowed != null && allowed.size()>0){
+                    menu.addElement(assembleComponent(m, allowed));   
+                }
+            }
+        } catch (GB_Exception ex) {
+            LOG.fatal(ex);
+            GBMessage.putException(ex);
+        }
     }
     
-    public String getActualView(){
-        return pageView;
-    }
-    
-    public void setView(int id){
-        System.out.println("com.gabyval.beans.menu.MenuBean.setView()");
-        if(id == 1){
-            setActualView("/core/welcome.xhtml");
+    private MenuElement assembleComponent(AdSecMenulinks superMenu, List<AdSecMenulinks> menus) throws GB_Exception {
+        if(superMenu.getGbIsNode() == 1){
+            DefaultSubMenu sub = assembleSubMenu(superMenu);
+            for(AdSecMenulinks mt : menus){
+                List<AdSecMenulinks> allowed = SecurityMan.getAllowedMenus(mt, username);
+                if(mt.getGbIsNode()==1 && allowed != null && allowed.size()>0){
+                    sub.addElement(assembleComponent(mt, allowed));
+                }else{
+                    sub.addElement(assembleItem(mt));
+                }
+            }
+            return sub;
         }else{
-            setActualView("/core/welcome_1.xhtml");
+            return assembleItem(superMenu);
         }
     }
     
-    public String getMenuName(String menu_id){
-        if(isRenderedComponent(menu_id)){
-            return rendered_menus.get(menu_id).getGbMenuName();
-        }
-        return "Funcion no disponible";
+    private DefaultMenuItem assembleItem(AdSecMenulinks menu){
+        DefaultMenuItem item = new DefaultMenuItem(menu.getGbMenuName());
+        item.setCommand(menu.getGbPageView());
+        return item;
     }
     
-    public String getDestination(String menu_id){
-        if(isRenderedComponent(menu_id)){
-            return rendered_menus.get(menu_id).getGbPageView();
-        }
-        return "#";
-    }
-    
-    public boolean isRenderedComponent(String menu_id){
-        if(rendered_menus != null){
-            return rendered_menus.containsKey(menu_id);
-        }
-        return false;
-    }
-    
-    public boolean isRenderedPrincipalMenu(String p_menu_id){
-        if(rendered_p_menus != null){
-            return rendered_p_menus.contains(p_menu_id);
-        }
-        return false;
+    private DefaultSubMenu assembleSubMenu(AdSecMenulinks menu){
+        return new DefaultSubMenu(menu.getGbMenuName());
     }
 }
