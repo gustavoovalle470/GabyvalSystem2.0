@@ -2,4 +2,31 @@
 <faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>primefaces_manhattan</name>
+    
+    <component>
+        <component-type>org.primefaces.component.ManhattanMenu</component-type>
+        <component-class>org.primefaces.manhattan.component.ManhattanMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ManhattanMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.manhattan.component.ManhattanMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>authorized</from-outcome>
+            <to-view-id>/GBAppmaster.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>denied</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>    
 </faces-config>

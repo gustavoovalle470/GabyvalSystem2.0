@@ -5,28 +5,30 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:pa="http://primefaces.org/manhattan">
-    
+
     <div class="layout-topbar">
         <a href="#" id="layout-menu-btn" class="menu-btn">
             <i class="fa fa-bars"></i>
         </a>
+        
         <div class="layout-topbar-menu-wrapper">            
             <ul class="topbar-menu">
                 <li class="profile-item">
                     <a href="#">                            
-                        <p:graphicImage value="#{StaffBean.photo_profile}"/>
+                        <p:graphicImage alt="Foto de perfil" value="#{StaffBean.photo_profile}" />
                         <span class="topbar-item-name profile-name">#{UserSesionBean.username}</span>
                     </a>
+                    
                     <ul class="animated">
                         <li role="menuitem">
                             <a href="#" onclick="PF('GBProfileViewdDlg').show();">
-                                <i class="fa fa-fw fa-user-secret"></i>
-                                <span>Perfil de usuario</span>
+                                <i class="fa fa-fw fa-user"></i>
+                                <span>Modificar perfil</span>
                             </a>
                         </li>
                         <li role="menuitem">
                             <a href="#" onclick="PF('GBChgPwdDlg').show();">
-                                <i class="fa fa-fw fa-key"></i>
+                                <i class="fa fa-fw fa-lock"></i>
                                 <span>Cambiar contraseña</span>
                             </a>
                         </li>
@@ -118,12 +120,15 @@
                     </h:form>
                 </li>
             </ul>
+            
             <a href="#" class="topbar-menu-btn">
                 <p:graphicImage name="images/avatar.png" library="manhattan-layout" />
             </a>
+            
             <a href="#" class="rightpanel-btn">
                 <i class="topbar-icon fa fa-fw fa-outdent"></i>
             </a>
         </div>
     </div>
+
 </ui:composition>

@@ -1,0 +1,507 @@
+body {
+    .ui-breadcrumb {
+        background-color: $contentBgColor;
+        border: 1px solid $contentBorderColor;
+        padding: $headerPadding;
+        
+        ul {
+            li {
+                float: none;
+                display: inline-block;
+                vertical-align: middle;
+                
+                .ui-menuitem-link {
+                    color: $textSecondaryColor;
+                    margin: 0;
+                    position: relative;
+                    top: -1px;
+                }
+                
+                &.ui-breadcrumb-chevron {
+                    @include icon_override("\f105");
+                    font-size: $fontSize + 4;
+                    margin: -2px 6px 0 6px;
+                    color: $textSecondaryColor;
+                }
+                
+                &:first-child {
+                    font-size: $fontSize + 2;
+                    
+                    a.ui-icon-home {
+                        color: $textSecondaryColor;
+                        margin: 0;
+                        font-size: 15px;
+                        
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    .ui-steps {
+        position: relative;
+        
+        .ui-steps-item {
+            background-color: transparent;
+            text-align: center;
+                        
+            .ui-menuitem-link {
+                display: inline-block;
+                text-align: center;
+                background-color: transparent;
+                overflow: hidden;
+                
+                .ui-steps-number {
+                    display: inline-block;
+                    background-color: $primaryColor;
+                    @include border-radius(50%);
+                    padding: 4px 9px;
+                    font-size: 16px;
+                    color: $primaryTextColor;
+                    position: relative;
+                    top: 14px;
+                    margin-bottom: 12px;
+                    border: 1px solid lighten($primaryColor,15%);
+                }
+                
+                .ui-steps-title {
+                    display: block;
+                    margin-top: 6px;
+                    color: $textSecondaryColor;
+                }
+            }
+            
+            &.ui-state-disabled {
+                @include opacity(1);
+                .ui-steps-number {
+                    background-color: $contentBgColor;
+                    border-color: $contentBorderColor;
+                    color: $textColor;
+                }
+            }
+            
+            &.ui-state-highlight {
+                .ui-steps-number {
+                    background-color: $primaryColor;
+                }
+                
+                .ui-steps-title { 
+                    font-weight: 700;
+                    color: $textColor;
+                }
+            }
+            
+            &:last-child {
+                .ui-menuitem-link {
+                    display: block;
+                }
+            }
+        }
+
+        &:before {
+            content:' ';
+            border-top: 1px solid $contentBorderColor;
+            width: 100%;
+            top: 45%;
+            left: 0;
+            display: block;
+            position: absolute;
+        }
+    }
+    
+    .ui-menu {
+        padding: 0;
+        
+        &.ui-shadow:not(.ui-menu-dynamic) {
+            border: 0 none;
+            @include overlay-shadow();
+        }
+        
+        &.ui-menu-dynamic {
+            &.ui-shadow {
+                @include shadow(0 0 5px 0 rgba(0, 0, 0, 0.2))
+            }
+        }
+        
+        .ui-menu-list {
+            .ui-widget-header {
+                margin: 1px 0 0 0;
+                width: 100%;
+                box-sizing: border-box;
+                border: 0 none;
+                @include border-radius(0);
+                background-color: $dividerColor;
+                
+                h3 {
+                    padding: $headerPadding;
+                    font-weight: 700;
+                    color: $textColor;
+                    
+                    .ui-icon-triangle-1-s {
+                        margin-top: -10px;    
+                    }
+                }
+                
+                span {
+                    color: $textColor;
+                }
+                
+                .ui-icon {
+                    color: $textColor;
+                }
+                
+                &.ui-state-hover {
+                    background-color: darken($dividerColor, 10%);
+                }
+                
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+            
+            .ui-menuitem {
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+                @include border-radius(0);
+                
+                &.ui-state-hover {
+                    @include menu-item-hover();
+                    
+                    .ui-menuitem-link {
+                        color: #ffffff;
+                    }
+                }
+                
+                .ui-menuitem-link {
+                    padding: $listItemPadding;
+                    width: 100%;
+                    box-sizing: border-box;
+                    @include border-radius(0);
+                    color: $textColor;
+                    
+                    &.ui-state-hover {
+                        @include menu-item-hover();
+                    }
+                    
+                    .ui-menuitem-icon {
+                        margin-right: 4px;
+                        vertical-align: middle;
+                        float: none;
+                    }
+                    
+                    .ui-menuitem-text {
+                        vertical-align: middle;
+                        float: none;
+                    }
+                    
+                    .ui-icon-triangle-1-e:last-child {
+                        @include icon_override("\f105");
+                        position: relative;
+                        top: 1px;
+                        margin-right: -8px;
+                    }
+                    
+                    .ui-icon-triangle-1-s:last-child {
+                        @include icon_override("\f107");
+                        position: relative;
+                        top: 1px;
+                        margin-right: -8px;
+                    }
+                }
+            }
+            
+            .ui-menu-child {
+                padding: 0;
+                
+                &.ui-shadow {
+                    border: 0 none;
+                    @include overlay-shadow();
+                }
+            }
+        }
+        
+        &.ui-menubar {
+            background-color: $contentBgColor;
+            
+            > .ui-menu-list {
+                > .ui-menuitem {
+                    width: auto;
+                    
+                    > .ui-menuitem-link {
+                        color: $textColor;
+                        line-height: $fontSize + 1;
+                        
+                        .ui-menuitem-icon {
+                            color: $textColor;
+                            position: static;
+                        }
+                        
+                        &.ui-state-hover {
+                            color: $primaryTextColor;
+                            
+                            .ui-menuitem-icon {
+                                color: $primaryTextColor;
+                            }
+                        }
+                        
+                        > span {
+                            float: none;
+                            vertical-align: middle;
+                            display: inline-block;
+                        }
+                        
+                        .ui-icon-triangle-1-s:last-child {
+                            top: 0px;
+                        }
+                    }
+                    
+                    &.ui-menubar-options {
+                        margin-right: 8px;
+                        margin-top: 1px;
+                    }
+                }
+            }
+        }
+        
+        &.ui-megamenu {
+            > .ui-menu-list {
+                > .ui-menuitem {
+                    > .ui-menuitem-link {
+                        .ui-icon:last-child {
+                            float: right;
+                        }
+                        
+                        .ui-icon-triangle-1-s:last-child {
+                            top: 1px;
+                        }
+                    }
+                }    
+            }
+            
+            .ui-menu-list {
+                > table {
+                    > tbody {
+                        > tr {
+                            > td {
+                                padding: 0;
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            
+            &.ui-megamenu-vertical { 
+                > .ui-menu-list {
+                    .ui-menuitem {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        
+        &.ui-slidemenu {
+            .ui-slidemenu-backward {
+                padding: $headerPadding;
+                color: $textColor;
+                width: 100%;
+                border: 0 none;
+                box-sizing: border-box;
+                background-color: $dividerColor;
+                @include border-radius(0);
+                
+                &:hover {
+                    background-color: darken($dividerColor, 10%);
+                }
+                
+                .ui-icon-triangle-1-w {
+                    @include icon_override("\f104");
+                    position: relative;
+                    top: 2px;
+                }
+            }
+            
+            .ui-menu-child {
+                padding: 0;
+                
+                &.ui-shadow {
+                    @include no-shadow();
+                }
+            }
+            
+            .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text {
+                vertical-align: initial;
+            }
+        }
+        
+        &.ui-menu-toggleable {
+            li.ui-widget-header {
+                .ui-icon {
+                    margin-top: -7px;
+                    
+                    &.ui-icon-triangle-1-s {
+                        margin-top: -9px;
+                    }
+                }
+            }
+        }
+    }
+    
+    .ui-tabmenu {
+        border: 0 none;
+        
+        .ui-tabmenu-nav {
+            padding: 0;
+            background: $primaryColor;
+            border: 0 none;
+            @include box-sizing(border-box);
+            @include border-radius(0);
+            
+            .ui-tabmenuitem {
+                margin: 0;
+                position: static;
+                @include transition(background-color .3s);
+                @include border-radius(0);
+                background-color: $primaryColor;
+                border-right: 1px solid darken($primaryColor, 5%);
+                margin-right: 0;
+                
+                .ui-menuitem-link {
+                    color: $primaryTextColor;
+                    padding: $headerPadding;
+                    @include border-radius(0);
+                    
+                    .ui-menuitem-icon, .ui-menuitem-text {
+                        vertical-align: middle;
+                        display: inline-block;
+                        float: none;
+                    }
+                    
+                    .ui-menuitem-icon {
+                        color: $primaryTextColor;
+                    }
+                }
+                
+                &.ui-state-hover {
+                    background-color: darken($primaryColor, 15%);
+                                        
+                    .ui-menuitem-icon {
+                        color: lighten($primaryColor,35%);
+                    }
+                }
+
+                &.ui-state-active {
+                    .ui-menuitem-link {
+                        background-color: $highlightBgColor;
+                        
+                        .ui-menuitem-icon, .ui-menuitem-text {
+                            color: $highlightTextColor;
+                        }
+                    }
+                }
+                
+                &.ui-menuitem-outline {
+                    outline: 0 none;
+                    background-color: darken($primaryColor, 10%);
+                }
+            }
+        }
+    }
+    
+    .ui-menubutton {
+        .ui-button.ui-button-text-icon-left {
+             .ui-icon {
+                 margin-top: -9px;
+             }
+         }
+    }
+        
+    .ui-panelmenu {
+        .ui-icon {
+            position: static;
+        }
+        
+        .ui-panelmenu-header {
+            background-color: $contentBgColor;
+            padding: 0;
+            border: 1px solid $contentBorderColor;
+            font-size: $fontSize;
+            color: $textColor;
+            margin-bottom: 1px;
+            @include transition(background-color .3s);
+            
+            .ui-icon {
+                color: $textColor;
+                margin-top: -6px;
+                
+                &.ui-icon-triangle-1-s {
+                    margin-top: -9px;
+                } 
+            }
+            
+            a {
+                padding: $headerPadding;
+                padding-left: 24px;
+                color: $textColor;
+            }
+            
+            &.ui-state-hover {
+                background-color: $headerHoverBgColor;
+            }
+            
+            &.ui-state-active {
+                border: 1px solid $primaryColor;
+                background-color: $primaryColor;
+                
+                a {
+                    color: $primaryTextColor;
+                }
+
+                .ui-icon {
+                    color: $primaryTextColor;
+                }
+            }
+            
+            &.ui-menuitem-outline {
+                outline: 0 none;
+                background-color: $headerHoverBgColor;
+                
+                &.ui-state-active {
+                    background-color: darken($primaryColor, 10%);
+                }
+            }
+        }
+        
+        .ui-panelmenu-content {
+            .ui-menuitem-link {
+                padding: $listItemPadding;
+                color: $textColor;
+                @include transition(background-color .3s);
+                
+                &.ui-state-hover {
+                    @include list-item-hover();
+                }
+                                
+                > span.ui-icon {
+                    display: inline-block;
+                    vertical-align: middle;
+                    left: auto;
+                    margin-right: 4px;
+                    
+                    &.ui-panelmenu-icon.ui-icon-triangle-1-s {
+                        margin-top: -4px;
+                    }
+                }
+                
+                .ui-menuitem-text {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}

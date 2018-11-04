@@ -26,10 +26,10 @@
         <ui:insert name="head"/>
     </h:head>
 
-    <h:body>
+    <h:body styleClass="dashboard">
         <p:growl id="GBCentralGrowl" showDetail="true"/>
-        <ui:include src="/pages/core/GBTemplates/GBDialogs.xhtml"/>
-        <div class="layout-wrapper  layout-slim">
+        <ui:include src="GBDialogs.xhtml"/>
+        <div class="layout-wrapper layout-slim">
             <div class="layout-main">
                 <ui:include src="./topbar.xhtml" />
                 
@@ -57,7 +57,7 @@
        </p:ajaxStatus>
         
         <h:outputStylesheet name="css/nanoscroller.css" library="manhattan-layout" />
-        <h:outputStylesheet name="css/layout-orange-indigo.css" library="manhattan-layout" />
+        <h:outputStylesheet name="css/layout-#{SystemInfoBean.theme}.css" library="manhattan-layout" />
     </h:body>
 
 </html>

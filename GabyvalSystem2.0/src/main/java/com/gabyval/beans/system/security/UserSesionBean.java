@@ -285,7 +285,7 @@ public class UserSesionBean implements Serializable {
             LOG.error(ex);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(15), null);
         }
-        return "index";
+        return "/index.xhtml";
     }
     
     /**
