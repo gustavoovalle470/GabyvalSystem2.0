@@ -193,7 +193,7 @@ public class MenuViewBean implements Serializable{
             AdSecMenulinks menu = new AdSecMenulinks(pageId, pageName, 
                                       (getModuleName().equalsIgnoreCase("ES MODULO")?null:MenuViewController.getInstance().getMenuId(getModuleName())), 
                                       pageView, (openPage?1:2), GBEnvironment.getInstance().serverDate(), 0, 
-                                      username, GBEnvironment.getInstance().serverDate());
+                                      username, GBEnvironment.getInstance().serverDate(), "");
             MenuViewController.getInstance().savePage(menu);
             GBMessage.putMessage(GBEnvironment.getInstance().getError(44), pageName);
         } catch (GB_Exception ex) {

@@ -44,7 +44,11 @@ public class CatalogController {
     
     public List<AdCatalogs> getAllCatalogs() throws GB_Exception{
         try {
-            return PersistenceManager.getInstance().runCriteria("FROM AdCatalogs A ORDER BY A.gbCatalogName, A.gbCatagogItemId");
+            List<AdCatalogs> allCatalogs = PersistenceManager.getInstance().runCriteria("FROM AdCatalogs A ORDER BY A.gbCatalogName, A.gbCatagogItemId");
+            for(AdCatalogs c : allCatalogs){
+                PersistenceManager.getInstance().update(c);
+            }
+            return allCatalogs;
         } catch (GB_Exception ex) {
             LOG.error(ex);
             throw ex;
@@ -67,5 +71,17 @@ public class CatalogController {
             LOG.error(ex);
         }
         return nextCatalogItemId;
+    }
+    
+    public HashMap<String, Integer> getCatalogsList() throws GB_Exception {
+        int i = 1;
+        HashMap<String, Integer> catalogsList = new HashMap<>();
+        for(AdCatalogs cat: getAllCatalogs()){
+            if(!catalogsList.containsKey(cat.getGbCatalogName())){
+                catalogsList.put(cat.getGbCatalogName(), i);
+                i++;
+            }
+        }
+        return catalogsList;
     }
 }

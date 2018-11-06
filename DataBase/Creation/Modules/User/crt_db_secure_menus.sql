@@ -19,6 +19,7 @@
  * *****************************************************************************************************************************************************
  *_____Nombre del Archivo___________|_____VERSION_______|_________________AUTOR_________________|____________Fecha de creacion/modificacion____________|
  *	   ins_db_admin_user			|		1.0			|     GUSTAVO ADOLFO OVALLE QUINTERO	|		                 26/03/2017                    |
+ *	   ins_db_admin_user			|		1.1			|     GUSTAVO ADOLFO OVALLE QUINTERO	|		                 05/11/2018                    |
  *******************************************************************************************************************************************************/
 
 /* *********************************************************************
@@ -35,6 +36,7 @@ CREATE TABLE GABYVAL.ad_sec_menulinks
 	GB_LAST_USER_CHG VARCHAR(20),
 	GB_LAST_DATE_CHG DATE,
 	gb_menu_status  INTEGER NOT NULL,
+	GB_ICON 		VARCHAR(100), 
 	create_dt			DATE		 NOT NULL,
 	rowversion			INTEGER		NOT NULL
 );

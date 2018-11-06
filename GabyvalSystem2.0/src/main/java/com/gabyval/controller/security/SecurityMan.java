@@ -8,10 +8,8 @@ package com.gabyval.controller.security;
 import com.gabyval.core.commons.controllers.PersistenceManager;
 import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
-import com.gabyval.persistence.user.security.AdSecMenuProfiling;
 import com.gabyval.persistence.user.security.AdSecMenulinks;
 import com.gabyval.persistence.user.security.AdUserProfiling;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

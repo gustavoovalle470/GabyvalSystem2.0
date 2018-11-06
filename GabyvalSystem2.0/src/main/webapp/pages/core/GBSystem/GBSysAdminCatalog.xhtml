@@ -6,30 +6,70 @@
                 template="/WEB-INF/template.xhtml">
     
     <ui:define name="content">
-        <h:form id="form">
+        <h:form id="form" >
             <div class="ui-g">
                 <div class="ui-g-12">
                     <div class="card card-w-title">
-                        <h1>A continuación se muestran todos los catalogos disponibles en el sistema:</h1>
-                        <p:dataTable var="catalog" value="#{CatalogBean.catalogs}" selectionMode="single" reflow="true"
-                                     selection="#{dtSelectionView.selectedCar}" rowKey="#{catalog.gbCatalogId}"
+                        <h1>A continuación se muestran todos los catálogos disponibles en el sistema:</h1>
+                        <p:dataTable var="catalog" value="#{CatalogBean.catalogs}" selectionMode="single" 
+                                     reflow="true" selection="#{CatalogBean.selectedCatalog}" 
+                                     rowKey="#{catalog.gbCatalogId}"
                                      paginator="true" rows="10"
-                                     class="ui-datatable">
+                                     class="ui-datatable"
+                                     editable="true"
+                                     id="GBCatalogsTbl">
                             <f:facet name="header">
-                                CATALOGOS DE SITEMA
+                                CATÁLOGOS DE SITEMA
                             </f:facet>
+                            <p:ajax event="rowEdit" listener="#{CatalogBean.onPageEdit}" update="GBCentralGrowl"/>
                             <p:column headerText="Id">
-                                <h:outputText value="#{catalog.gbCatalogId}" />
+                                <h:outputText value="#{catalog.gbCatagogItemId}" />
                             </p:column>
 
-                            <p:column headerText="Nombre" sortBy="#{catalog.gbCatalogName}">
+                            <p:column headerText="Catálogo" sortBy="#{catalog.gbCatalogName}">
                                 <h:outputText value="#{catalog.gbCatalogName}" />
                             </p:column>
 
-                            <p:column headerText="Valor">
-                                <h:outputText value="#{catalog.gbCatalogName}" />
+                            <p:column headerText="Item">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{catalog.gbCatalogItem}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{catalog.gbCatalogItem}" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column headerText="Descripción">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{catalog.gbCatalogDescription}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{catalog.gbCatalogDescription}" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column style="width:32px">
+                                <p:rowEditor />
                             </p:column>
                         </p:dataTable>
+                        <br></br>
+                        <br></br>
+                        <div align="center">
+                            <p:commandButton value="Agregar catálogo"
+                                             icon="fa fa-fw fa-plus"
+                                             onclick="PF('GBCatalogDlg').show();"/>
+                            <p:commandButton id="GBUpdateCatalogs"
+                                             value="Actualizar"
+                                             icon="fa fa-fw fa-refresh"
+                                             update="GBCatalogsTbl"/>
+                            <p:commandButton value="Volver al inicio"
+                                             icon="fa fa-fw fa-home"
+                                             action="/GBAppmaster.xhtml"/>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -35,5 +35,8 @@
         <property name="gbLastDateChg" type="date">
             <column name="GB_LAST_DATE_CHG" />
         </property>
+        <property name="gbIcon" type="string">
+            <column name="GB_ICON" length="100" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -24,21 +24,23 @@
  * |*********|**************|****************|*********************************************************************************************************|
  * | Version |    Fecha     |  Responsable   |                                                  Comentarios                                            |
  * |*********|**************|****************|*********************************************************************************************************|
- * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del contenedor de todos los dialogos del aplicativo web.                                       |   
+ * |   1.0   |  10/06/2018  |      GAOQ      | Creacion del dialogo que se invoca para el cambio de contraseña a peticion.                             |   
  * |*********|**************|****************|*********************************************************************************************************|
  ******************************************************************************************************************************************************
- **Nombre del archivo: GBDialogs.xhtml
+ **Nombre del archivo: GBPassChgDlg.xhtml
  ******************************************************************************************************************************************************
- **Descripcion:        Contenedor de dialogos.
+ **Descripcion:        Dialogo que permite al usuario cambiar su contraseña a peticion.
  ******************************************************************************************************************************************************
- **Componentes en que se usa: app_master.xhtml.
+ **Componentes en que se usa: GBDialogs.xhtml.
  ******************************************************************************************************************************************************
 -->
 <!DOCTYPE html>
 <html lang="es" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:head>
         <meta charset="utf-8" />
@@ -48,12 +50,54 @@
         <title>GABYVAL System v#{SystemDateBean.app_version}</title>
     </h:head>
     <h:body>
-        <ui:composition>    
-            <ui:include src="../pages/dialogs/system/GBLogoutConfirmationDlg.xhtml"/>
-            <ui:include src="../pages/dialogs/system/GBPassChgDlg.xhtml"/>
-            <ui:include src="../pages/dialogs/system/GBPassExpiredChgDlg.xhtml"/>
-            <ui:include src="../pages/dialogs/system/GBUserProfViewDlg.xhtml"/>
-            <ui:include src="../pages/dialogs/system/GBCatalogDlg.xhtml"/>
-        </ui:composition>   
+        <ui:composition>
+            <p:dialog header="Adición de catálogos" 
+                      widgetVar="GBCatalogDlg" 
+                      id="GBCatalogDlg" 
+                      resizable="false" 
+                      draggable="false" 
+                      responsive="true" 
+                      modal="true">
+                <h:form id="GBAddingCatalogForm">
+                    <p:panelGrid columns="2" 
+                                 layout="grid" 
+                                 styleClass="ui-panelgrid-blank" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-8">
+                        <p:outputLabel value="Catalogo nuevo:" for="GBNewCatalog"/>
+                        <p:inputSwitch id="GBNewCatalog" value="#{CatalogBean.isNewCatalog}">
+                            <p:ajax update="GBActualCatalogs, GBCatalogName" />
+                        </p:inputSwitch>
+                        <p:outputLabel value="Seleccionar catalogo:" for="GBNewCatalog"/>
+                        <p:selectOneMenu id="GBActualCatalogs" value="#{CatalogBean.catalog_name_select}" 
+                                         disabled="#{!CatalogBean.isNewCatalog}"
+                                         required="#{!CatalogBean.isNewCatalog}">
+                            <f:selectItems value="#{CatalogBean.catalogsList}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Nombre catalogo:" for="GBNewCatalog"/>
+                        <p:inputText id="GBCatalogName" placeholder="Nombre del catalogo" disabled="#{CatalogBean.isNewCatalog}" value="#{CatalogBean.catalog_name}" required="#{CatalogBean.catalog_name}"/>
+                        <p:outputLabel value="Valor:" for="GBCatalogValue"/>
+                        <p:inputText id="GBCatalogValue" value="#{CatalogBean.catalog_value}" required="true"/>
+                        <p:outputLabel value="Descripción:" for="GBCatalogDesc"/>
+                        <p:inputText id="GBCatalogDesc" value="#{CatalogBean.catalog_value_desc}"/>
+                        <p:commandButton value="Crear" action="#{CatalogBean.saveCatalog()}" 
+                                         onclick="PF('GBCatalogDlg').hide()" 
+                                         oncomplete="handleLoginRequest(xhr, status, args)"
+                                         icon="fa fa-check" update="GBCentralGrowl"/>
+                        <p:commandButton value="Cancelar" onclick="PF('GBCatalogDlg').hide()"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if(!#{UserSesionBean.chgExpPwdSucess}) {
+                        PF('GBCatalogDlg').jq.effect("shake", {times:5}, 100);
+                    }
+                    else {
+                        $('GBUpdateCatalogs').click();
+                        PF('GBCatalogDlg').hide();
+                    }
+                }
+            </script>
+        </ui:composition>
     </h:body>
 </html>

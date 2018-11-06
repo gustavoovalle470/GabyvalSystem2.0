@@ -24,7 +24,7 @@
 /* *****************************************************************
  * Esquema: GABYVAL
  * Tabla: AD_ERROR
- * Cantidad inserts: 34
+ * Cantidad inserts: 41
  * Descripcion: Inserts iniciales de errores predeterminados.
  * *****************************************************************/
 INSERT INTO AD_ERROR VALUES (1, 'El sistema no pudo encontrar el registro solicitado o la conexión no está disponible. Contacte con su administrador.', 'ERROR', 'Error grave en la base de datos.', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
@@ -61,5 +61,12 @@ INSERT INTO AD_ERROR VALUES (31, 'La contraseña de usuario se modifico correcta
 INSERT INTO AD_ERROR VALUES (32, 'La contraseña actual no es correcta. Verifique e intente nuevamente.', 'ERROR', 'Error al cambiar la contraseña.', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
 INSERT INTO AD_ERROR VALUES (33, 'Se ha presentado un problema al modificar la contraseña, si el problema persiste contacte con su administrador.', 'ERROR', 'Error al cambiar la contraseña.', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
 INSERT INTO AD_ERROR VALUES (34, 'La contraseña no cumple con las politicas definidas o la confirmacion fallo. Por favor valide e intente de nuevo.', 'ERROR', 'Error al cambiar la contraseña.', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (35, 'Se a actualizado correctamente el catálogo', 'INFO', 'Éxito al modificar el catálogo', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (36, 'Para que el cambio tenga efecto deberá reiniciar su sesión.', 'WARN', 'Éxito al modificar el catálogo', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (37, 'Se ha presentado un problema al modificar el catálogo. Intente nuevamente. Si el problema persiste contacte con su administrador', 'ERROR', 'Error al modificar el catálogo', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (38, 'El catálogo $ ha sido guardado correctamente, junto con el item $.', 'INFO', 'Éxito al crear el catálogo', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (39, 'El catálogo $ no ha sido guardado correctamente, junto con el item $. Si el problema perisite contacte con su administrador', 'ERROR', 'Error al crear el catálogo', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (40, 'Ha ocurrido un error inesperado al guardar el catálogo. Si el problema persiste contacte con su administrador', 'FATAL', 'Error al crear el catálogo', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
+INSERT INTO AD_ERROR VALUES (41, 'Se ha presentado un error al tratar de recuperar los catálogos actuales. Si el problema persiste contacte con su administrador', 'FATAL', 'Error al recuperar la vista', 'SYSTEM', 'SYSTEM', to_timestamp(sysdate,'DD/MM/RR HH12:MI:SSXFF AM'),1,to_date(sysdate,'DD/MM/RR'),0);
 
 COMMIT;

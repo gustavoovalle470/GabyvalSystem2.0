@@ -35,6 +35,7 @@ import com.gabyval.core.exception.GB_Exception;
 import com.gabyval.core.logger.GB_Logger;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.event.RowEditEvent;
@@ -51,12 +52,40 @@ public class CatalogBean implements Serializable{
     
     private static final GB_Logger LOG = GB_Logger.getLogger(CatalogBean.class); //Log for this class.
     private ArrayList<AdCatalogs> catalogs; //Catalog list.
+    private HashMap<String, Integer> catalogsList; //All genders allowed.
+    private String catalog_name_select;
+    private AdCatalogs selectedCatalog;
     private String catalog_name; //Catalog name
     private String catalog_value; //Catalog item.
     private String catalog_value_desc; // Catalog item description.
-    private String catalog_name_st; //Catalog name status.
-    private String catalog_item_st; //Catalog item status.
+    private boolean isNewCatalog;
+    
+    public CatalogBean(){
+        getCatalogsList();
+    }
 
+    public String getCatalog_name_select() {
+        return catalog_name_select;
+    }
+
+    public void setCatalog_name_select(String catalog_name_select) {
+        this.catalog_name_select = catalog_name_select;
+    }
+
+    public HashMap<String, Integer> getCatalogsList() {
+        try {
+            catalogsList = CatalogController.getInstance().getCatalogsList();
+        } catch (GB_Exception ex) {
+            LOG.fatal(ex);
+            GBMessage.putException(ex);
+        }
+        return catalogsList;
+    }
+
+    public void setCatalogsList(HashMap<String, Integer> catalogsList) {
+        this.catalogsList = catalogsList;
+    }
+    
     /**
      * Obtain all catalog for the database.
      * @return ArrayList All catalogs from database.
@@ -99,71 +128,69 @@ public class CatalogBean implements Serializable{
         this.catalog_value_desc = catalog_value_desc;
     }
 
-    public String getCatalog_name_st() {
-        return catalog_name_st;
+    public AdCatalogs getSelectedCatalog() {
+        return selectedCatalog;
     }
 
-    public void setCatalog_name_st(String catalog_name_st) {
-        this.catalog_name_st = catalog_name_st;
+    public void setSelectedCatalog(AdCatalogs selectedCatalog) {
+        this.selectedCatalog = selectedCatalog;
     }
 
-    public String getCatalog_item_st() {
-        return catalog_item_st;
+    public boolean isIsNewCatalog() {
+        return isNewCatalog;
     }
 
-    public void setCatalog_item_st(String catalog_item_st) {
-        this.catalog_item_st = catalog_item_st;
+    public void setIsNewCatalog(boolean isNewCatalog) {
+        this.isNewCatalog = isNewCatalog;
     }
-    
+     
     public void onPageEdit(RowEditEvent evt){
         AdCatalogs catalogEdit = (AdCatalogs)evt.getObject();
         catalogEdit.setRowversion(catalogEdit.getRowversion()+1);
         try {
             CatalogController.getInstance().save(catalogEdit);
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(54), null);
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(55), null);
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(35), null);
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(36), null);
         } catch (GB_Exception ex) {
             LOG.error(ex);
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(53), null);
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(37), null);
         }
     }
     
     public void saveCatalog(){
         try {
-            AdCatalogs catalog= new AdCatalogs(GBEnvironment.getInstance().getNextTableId("AdCatalogs"), catalog_name.toUpperCase(), CatalogController.getInstance().getNextCatalogItemId(catalog_name.toUpperCase()), catalog_value.toUpperCase(), catalog_value_desc, GBEnvironment.getInstance().serverDate(), 0);
+            String catalog_dest ="";
+            if(isNewCatalog){
+                catalog_dest = getCatalogName();
+            }else{
+                catalog_dest = catalog_name.toUpperCase();
+            }
+            AdCatalogs catalog= new AdCatalogs(GBEnvironment.getInstance().getNextTableId("AdCatalogs"), catalog_dest, CatalogController.getInstance().getNextCatalogItemId(catalog_dest), catalog_value, catalog_value_desc, GBEnvironment.getInstance().serverDate(), 0);
             CatalogController.getInstance().save(catalog);
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(52), catalog_name.toUpperCase()+","+catalog_value.toUpperCase());
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(38), catalog_dest+","+catalog_value);
             clearView();
         } catch (GB_Exception ex) {
             LOG.error(ex);
-            GBMessage.putMessage(GBEnvironment.getInstance().getError(51), catalog_name.toUpperCase()+","+catalog_value.toUpperCase());
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(39), catalog_name.toUpperCase()+","+catalog_value);
+        } catch(Exception ex){
+            LOG.error(ex);
+            GBMessage.putMessage(GBEnvironment.getInstance().getError(39), null);
         }
     }
     
-    public void validateCatalog(){
-        if(catalog_name.toUpperCase().contains(" ")){
-            setCatalog_name_st("Nombre no válido.");
-        }
-        else if(GBEnvironment.getInstance().getCatalog(catalog_name.toUpperCase()).catalogExist()){
-            setCatalog_name_st("Edición de catalogo");
-        }else{
-            setCatalog_name_st("Creación de catalogo");
-        }
-    }
-    
-    public void validateCatalogItem(){
-        if(GBEnvironment.getInstance().getCatalog(catalog_name.toUpperCase()).getAllCatalog().containsKey(catalog_value.toUpperCase())){
-            setCatalog_item_st("El item ya existe");
-        }else{
-            setCatalog_item_st("Item correcto");
-        }
-    }
-
     public void clearView() {
-        setCatalog_item_st("");
-        setCatalog_name_st("");
         setCatalog_name("");
         setCatalog_value("");
         setCatalog_value_desc("");
+    }
+
+    private String getCatalogName() throws GB_Exception {
+        for(String catalogName : catalogsList.keySet()){
+            System.out.println("Comparando "+catalogsList.get(catalogName).toString()+" vs. "+catalog_name_select+" son inguales? "+catalogsList.get(catalogName).toString().equals(catalog_name_select));
+            if(catalogsList.get(catalogName).toString().equals(catalog_name_select)){
+                return catalogName;
+            }
+        }
+        throw new GB_Exception(41);
     }
 }

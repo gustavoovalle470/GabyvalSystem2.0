@@ -32,20 +32,20 @@
         <div class="layout-wrapper layout-slim">
             <div class="layout-main">
                 <ui:include src="./topbar.xhtml" />
-                
+
                 <div class="layout-content">
                     <ui:insert name="content"/>
                 </div>
-                
+
                 <ui:include src="./footer.xhtml" />
-                
+
                 <div class="layout-main-mask"></div>
             </div>
 
             <ui:include src="./rightpanel.xhtml" />      
             <ui:include src="./sidebar.xhtml" />
         </div>
-        
+
         <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
            <f:facet name="start">
                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>

@@ -31,6 +31,7 @@ public class AdSecMenulinks  implements java.io.Serializable {
      private int rowversion;
      private String gbLastUserChg;
      private Date gbLastDateChg;
+     private String gbIcon;
 
     public AdSecMenulinks() {
     }
@@ -43,7 +44,7 @@ public class AdSecMenulinks  implements java.io.Serializable {
         this.createDt = createDt;
         this.rowversion = rowversion;
     }
-    public AdSecMenulinks(String gbMenuId, String gbMenuName, String gbMenuParId, String gbPageView, int gbMenuStatus, Date createDt, int rowversion, String gbLastUserChg, Date gbLastDateChg) {
+    public AdSecMenulinks(String gbMenuId, String gbMenuName, String gbMenuParId, String gbPageView, int gbMenuStatus, Date createDt, int rowversion, String gbLastUserChg, Date gbLastDateChg, String gbIcon) {
        this.gbMenuId = gbMenuId;
        this.gbMenuName = gbMenuName;
        this.gbMenuParId = gbMenuParId;
@@ -53,6 +54,7 @@ public class AdSecMenulinks  implements java.io.Serializable {
        this.rowversion = rowversion;
        this.gbLastUserChg = gbLastUserChg;
        this.gbLastDateChg = gbLastDateChg;
+       this.gbIcon = gbIcon;
     }
    
      @Id 
@@ -155,9 +157,15 @@ public class AdSecMenulinks  implements java.io.Serializable {
         this.gbLastDateChg = gbLastDateChg;
     }
 
+    @Column(name="GB_ICON", nullable=false, length=100)
+    public String getGbIcon() {
+        return gbIcon;
+    }
 
-
-
+    public void setGbIcon(String gbIcon) {
+        this.gbIcon = gbIcon;
+    }
+    
 }
 
 

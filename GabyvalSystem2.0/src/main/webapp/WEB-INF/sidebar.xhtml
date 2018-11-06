@@ -5,25 +5,25 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:pm="http://primefaces.org/manhattan">
-
-    <div class="layout-sidebar">
-        <div class="layout-sidebar-logo">
-            <p:commandLink action="/GBAppMaster.xhtml">
-                <p:graphicImage name="images/logo-manhattan.png" library="manhattan-layout" />
-            </p:commandLink>
-            <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu">
-                <i class="fa"></i>
-            </a>
-        </div>
-
-        <div class="nano">
-            <div class="nano-content sidebar-scroll-content">
-                <div class="layout-menu-container">
-                    <h:form id="menuform">
-                        <pm:menu model="#{MenuBean.menu}"/>
-                    </h:form>
+        <div class="layout-sidebar">
+            <div class="layout-sidebar-logo">
+                <h:form id="homeform">
+                    <p:commandLink action="/GBAppmaster.xhtml">
+                        <p:graphicImage name="images/logo-manhattan.png" library="manhattan-layout" />
+                    </p:commandLink>
+                    <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu">
+                        <i class="fa"></i>
+                    </a>
+                </h:form>
+            </div>
+            <div class="nano">
+                <div class="nano-content sidebar-scroll-content">
+                    <div class="layout-menu-container">
+                        <h:form id="menuform">
+                            <pm:menu model="#{MenuBean.menu}"/>           
+                        </h:form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </ui:composition>

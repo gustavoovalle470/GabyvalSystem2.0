@@ -113,11 +113,16 @@ public class MenuBean implements Serializable{
     
     private DefaultMenuItem assembleItem(AdSecMenulinks menu){
         DefaultMenuItem item = new DefaultMenuItem(menu.getGbMenuName());
+        item.setId(menu.getGbMenuId());
+        item.setIcon(menu.getGbIcon());
         item.setCommand(menu.getGbPageView());
         return item;
     }
     
     private DefaultSubMenu assembleSubMenu(AdSecMenulinks menu){
-        return new DefaultSubMenu(menu.getGbMenuName());
+        DefaultSubMenu sub = new DefaultSubMenu(menu.getGbMenuName());
+        sub.setId(menu.getGbMenuId());
+        sub.setIcon(menu.getGbIcon());
+        return sub;
     }
 }

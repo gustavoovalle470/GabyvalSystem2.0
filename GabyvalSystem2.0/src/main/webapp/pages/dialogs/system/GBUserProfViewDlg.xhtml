@@ -54,7 +54,7 @@
             <p:dialog header="#{UserSesionBean.username}" 
                       widgetVar="GBProfileViewdDlg" 
                       id="GBProfileViewdDlg" 
-                      resizable="false" 
+                      resizable="true" 
                       draggable="false" 
                       responsive="true" 
                       modal="true">
@@ -91,16 +91,6 @@
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
-            <script type="text/javascript">
-                function handleLoginRequest(xhr, status, args) {
-                    if(!#{UserSesionBean.chgExpPwdSucess}) {
-                        PF('GBChgExpPwdDlg').jq.effect("shake", {times:5}, 100);
-                    }
-                    else {
-                        PF('GBChgExpPwdDlg').hide();
-                    }
-                }
-            </script>
         </ui:composition>
     </h:body>
 </html>
